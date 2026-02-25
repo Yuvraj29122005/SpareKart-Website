@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "~/Views/Shared/_ProfileLayout.cshtml";
+}
+
+<div class="profile-container">
+
+    <div class="profile-left">
+
+        <div class="user-card">
+            <div class="avatar">
+                <i class="fa fa-user"></i>
+            </div>
+
+            <h4>Yuvraj dhadhal</h4>
+            <p>yuvraj@example.com</p>
+
+            <span class="active">Active Member</span>
+
+            <p class="phone">+91 9876543210</p>
+        </div>
+
+    </div>
+
+    <div class="profile-right">
+
+        <div class="top">
+            <h4>Personal Information</h4>
+            <button onclick="editProfile()" class="edit-btn">
+                <i class="fa fa-pen"></i> Edit Profile
+            </button>
+        </div>
+
+        <div class="form">
+
+            <label>Full Name</label>
+            <input type="text" id="name" value="Yuvraj dhadhal" disabled />
+
+            <label>Email Address</label>
+            <input type="text" id="email" value="yuvraj@example.com" disabled />
+
+            <label>Phone Number</label>
+            <input type="text" id="phone" value="+91 9876543210" disabled />
+
+            <label>Address</label>
+<textarea id="address" disabled>
+rk university,rajkot,gujarat,360020
+</textarea>
+
+            <button class="save" id="saveBtn" style="display:none;">
+                Save Changes
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function editProfile(){
+    document.getElementById("name").disabled=false;
+    document.getElementById("email").disabled=false;
+    document.getElementById("phone").disabled=false;
+    document.getElementById("address").disabled=false;
+    document.getElementById("saveBtn").style.display="block";
+    }
+</script>
