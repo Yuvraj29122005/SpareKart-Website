@@ -4,17 +4,11 @@ namespace SpareKart_Website.Models
 {
     public class UserModel
     {
-        public int Id { get; set; }
-
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
-
-        public static List<UserModel> users = new List<UserModel>();
     }
 }
