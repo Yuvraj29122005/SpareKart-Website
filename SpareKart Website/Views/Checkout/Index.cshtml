@@ -5,7 +5,9 @@
 
 <h2 class="title">Checkout</h2>
 
-<form action="/Checkout/OrderConfirm" method="get">
+<form asp-controller="Checkout"
+      asp-action="PlaceOrder"
+      method="post">
 
     <div class="checkout">
 
@@ -25,8 +27,8 @@
                 <input type="email" name="email" required />
 
                 <label>Phone Number *</label>
-                <input type="tel" name="phone" pattern="[0-9]{10}" required />
-
+                <input type="tel" name="phone"
+                       pattern="[0-9]{10}" required />
             </div>
 
             <!-- SHIPPING -->
@@ -35,8 +37,11 @@
                 <h4>📍 Shipping Address</h4>
 
                 <label>Complete Address *</label>
-<textarea rows="4" name="address" required></textarea>
 
+                <textarea rows="4"
+                          name="address"
+                          required>
+                </textarea>
             </div>
 
             <!-- PAYMENT -->
@@ -46,22 +51,35 @@
 
                 <label class="payment-option">
 
-                    <input type="radio" name="pay" value="COD" checked required>
+                    <input type="radio"
+                           name="pay"
+                           value="COD"
+                           checked required>
 
                     <div class="pay-info">
-                        <span class="pay-title">Cash on Delivery</span>
-                        <span class="pay-desc">Pay when you receive your order</span>
+                        <span class="pay-title">
+                            Cash on Delivery
+                        </span>
+                        <span class="pay-desc">
+                            Pay when you receive your order
+                        </span>
                     </div>
 
                 </label>
 
                 <label class="payment-option">
 
-                    <input type="radio" name="pay" value="Online">
+                    <input type="radio"
+                           name="pay"
+                           value="Online">
 
                     <div class="pay-info">
-                        <span class="pay-title">Online Payment</span>
-                        <span class="pay-desc">UPI, Credit/Debit Cards, Net Banking</span>
+                        <span class="pay-title">
+                            Online Payment
+                        </span>
+                        <span class="pay-desc">
+                            UPI, Credit/Debit Cards, Net Banking
+                        </span>
                     </div>
 
                 </label>
@@ -78,7 +96,8 @@
 
             <div class="order-card">
 
-                <img src="~/images/@ViewBag.Image" class="sum-img" />
+                <img src="~/images/@ViewBag.Image"
+                     class="sum-img" />
 
                 <div>
                     <p>@ViewBag.Name</p>
@@ -94,7 +113,11 @@
 
             <h4>Total ₹@ViewBag.Price</h4>
 
-            <button type="submit">Place Order</button>
+            <!-- IMPORTANT -->
+            <button type="submit"
+                    class="place-btn">
+                Place Order
+            </button>
 
         </div>
 

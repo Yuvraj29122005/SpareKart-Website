@@ -1,0 +1,42 @@
+﻿@model SpareKart_Website.Models.OrderModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/orderdetails.css" />
+
+<div class="details-container">
+
+    <h2>Order Details</h2>
+
+    <div class="details-card">
+
+        <p><b>Order ID :</b> @Model.OrderId</p>
+        <p><b>Order Date :</b> @Model.Date</p>
+        <p><b>Shipping Address :</b> @Model.Address</p>
+
+    </div>
+
+    <h3>Products</h3>
+
+    @foreach (var item in Model.Items)
+    {
+        <div class="item">
+
+            <img src="~/images/@item.Image" />
+
+            <div class="item-info">
+                <p>@item.Name</p>
+                <p>₹@item.Price</p>
+                <p>Qty : @item.Quantity</p>
+            </div>
+
+        </div>
+    }
+
+    <div class="total">
+        Total Amount : ₹@Model.TotalAmount
+    </div>
+
+</div>

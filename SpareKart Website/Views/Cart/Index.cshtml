@@ -1,19 +1,28 @@
 ﻿@model List<SpareKart_Website.Models.CartItem>
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <link rel="stylesheet" href="~/css/cart.css" />
+
+@* ========================================
+   IF CART IS EMPTY
+   ======================================== *@
 
 @if (Model.Count == 0)
 {
     <div class="empty-cart">
 
         <div class="empty-box">
+
+            <!-- CART ICON -->
             <i class="fa fa-shopping-bag empty-icon"></i>
 
             <h3>Your Cart is Empty</h3>
             <p>Looks like you haven't added any items to your cart yet.</p>
 
+            <!-- REDIRECT TO PRODUCTS PAGE -->
             <a href="/Products/AllProducts">
                 <button>Continue Shopping</button>
             </a>
@@ -22,38 +31,59 @@
 
     </div>
 }
+
+@* ========================================
+   IF CART HAS PRODUCTS
+   ======================================== *@
+
 else
 {
-
     <div class="cart-container">
 
         <h2 class="cart-title">Shopping Cart</h2>
 
+        @* LOOP THROUGH CART ITEMS *@
         @foreach (var item in Model)
         {
             <div class="cart-item">
 
-                <img src="~/images/@item.Image" class="cart-img" />
+                <!-- PRODUCT IMAGE -->
+                <img src="~/images/@item.Image"
+                     class="cart-img" />
 
                 <div class="cart-info">
 
+                    <!-- PRODUCT NAME -->
                     <h4>@item.Name</h4>
+
+                    <!-- PRODUCT PRICE -->
                     <p class="price">₹@item.Price</p>
 
+                    <!-- QUANTITY BUTTONS -->
                     <div class="qty">
 
-                        <a href="/Cart/Decrease?name=@item.Name" class="qty-btn">-</a>
+                        <!-- DECREASE QUANTITY -->
+                        <a href="/Cart/Decrease?name=@item.Name"
+                           class="qty-btn">-</a>
+
+                        <!-- CURRENT QTY -->
                         <span>@item.Quantity</span>
-                        <a href="/Cart/Increase?name=@item.Name" class="qty-btn">+</a>
+
+                        <!-- INCREASE QUANTITY -->
+                        <a href="/Cart/Increase?name=@item.Name"
+                           class="qty-btn">+</a>
 
                     </div>
 
-                    <a href="/Cart/Remove?name=@item.Name" class="remove-btn">
+                    <!-- REMOVE ITEM -->
+                    <a href="/Cart/Remove?name=@item.Name"
+                       class="remove-btn">
                         Remove
                     </a>
 
                 </div>
 
+                <!-- SUBTOTAL -->
                 <div class="subtotal">
                     ₹@(item.Price* item.Quantity)
                 </div>
@@ -61,12 +91,44 @@ else
             </div>
         }
 
+        <!-- CART SUMMARY -->
         <div class="cart-summary">
 
-            <h3>Total: ₹@Model.Sum(x => x.Price * x.Quantity)</h3>
+            <!-- TOTAL AMOUNT -->
+            <h3>
+                Total:
+                ₹@Model.Sum(x => x.Price * x.Quantity)
+            </h3>
 
-            <a href="/Checkout/Index?name=@Model[0].Name&price=@Model.Sum(x => x.Price * x.Quantity)&image=@Model[0].Image">
-                <button class="checkout-btn">Checkout</button>
+            @* ===========================================
+               VERY IMPORTANT CHANGE
+               ===========================================
+
+               ❌ OLD CODE WAS:
+               Sending name, price, image in URL
+
+               /Checkout/Index?name=...&price=...&image=...
+
+               THIS WAS CAUSING:
+               CartController.cart COUNT = 0
+               Order NOT SAVED
+               Redirect to Home
+
+               -------------------------------------------
+
+               ✅ NOW:
+               We are just going to Checkout
+               and Checkout will read directly
+               from CartController.cart list
+
+               =========================================== *@
+
+            <a href="/Checkout/Index">
+
+                <button class="checkout-btn">
+                    Proceed to Checkout
+                </button>
+
             </a>
 
         </div>

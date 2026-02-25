@@ -1,0 +1,100 @@
+﻿@model List<SpareKart_Website.Models.OrderModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/orders.css" />
+
+<div class="order-top-bar">
+
+    <h2>My Orders</h2>
+
+    @if (Model.Count > 0)
+    {
+        <a href="/Order/ClearHistory"
+           class="clear-btn"
+           onclick="return confirm('Are you sure to clear order history?')">
+            Clear History
+        </a>
+    }
+
+</div>
+
+@* ===========================
+   EMPTY ORDER DESIGN
+   =========================== *@
+
+@if (Model.Count == 0)
+{
+    <div class="empty-order">
+
+        <div class="empty-box">
+
+            <i class="fa fa-shopping-bag empty-icon"></i>
+
+            <h3>No Orders Yet</h3>
+
+            <p>You haven't placed any orders yet.</p>
+
+            <a href="/Products/AllProducts">
+                <button class="shop-btn">
+                    Continue Shopping
+                </button>
+            </a>
+
+        </div>
+
+    </div>
+}
+
+@* ===========================
+   SHOW ORDERS
+   =========================== *@
+
+else
+{
+    @foreach (var order in Model)
+    {
+        <div class="order-card">
+
+            <div class="order-header">
+
+                <div>
+                    <p class="label">Order ID</p>
+                    <h4>@order.OrderId</h4>
+                </div>
+
+                <div>
+                    <p class="label">Order Date</p>
+                    <h4>@order.Date</h4>
+                </div>
+
+                <div>
+                    <p class="label">Items</p>
+                    <h4>@order.Items.Count</h4>
+                </div>
+
+                <div>
+                    <p class="label">Total</p>
+                    <h4 class="price">₹@order.TotalAmount</h4>
+                </div>
+
+            </div>
+
+            <div class="order-footer">
+
+                <p class="address">
+                    Shipping Address : @order.Address
+                </p>
+
+                <a href="/Order/Details?id=@order.OrderId"
+                   class="view-btn">
+                    View Order Details
+                </a>
+
+            </div>
+
+        </div>
+    }
+}
