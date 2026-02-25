@@ -1,0 +1,42 @@
+﻿.cart-container {
+    padding: 40px;
+}
+
+.cart-item {
+    display: flex;
+    gap: 20px;
+    background: white;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+    .cart-item img {
+        width: 80px;
+        height: 80px;
+        border-radius: 5px;
+    }
+
+.qty {
+    display: flex;
+    gap: 10px;
+}
+
+    .qty a {
+        padding: 5px 10px;
+        background: #2563eb;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+.remove {
+    color: red;
+    display: block;
+    margin-top: 5px;
+}
+
+.empty {
+    text-align: center;
+    margin: 100px;
+}
