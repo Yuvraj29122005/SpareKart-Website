@@ -1,0 +1,86 @@
+﻿.feedback-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+
+.feedback-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 350px;
+    text-align: center;
+}
+
+    .feedback-box .icon {
+        background: #dbeafe;
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        border-radius: 50%;
+        margin: auto;
+        color: #2563eb;
+        font-size: 22px;
+    }
+
+    .feedback-box input,
+    .feedback-box textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+    }
+
+    .feedback-box textarea {
+        height: 80px;
+    }
+
+    .feedback-box button {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 6px;
+        margin-top: 10px;
+    }
+
+/* POPUP */
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+}
+
+    .popup-box i {
+        color: green;
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .popup-box button {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 6px 15px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
