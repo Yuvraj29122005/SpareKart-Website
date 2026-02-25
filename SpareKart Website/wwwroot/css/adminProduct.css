@@ -1,0 +1,20 @@
+﻿.product-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px lightgray;
+}
+
+.badge-cat {
+    background: #e0ecff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #2563eb;
+}
+
+.stock {
+    background: #dcfce7;
+    padding: 5px;
+    border-radius: 5px;
+    color: green;
+}
