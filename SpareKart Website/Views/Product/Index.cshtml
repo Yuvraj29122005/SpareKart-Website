@@ -1,0 +1,112 @@
+﻿@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/productUI.css" />
+
+<h4>Manage Products</h4>
+
+<input type="text" placeholder="Search products..." class="form-control search-box" />
+
+<a href="/Product/AddProduct" class="btn add-btn">+ Add Product</a>
+
+<div class="product-container mt-4">
+
+	<table class="table">
+
+		<tr>
+			<th>Image</th>
+			<th>Name</th>
+			<th>Category</th>
+			<th>Price</th>
+			<th>Stock</th>
+			<th>Actions</th>
+		</tr>
+
+		<tr>
+			<td><img src="/images/p1.jpg" /></td>
+			<td>Engine Oil Filter</td>
+			<td><span class="cat-badge">Engine</span></td>
+			<td>₹499</td>
+			<td><span class="stock-badge">50</span></td>
+			<td>
+				<a href="/Product/EditProduct" class="btn btn-primary btn-sm">✏</a>
+				<a href="#" class="btn btn-danger btn-sm">🗑</a>
+			</td>
+		</tr>
+
+		<tr>
+			<td><img src="/images/p2.jpg" /></td>
+			<td>Brake Disc Set</td>
+			<td><span class="cat-badge">Brakes</span></td>
+			<td>₹2,999</td>
+			<td><span class="stock-badge">30</span></td>
+			<td>
+				<a href="/Product/EditProduct" class="btn btn-primary btn-sm">✏</a>
+				<a href="#" class="btn btn-danger btn-sm">🗑</a>
+			</td>
+		</tr>
+
+		<tr>
+			<td><img src="/images/p3.jpg" /></td>
+			<td>All Season Tyre</td>
+			<td><span class="cat-badge">Tyres</span></td>
+			<td>₹4,500</td>
+			<td><span class="stock-badge">40</span></td>
+			<td>
+				<a href="/Product/EditProduct" class="btn btn-primary btn-sm">✏</a>
+				<a href="#" class="btn btn-danger btn-sm">🗑</a>
+			</td>
+		</tr>
+
+		<tr>
+			<td><img src="/images/p4.jpg" /></td>
+			<td>LED Headlight</td>
+			<td><span class="cat-badge">Lights</span></td>
+			<td>₹1,899</td>
+			<td><span class="stock-badge">60</span></td>
+			<td>
+				<a href="/Product/EditProduct" class="btn btn-primary btn-sm">✏</a>
+				<a href="#" class="btn btn-danger btn-sm">🗑</a>
+			</td>
+		</tr>
+
+		<tr>
+			<td><img src="/images/p5.jpg" /></td>
+			<td>Car Air Freshener</td>
+			<td><span class="cat-badge">Accessories</span></td>
+			<td>₹199</td>
+			<td><span class="stock-badge">100</span></td>
+			<td>
+				<a href="/Product/EditProduct" class="btn btn-primary btn-sm">✏</a>
+				<a href="#" class="btn btn-danger btn-sm">🗑</a>
+			</td>
+		</tr>
+
+		<tr>
+			<td><img src="/images/p1.jpg" /></td>
+			<td>Spark Plug Set</td>
+			<td><span class="cat-badge">Engine</span></td>
+			<td>₹799</td>
+			<td><span class="stock-badge">75</span></td>
+			<td>
+				<a href="/Product/EditProduct" class="btn btn-primary btn-sm">✏</a>
+				<a href="#" class="btn btn-danger btn-sm">🗑</a>
+			</td>
+		</tr>
+
+		<tr>
+			<td><img src="/images/p2.jpg" /></td>
+			<td>Brake Pads</td>
+			<td><span class="cat-badge">Brakes</span></td>
+			<td>₹1,299</td>
+			<td><span class="stock-badge">45</span></td>
+			<td>
+				<a href="/Product/EditProduct" class="btn btn-primary btn-sm">✏</a>
+				<a href="#" class="btn btn-danger btn-sm">🗑</a>
+			</td>
+		</tr>
+
+	</table>
+
+</div>
