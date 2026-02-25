@@ -4,17 +4,6 @@
 
 <link rel="stylesheet" href="~/css/feedback.css" />
 
-@if (TempData["msg"] != null)
-{
-    <div class="popup">
-        <div class="popup-box">
-            <i class="fa fa-check-circle"></i>
-            <h3>@TempData["msg"]</h3>
-            <button onclick="closePopup()">OK</button>
-        </div>
-    </div>
-}
-
 <div class="feedback-container">
 
     <form method="post" action="/Feedback/Submit" class="feedback-box">
@@ -24,7 +13,7 @@
         </div>
 
         <h2>We Value Your Feedback</h2>
-        <p>Help us improve our service</p>
+        <p class="sub">Help us improve our service</p>
 
         <label>Name</label>
         <input type="text" name="name" placeholder="Enter your name" required />
@@ -40,9 +29,3 @@
     </form>
 
 </div>
-
-<script>
-    function closePopup(){
-    document.querySelector(".popup").style.display="none";
-    }
-</script>
