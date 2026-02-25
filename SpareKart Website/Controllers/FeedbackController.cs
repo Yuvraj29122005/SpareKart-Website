@@ -10,7 +10,7 @@ namespace SpareKart_Website.Controllers
         }
 
         [HttpPost]
-        public IActionResult Submit()
+        public IActionResult Submit(string name, string email, string message)
         {
             TempData["msg"] = "Thank you for your valuable feedback!";
             return RedirectToAction("Index");
