@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>SpareKart</title>
+
+    <link rel="stylesheet" href="~/css/profilelayout.css" />
+    <link rel="stylesheet" href="~/css/layout.css" />
+    <link rel="stylesheet" href="~/css/profile.css" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- PROFILE NAVBAR -->
+
+    <div class="profile-navbar">
+
+        <div class="nav-left">
+            <img src="~/images/logo.png" class="logo" />
+        </div>
+
+        <div class="nav-center">
+            <span class="brand">SpareKart</span>
+        </div>
+
+        <div class="nav-right">
+            <a href="/Profile/Logout">
+                <button class="logout-btn">
+                    <i class="fa fa-sign-out"></i> Logout
+                </button>
+            </a>
+        </div>
+
+    </div>
+
+    @RenderBody()
+
+    <!-- FOOTER START -->
+
+    <div class="footer">
+
+        <div class="footer-container">
+
+            <div class="footer-box">
+                <h3>About SpareKart</h3>
+                <p>
+                    Spare Kart is an online <br />
+                    store providing quality <br />
+                    car spare parts at <br />
+                    affordable prices with <br />
+                    fast, reliable service.
+                </p>
+            </div>
+
+            <div class="footer-box">
+                <h3>Quick Links</h3>
+                <p><a href="/Home/Index">Home</a></p>
+                <p><a href="/Products/AllProducts">Products</a></p>
+                <p><a href="/Order/MyOrders">Orders</a></p>
+            </div>
+
+            <div class="footer-box">
+                <h3>Support</h3>
+                <p><a href="/Feedback/Index">Feedback</a></p>
+                <p><i class="fa fa-envelope"></i> ydhadhal15@rku.ac.in</p>
+                <p><i class="fa fa-phone"></i> +91 81403 51044</p>
+            </div>
+
+            <div class="footer-box">
+                <h3>Follow Us</h3>
+                <i class="fab fa-facebook icon"></i>
+                <i class="fab fa-twitter icon"></i>
+                <i class="fab fa-instagram icon"></i>
+                <i class="fab fa-linkedin icon"></i>
+            </div>
+
+        </div>
+
+        <hr />
+
+        <p class="copyright">
+            © 2026 <span>SpareKart</span> Car Parts. All rights reserved.
+        </p>
+
+    </div>
+
+    <!-- FOOTER END -->
+
+</body>
+</html>
