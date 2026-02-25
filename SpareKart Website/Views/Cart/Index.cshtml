@@ -1,0 +1,75 @@
+﻿@model List<SpareKart_Website.Models.CartItem>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/css/cart.css" />
+
+@if (Model.Count == 0)
+{
+    <div class="empty-cart">
+
+        <div class="empty-box">
+            <i class="fa fa-shopping-bag empty-icon"></i>
+
+            <h3>Your Cart is Empty</h3>
+            <p>Looks like you haven't added any items to your cart yet.</p>
+
+            <a href="/Products/AllProducts">
+                <button>Continue Shopping</button>
+            </a>
+
+        </div>
+
+    </div>
+}
+else
+{
+
+    <div class="cart-container">
+
+        <h2 class="cart-title">Shopping Cart</h2>
+
+        @foreach (var item in Model)
+        {
+            <div class="cart-item">
+
+                <img src="~/images/@item.Image" class="cart-img" />
+
+                <div class="cart-info">
+
+                    <h4>@item.Name</h4>
+                    <p class="price">₹@item.Price</p>
+
+                    <div class="qty">
+
+                        <a href="/Cart/Decrease?name=@item.Name" class="qty-btn">-</a>
+                        <span>@item.Quantity</span>
+                        <a href="/Cart/Increase?name=@item.Name" class="qty-btn">+</a>
+
+                    </div>
+
+                    <a href="/Cart/Remove?name=@item.Name" class="remove-btn">
+                        Remove
+                    </a>
+
+                </div>
+
+                <div class="subtotal">
+                    ₹@(item.Price* item.Quantity)
+                </div>
+
+            </div>
+        }
+
+        <div class="cart-summary">
+
+            <h3>Total: ₹@Model.Sum(x => x.Price * x.Quantity)</h3>
+
+            <a href="/Checkout/Index?name=@Model[0].Name&price=@Model.Sum(x => x.Price * x.Quantity)&image=@Model[0].Image">
+                <button class="checkout-btn">Checkout</button>
+            </a>
+
+        </div>
+
+    </div>
+}

@@ -2,22 +2,16 @@
     background: #f3f4f6;
 }
 
-/* PAGE TITLE */
-
 .p-title {
     margin: 20px 40px;
     font-weight: 500;
 }
-
-/* MAIN PAGE */
 
 .product-page {
     display: flex;
     gap: 30px;
     padding: 0 40px;
 }
-
-/* FILTER SIDEBAR */
 
 .filter {
     width: 220px;
@@ -28,52 +22,11 @@
     height: fit-content;
 }
 
-    /* FILTER HEADING */
-
-    .filter h4 {
-        margin-bottom: 20px;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    /* SEARCH */
-
-    .filter input {
-        width: 100%;
-        padding: 8px;
-        border-radius: 5px;
-        border: 1px solid #d1d5db;
-        margin-bottom: 15px;
-    }
-
-    /* DROPDOWN */
-
-    .filter select {
-        width: 100%;
-        padding: 8px;
-        border-radius: 5px;
-        border: 1px solid #d1d5db;
-        margin-bottom: 15px;
-    }
-
-    /* PRICE */
-
-    .filter p {
-        font-size: 13px;
-        color: #374151;
-    }
-
-/* PRODUCT LIST */
-
 .product-list {
     display: grid;
     grid-template-columns: repeat(3,1fr);
     gap: 20px;
 }
-
-/* CARD */
 
 .p-card {
     background: white;
@@ -81,12 +34,11 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     overflow: hidden;
 }
-.card-link {
-    text-decoration: none;
-    color: black;
-}
 
-    /* IMAGE */
+    .p-card a {
+        text-decoration: none;
+        color: black;
+    }
 
     .p-card img {
         width: 100%;
@@ -94,22 +46,16 @@
         object-fit: cover;
     }
 
-    /* TITLE */
-
     .p-card h4 {
         margin: 10px;
         font-size: 14px;
     }
-
-/* DESC */
 
 .desc {
     margin: 0 10px;
     font-size: 12px;
     color: #6b7280;
 }
-
-/* BOTTOM */
 
 .bottom {
     display: flex;
@@ -118,14 +64,10 @@
     padding: 10px;
 }
 
-    /* PRICE */
-
     .bottom span {
         color: #2563eb;
         font-weight: bold;
     }
-
-    /* BUTTON */
 
     .bottom button {
         background: #2563eb;
