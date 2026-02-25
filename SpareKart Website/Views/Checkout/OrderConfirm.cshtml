@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/css/orderconfirm.css" />
+
+<div class="confirm-box">
+
+    <img src="~/images/logo.png" class="logo" />
+
+    <div class="tick">
+        ✔
+    </div>
+
+    <h2>Order Confirmed!</h2>
+
+    <p>
+        Thank you for your purchase. Your order has been received and is being processed.
+    </p>
+
+    <div class="order-summary">
+
+        <div>
+            <span>Order Total:</span>
+            <b>₹@ViewBag.Price</b>
+        </div>
+
+        <div>
+            <span>Estimated Delivery:</span>
+            <b>Thu, 13 Feb</b>
+        </div>
+
+        <div>
+            <span>Payment Method:</span>
+            <b>Cash on Delivery</b>
+        </div>
+
+    </div>
+
+    <a href="/Products/AllProducts">
+        <button class="shop">Continue Shopping</button>
+    </a>
+
+</div>

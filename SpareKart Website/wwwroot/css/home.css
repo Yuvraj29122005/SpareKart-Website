@@ -1,0 +1,105 @@
+﻿/* HERO */
+
+.hero {
+    background: linear-gradient(to right,#2563eb,#1e40af);
+    color: white;
+    text-align: center;
+    padding: 60px 0;
+}
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .hero p {
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+/* CATEGORY */
+
+.title {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.category {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.cat-card {
+    background: white;
+    padding: 20px;
+    width: 130px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px #ccc;
+    font-size: 14px;
+}
+
+/* PRODUCTS */
+
+.products {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.p-card {
+    width: 220px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px #ccc;
+    overflow: hidden;
+}
+
+    .p-card img {
+        width: 100%;
+        height: 130px;
+        object-fit: cover;
+    }
+
+    .p-card h4 {
+        margin: 10px;
+        font-size: 14px;
+    }
+
+.desc {
+    margin: 0 10px;
+    font-size: 12px;
+    color: gray;
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+    .bottom button {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+/* VIEW BUTTON */
+
+.view-btn {
+    text-align: center;
+    margin-top: 20px;
+}
+
+    .view-btn button {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }

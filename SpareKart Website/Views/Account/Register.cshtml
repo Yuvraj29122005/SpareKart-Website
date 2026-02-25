@@ -1,0 +1,29 @@
+﻿@model SpareKart_Website.Models.UserModel
+@{
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/css/login.css" />
+
+<div class="login-box">
+
+    <img src="~/images/logo.png" height="60" />
+
+    <h2>Create Account</h2>
+
+    <form method="post">
+
+        <input type="text" name="Name" placeholder="Full Name" required />
+        <input type="email" name="Email" placeholder="Email" required />
+        <input type="password" name="Password" placeholder="Password" required />
+
+        <button type="submit">Register</button>
+
+    </form>
+
+    <p>
+        Already have account?
+        <a href="/Account/Login">Login here</a>
+    </p>
+
+</div>

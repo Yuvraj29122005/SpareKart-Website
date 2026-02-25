@@ -1,0 +1,103 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/css/checkout.css" />
+
+<h2 class="title">Checkout</h2>
+
+<form action="/Checkout/OrderConfirm" method="get">
+
+    <div class="checkout">
+
+        <!-- LEFT SIDE -->
+
+        <div class="form">
+
+            <!-- CONTACT -->
+
+            <div class="form-box">
+                <h4>✉ Contact Information</h4>
+
+                <label>Full Name *</label>
+                <input type="text" name="fullname" required />
+
+                <label>Email Address *</label>
+                <input type="email" name="email" required />
+
+                <label>Phone Number *</label>
+                <input type="tel" name="phone" pattern="[0-9]{10}" required />
+
+            </div>
+
+            <!-- SHIPPING -->
+
+            <div class="form-box">
+                <h4>📍 Shipping Address</h4>
+
+                <label>Complete Address *</label>
+<textarea rows="4" name="address" required></textarea>
+
+            </div>
+
+            <!-- PAYMENT -->
+
+            <div class="form-box">
+                <h4>💳 Payment Method</h4>
+
+                <label class="payment-option">
+
+                    <input type="radio" name="pay" value="COD" checked required>
+
+                    <div class="pay-info">
+                        <span class="pay-title">Cash on Delivery</span>
+                        <span class="pay-desc">Pay when you receive your order</span>
+                    </div>
+
+                </label>
+
+                <label class="payment-option">
+
+                    <input type="radio" name="pay" value="Online">
+
+                    <div class="pay-info">
+                        <span class="pay-title">Online Payment</span>
+                        <span class="pay-desc">UPI, Credit/Debit Cards, Net Banking</span>
+                    </div>
+
+                </label>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+
+        <div class="summary">
+
+            <h3>Order Summary</h3>
+
+            <div class="order-card">
+
+                <img src="~/images/@ViewBag.Image" class="sum-img" />
+
+                <div>
+                    <p>@ViewBag.Name</p>
+                    <p>₹@ViewBag.Price</p>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <p>Subtotal ₹@ViewBag.Price</p>
+            <p style="color:green;">Shipping Free</p>
+
+            <h4>Total ₹@ViewBag.Price</h4>
+
+            <button type="submit">Place Order</button>
+
+        </div>
+
+    </div>
+
+</form>

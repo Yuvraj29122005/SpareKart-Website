@@ -1,0 +1,45 @@
+﻿.confirm-box {
+    text-align: center;
+    background: white;
+    width: 400px;
+    margin: 50px auto;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+.tick {
+    background: #d1fae5;
+    color: green;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    margin: auto;
+    border-radius: 50%;
+    font-size: 30px;
+}
+
+.order-summary {
+    margin-top: 20px;
+    text-align: left;
+}
+
+    .order-summary div {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 0;
+    }
+
+.shop {
+    background: #2563eb;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    margin-top: 20px;
+    border-radius: 5px;
+}

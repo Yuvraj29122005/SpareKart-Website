@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/productdetails.css" />
+
+<div class="back">
+    <a href="/Products/AllProducts">← Back</a>
+</div>
+
+<div class="product-details">
+
+    <div class="img-box">
+        <img src="~/images/brake.jpg" />
+    </div>
+
+    <div class="info-box">
+
+        <span class="tag">In Stock</span>
+
+        <h2>Brake Disc Set</h2>
+
+        <h3>
+            ₹2999
+            <span class="strike">₹3499</span>
+            <span class="save">Save ₹500</span>
+        </h3>
+
+        <h4>Description</h4>
+
+        <p>
+            Premium brake disc set for superior stopping power.
+            Fits front wheels.
+        </p>
+
+        <hr />
+
+        <h4>Quantity</h4>
+
+        <div class="qty">
+            <button>-</button>
+            <input type="text" value="1" />
+            <button>+</button>
+        </div>
+
+        <a href="/Checkout/Index?name=Brake Disc Set&price=2999&image=brake.jpg">
+            <button class="buy">
+                <i class="fa fa-shopping-cart"></i>
+                Buy Now
+            </button>
+        
+        </a>
+
+    </div>
+
+</div>

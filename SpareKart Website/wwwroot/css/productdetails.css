@@ -1,0 +1,63 @@
+﻿.product-details {
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+}
+
+.img-box img {
+    width: 450px;
+    border-radius: 10px;
+}
+
+.info-box {
+    width: 400px;
+}
+
+.tag {
+    background: #dbeafe;
+    color: #2563eb;
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+h3 {
+    color: #2563eb;
+}
+
+.strike {
+    text-decoration: line-through;
+    color: gray;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.save {
+    color: green;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.qty {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+    .qty button {
+        padding: 5px 10px;
+    }
+
+.buy {
+    margin-top: 20px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.back {
+    padding-left: 40px;
+    margin-top: 20px;
+}

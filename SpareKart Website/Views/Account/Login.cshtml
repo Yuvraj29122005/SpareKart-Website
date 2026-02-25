@@ -1,0 +1,33 @@
+﻿@model SpareKart_Website.Models.UserModel
+@{
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/css/login.css" />
+
+<div class="login-box">
+
+    <img src="~/images/logo.png" height="60" />
+
+    <h2>Welcome Back</h2>
+
+    <form method="post">
+
+        <input type="email" name="Email" placeholder="Enter your email" required />
+        <input type="password" name="Password" placeholder="Enter your password" required />
+
+        <button type="submit">Login</button>
+
+    </form>
+
+    @if (ViewBag.Error != null)
+    {
+        <p style="color:red">@ViewBag.Error</p>
+    }
+
+    <p>
+        Don't have account?
+        <a href="/Account/Register">Register here</a>
+    </p>
+
+</div>
