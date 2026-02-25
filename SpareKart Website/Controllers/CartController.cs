@@ -18,9 +18,8 @@ namespace SpareKart_Website.Controllers
         {
             var item = cart.FirstOrDefault(x => x.Name == name);
 
-            if (item != null)
-                item.Quantity++;
-            else
+            if (item == null)
+            {
                 cart.Add(new CartItem
                 {
                     Name = name,
@@ -28,22 +27,12 @@ namespace SpareKart_Website.Controllers
                     Image = image,
                     Quantity = 1
                 });
+            }
+            else
+            {
+                item.Quantity++;
+            }
 
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult Increase(string name)
-        {
-            var item = cart.FirstOrDefault(x => x.Name == name);
-            if (item != null) item.Quantity++;
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult Decrease(string name)
-        {
-            var item = cart.FirstOrDefault(x => x.Name == name);
-            if (item != null && item.Quantity > 1)
-                item.Quantity--;
             return RedirectToAction("Index");
         }
 
@@ -52,6 +41,7 @@ namespace SpareKart_Website.Controllers
             var item = cart.FirstOrDefault(x => x.Name == name);
             if (item != null)
                 cart.Remove(item);
+
             return RedirectToAction("Index");
         }
     }
