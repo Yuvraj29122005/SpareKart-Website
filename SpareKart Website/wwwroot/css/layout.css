@@ -12,7 +12,7 @@
     align-items: center;
     padding: 10px 40px;
     background: #f9fafb;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 👈 light shadow instead of blue line */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .logo {
@@ -32,8 +32,17 @@
     gap: 20px;
 }
 
+.cart-link {
+    text-decoration: none;
+    color: black;
+}
+
 .cart {
     font-size: 18px;
+}
+
+.user-link {
+    text-decoration: none;
 }
 
 .user {
@@ -67,6 +76,11 @@
 .footer-box p {
     font-size: 14px;
     margin: 5px 0;
+}
+
+.footer-box a {
+    color: white;
+    text-decoration: none;
 }
 
 .icon {

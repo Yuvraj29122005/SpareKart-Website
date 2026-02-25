@@ -21,12 +21,20 @@
         </div>
 
         <div class="nav-right">
-            <i class="fa fa-shopping-cart cart"></i>
 
-            <div class="user">
-                <i class="fa fa-user-circle"></i>
-                <span>Hi,Yuvraj</span>
-            </div>
+            <!-- CART ICON CLICKABLE -->
+            <a href="/Cart/Index" class="cart-link">
+                <i class="fa fa-shopping-cart cart"></i>
+            </a>
+
+            <!-- PROFILE CLICKABLE -->
+            <a href="/Profile/Index" class="user-link">
+                <div class="user">
+                    <i class="fa fa-user-circle"></i>
+                    <span>Hi,Yuvraj</span>
+                </div>
+            </a>
+
         </div>
 
     </div>
@@ -53,14 +61,14 @@
 
             <div class="footer-box">
                 <h3>Quick Links</h3>
-                <p>Home</p>
-                <p>Products</p>
-                <p>Orders</p>
+                <p><a href="/Home/Index">Home</a></p>
+                <p><a href="/Products/AllProducts">Products</a></p>
+                <p><a href="/Order/MyOrders">Orders</a></p>
             </div>
 
             <div class="footer-box">
                 <h3>Support</h3>
-                <p>Feedback</p>
+                <p><a href="/Feedback/Index">Feedback</a></p>
                 <p><i class="fa fa-envelope"></i> ydhadhal15@rku.ac.in</p>
                 <p><i class="fa fa-phone"></i> +91 81403 51044</p>
             </div>

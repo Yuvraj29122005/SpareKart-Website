@@ -1,0 +1,92 @@
+﻿.profile-container {
+    display: flex;
+    gap: 30px;
+    padding: 40px;
+}
+
+.profile-left {
+    width: 300px;
+}
+
+.user-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+}
+
+.avatar {
+    background: #2563eb;
+    color: white;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 50%;
+    margin: auto;
+    font-size: 25px;
+}
+
+.active {
+    background: #d1fae5;
+    color: green;
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.stats {
+    background: linear-gradient(to right,#2563eb,#1e3a8a);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.profile-right {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.form input,
+.form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #d1d5db;
+}
+
+.save {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.logout {
+    position: absolute;
+    top: 80px;
+    right: 40px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+}

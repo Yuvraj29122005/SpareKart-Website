@@ -1,0 +1,86 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/css/profile.css" />
+
+<div class="profile-container">
+
+    <div class="profile-left">
+
+        <div class="user-card">
+            <div class="avatar">
+                <i class="fa fa-user"></i>
+            </div>
+
+            <h4>Yuvraj dhadhal</h4>
+            <p>yuvraj@example.com</p>
+
+            <span class="active">Active Member</span>
+
+            <p class="phone">+91 9876543210</p>
+        </div>
+
+        <div class="stats">
+            <h4>Order Statistics</h4>
+
+            <div class="row">
+                <span>Total Orders</span>
+                <span>3</span>
+            </div>
+
+            <div class="row">
+                <span>Delivered</span>
+                <span>1</span>
+            </div>
+
+            <div class="row">
+                <span>Total Spent</span>
+                <span>₹11894.00</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="profile-right">
+
+        <div class="top">
+            <h4>Personal Information</h4>
+            <button onclick="editProfile()">Edit Profile</button>
+        </div>
+
+        <div class="form">
+
+            <label>Full Name</label>
+            <input type="text" id="name" value="Yuvraj dhadhal" disabled />
+
+            <label>Email Address</label>
+            <input type="text" id="email" value="yuvraj@example.com" disabled />
+
+            <label>Phone Number</label>
+            <input type="text" id="phone" value="+91 9876543210" disabled />
+
+            <label>Address</label>
+<textarea id="address" disabled>rk university,rajkot,gujarat,360020</textarea>
+
+            <button class="save" id="saveBtn" style="display:none;">Save Changes</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<a href="/Profile/Logout">
+    <button class="logout">Logout</button>
+</a>
+
+<script>
+    function editProfile(){
+    document.getElementById("name").disabled=false;
+    document.getElementById("email").disabled=false;
+    document.getElementById("phone").disabled=false;
+    document.getElementById("address").disabled=false;
+    document.getElementById("saveBtn").style.display="block";
+    }
+</script>
