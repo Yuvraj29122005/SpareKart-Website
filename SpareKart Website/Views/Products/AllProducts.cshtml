@@ -7,97 +7,179 @@
 
 <div class="product-page">
 
-    <!-- FILTER -->
-
+    <!-- FILTER SIDEBAR -->
     <div class="filter">
         <h4>Filters</h4>
-        <input type="text" placeholder="Search products..." />
-        <select>
-            <option>All Categories</option>
+
+        <label>Search</label>
+        <input type="text" id="searchInput" placeholder="Search products..." oninput="filterProducts()" />
+
+        <label>Category</label>
+        <select id="categorySelect" onchange="filterProducts()">
+            <option value="">All Categories</option>
+            <option value="Engine">Engine</option>
+            <option value="Brakes">Brakes</option>
+            <option value="Tyres">Tyres</option>
+            <option value="Lights">Lights</option>
+            <option value="Accessories">Accessories</option>
         </select>
-        <p>Price Range: ₹0 - ₹10000</p>
+
+        <span class="price-label">Price Range</span>
+        <p class="price-range">₹0 – ₹10000</p>
     </div>
 
-    <!-- PRODUCTS -->
+    <!-- PRODUCT SECTION -->
+    <div class="product-section">
+        <p class="showing-count" id="showingCount">Showing 8 product(s)</p>
 
-    <div class="product-list">
+        <div class="product-list" id="productList">
 
-        <!-- PRODUCT 1 -->
-
-        <div class="p-card">
-
-            <a href="/Product/ProductDetails?name=Engine Oil Filter&price=499&image=engine.jpg">
-                <img src="~/images/engine.jpg" />
-                <h4>Engine Oil Filter</h4>
-                <p class="desc">High-quality filter.</p>
-            </a>
-
-            <div class="bottom">
-                <span>₹499</span>
-                <a href="/Cart/Add?name=Engine Oil Filter&price=499&image=engine.jpg">
-                    <button>Add</button>
+            <!-- PRODUCT 1 -->
+            <div class="p-card" data-name="Engine Oil Filter" data-category="Engine">
+                <a href="/Products/ProductDetails?name=Engine Oil Filter&price=499&image=engine.jpg">
+                    <img src="~/images/engine.jpg" alt="Engine Oil Filter" />
+                    <h4>Engine Oil Filter</h4>
+                    <p class="desc">High-quality oil filter for engine protection. Compatible with most car models.</p>
                 </a>
+                <div class="bottom">
+                    <span>₹499</span>
+                    <a href="/Cart/Add?name=Engine Oil Filter&price=499&image=engine.jpg">
+                        <button><i class="fa fa-shopping-cart"></i> Add</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PRODUCT 2 -->
+            <div class="p-card" data-name="Brake Disc Set" data-category="Brakes">
+                <a href="/Products/ProductDetails?name=Brake Disc Set&price=2999&image=brake.jpg">
+                    <img src="~/images/brake.jpg" alt="Brake Disc Set" />
+                    <h4>Brake Disc Set</h4>
+                    <p class="desc">Premium brake disc set for superior stopping power. Fits most wheels.</p>
+                </a>
+                <div class="bottom">
+                    <span>₹2999</span>
+                    <a href="/Cart/Add?name=Brake Disc Set&price=2999&image=brake.jpg">
+                        <button><i class="fa fa-shopping-cart"></i> Add</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PRODUCT 3 -->
+            <div class="p-card" data-name="All-Season Tyre" data-category="Tyres">
+                <a href="/Products/ProductDetails?name=All-Season Tyre&price=4500&image=tyre.jpg">
+                    <img src="~/images/tyre.jpg" alt="All-Season Tyre" />
+                    <h4>All-Season Tyre</h4>
+                    <p class="desc">Durable all-season tyre with excellent grip. Size: 195/65 Info.</p>
+                </a>
+                <div class="bottom">
+                    <span>₹4500</span>
+                    <a href="/Cart/Add?name=All-Season Tyre&price=4500&image=tyre.jpg">
+                        <button><i class="fa fa-shopping-cart"></i> Add</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PRODUCT 4 -->
+            <div class="p-card" data-name="LED Headlight" data-category="Lights">
+                <a href="/Products/ProductDetails?name=LED Headlight&price=1899&image=light.jpg">
+                    <img src="~/images/light.jpg" alt="LED Headlight" />
+                    <h4>LED Headlight</h4>
+                    <p class="desc">Bright LED headlight for better visibility. Easy installation.</p>
+                </a>
+                <div class="bottom">
+                    <span>₹1899</span>
+                    <a href="/Cart/Add?name=LED Headlight&price=1899&image=light.jpg">
+                        <button><i class="fa fa-shopping-cart"></i> Add</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PRODUCT 5 -->
+            <div class="p-card" data-name="Car Air Freshener" data-category="Accessories">
+                <a href="/Products/ProductDetails?name=Car Air Freshener&price=199&image=light.jpg">
+                    <img src="~/images/light.jpg" alt="Car Air Freshener" />
+                    <h4>Car Air Freshener</h4>
+                    <p class="desc">Long lasting air freshener with pleasant fragrance. Fits all cars.</p>
+                </a>
+                <div class="bottom">
+                    <span>₹199</span>
+                    <a href="/Cart/Add?name=Car Air Freshener&price=199&image=light.jpg">
+                        <button><i class="fa fa-shopping-cart"></i> Add</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PRODUCT 6 -->
+            <div class="p-card" data-name="Spark Plugs Set" data-category="Engine">
+                <a href="/Products/ProductDetails?name=Spark Plugs Set&price=799&image=engine.jpg">
+                    <img src="~/images/engine.jpg" alt="Spark Plugs Set" />
+                    <h4>Spark Plugs Set</h4>
+                    <p class="desc">High-performance spark plugs for smooth engine operation. Set of 4.</p>
+                </a>
+                <div class="bottom">
+                    <span>₹799</span>
+                    <a href="/Cart/Add?name=Spark Plugs Set&price=799&image=engine.jpg">
+                        <button><i class="fa fa-shopping-cart"></i> Add</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PRODUCT 7 -->
+            <div class="p-card" data-name="Brake Pads" data-category="Brakes">
+                <a href="/Products/ProductDetails?name=Brake Pads&price=1299&image=brake.jpg">
+                    <img src="~/images/brake.jpg" alt="Brake Pads" />
+                    <h4>Brake Pads</h4>
+                    <p class="desc">Ceramic brake pads for quiet and efficient braking.</p>
+                </a>
+                <div class="bottom">
+                    <span>₹1299</span>
+                    <a href="/Cart/Add?name=Brake Pads&price=1299&image=brake.jpg">
+                        <button><i class="fa fa-shopping-cart"></i> Add</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PRODUCT 8 -->
+            <div class="p-card" data-name="Tail Light Assembly" data-category="Lights">
+                <a href="/Products/ProductDetails?name=Tail Light Assembly&price=1599&image=tyre.jpg">
+                    <img src="~/images/tyre.jpg" alt="Tail Light Assembly" />
+                    <h4>Tail Light Assembly</h4>
+                    <p class="desc">Complete tail light assembly. Direct replacement.</p>
+                </a>
+                <div class="bottom">
+                    <span>₹1599</span>
+                    <a href="/Cart/Add?name=Tail Light Assembly&price=1599&image=tyre.jpg">
+                        <button><i class="fa fa-shopping-cart"></i> Add</button>
+                    </a>
+                </div>
             </div>
 
         </div>
-
-        <!-- PRODUCT 2 -->
-
-        <div class="p-card">
-
-            <a href="/Product/ProductDetails?name=Brake Disc Set&price=2999&image=brake.jpg">
-                <img src="~/images/brake.jpg" />
-                <h4>Brake Disc Set</h4>
-                <p class="desc">Premium brake disc.</p>
-            </a>
-
-            <div class="bottom">
-                <span>₹2999</span>
-                <a href="/Cart/Add?name=Brake Disc Set&price=2999&image=brake.jpg">
-                    <button>Add</button>
-                </a>
-            </div>
-
-        </div>
-
-        <!-- PRODUCT 3 -->
-
-        <div class="p-card">
-
-            <a href="/Product/ProductDetails?name=All Season Tyre&price=4500&image=tyre.jpg">
-                <img src="~/images/tyre.jpg" />
-                <h4>All Season Tyre</h4>
-                <p class="desc">Durable tyre.</p>
-            </a>
-
-            <div class="bottom">
-                <span>₹4500</span>
-                <a href="/Cart/Add?name=All Season Tyre&price=4500&image=tyre.jpg">
-                    <button>Add</button>
-                </a>
-            </div>
-
-        </div>
-
-        <!-- PRODUCT 4 -->
-
-        <div class="p-card">
-
-            <a href="/Product/ProductDetails?name=LED Headlight&price=1899&image=light.jpg">
-                <img src="~/images/light.jpg" />
-                <h4>LED Headlight</h4>
-                <p class="desc">Bright LED headlight.</p>
-            </a>
-
-            <div class="bottom">
-                <span>₹1899</span>
-                <a href="/Cart/Add?name=LED Headlight&price=1899&image=light.jpg">
-                    <button>Add</button>
-                </a>
-            </div>
-
-        </div>
-
     </div>
 
 </div>
+
+<script>
+    function filterProducts() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const category = document.getElementById('categorySelect').value;
+        const cards = document.querySelectorAll('.p-card');
+        let visible = 0;
+
+        cards.forEach(card => {
+            const name = card.getAttribute('data-name').toLowerCase();
+            const cat = card.getAttribute('data-category');
+            const matchSearch = name.includes(search);
+            const matchCategory = category === '' || cat === category;
+            if (matchSearch && matchCategory) {
+                card.style.display = 'flex';
+                card.style.flexDirection = 'column';
+                visible++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        document.getElementById('showingCount').textContent = 'Showing ' + visible + ' product(s)';
+    }
+</script>
