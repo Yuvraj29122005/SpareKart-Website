@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
-namespace SpareKart_Website.Controllers
+namespace SpareKart_Website.Controllers.Admin
 {
     public class AdminController : Controller
     {

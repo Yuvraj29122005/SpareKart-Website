@@ -1,97 +1,116 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SpareKart</title>
+    
+    <!-- Link to the main layout CSS -->
     <link rel="stylesheet" href="~/css/layout.css" />
+    
+    <!-- Required: Font Awesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
 </head>
 
 <body>
 
-    <!-- NAVBAR START -->
-
+    <!-- ================= NAVBAR START ================= -->
     <div class="navbar">
 
+        <!-- Left: Image Logo -->
         <div class="nav-left">
-            <img src="~/images/logo.png" class="logo" />
+            <a href="/Home/Index">
+                <img src="~/images/logo.png" class="logo" alt="SpareKart Logo" />
+            </a>
         </div>
 
+        <!-- Center: Two-tone Text Logo -->
         <div class="nav-center">
-            <a href="/Home/Index" class="brand">SpareKart</a>
+            <a href="/Home/Index" class="brand" style="text-decoration:none;">
+                <span style="color:#2563eb; font-weight:800;">Spare</span><span style="color:#f97316; font-weight:800;">Kart</span>
+            </a>
         </div>
 
+        <!-- Right: Links -->
         <div class="nav-right">
-
-            <!-- CART ICON CLICKABLE -->
-            <a href="/Cart/Index" class="cart-link">
+            <!-- Cart Icon -->
+            <a href="/Cart/Index" class="cart-link" title="Cart">
                 <i class="fa fa-shopping-cart cart"></i>
             </a>
 
-            <!-- PROFILE CLICKABLE -->
+            <!-- User Profile -->
             <a href="/Profile/Index" class="user-link">
                 <div class="user">
                     <i class="fa fa-user-circle"></i>
                     <span>Hi,Yuvraj</span>
                 </div>
             </a>
-
         </div>
 
     </div>
+    <!-- ================= NAVBAR END ================= -->
 
-    <!-- NAVBAR END -->
+    <!-- Main Content Body inserted here -->
     @RenderBody()
 
-    <!-- FOOTER START -->
-
+    <!-- ================= FOOTER START ================= -->
     <div class="footer">
-
         <div class="footer-container">
 
             <div class="footer-box">
-                <h3>About SpareKart</h3>
-                <p>
-                    Spare Kart is an online <br />
-                    store providing quality <br />
-                    car spare parts at <br />
-                    affordable prices with <br />
+                <h3>About <span style="color:#3b82f6;">Spare</span><span style="color:#f97316;">Kart</span></h3>
+                <p class="about-text">
+                    Spare Kart is an online<br />
+                    store providing quality<br />
+                    car spare parts at<br />
+                    affordable prices with<br />
                     fast, reliable service.
                 </p>
             </div>
 
             <div class="footer-box">
                 <h3>Quick Links</h3>
-                <p><a href="/Home/Index">Home</a></p>
-                <p><a href="/Products/AllProducts">Products</a></p>
-                <p><a href="/Order/MyOrders">Orders</a></p>
+                <ul>
+                    <li><a href="/Home/Index">Home</a></li>
+                    <li><a href="/Products/AllProducts">Products</a></li>
+                    <li><a href="/Order/MyOrders">Orders</a></li>
+                </ul>
             </div>
 
             <div class="footer-box">
                 <h3>Support</h3>
-                <p><a href="/Feedback/Index">Feedback</a></p>
-                <p><i class="fa fa-envelope"></i> ydhadhal15@rku.ac.in</p>
-                <p><i class="fa fa-phone"></i> +91 81403 51044</p>
+                <div class="support-item">
+                    <a href="/Feedback/Index" style="color:#cbd5e1; text-decoration:none;">Feedback</a>
+                </div>
+                <div class="support-item">
+                    <i class="fa-regular fa-envelope"></i>
+                    <span>ydhadhal15@rku.ac.in</span>
+                </div>
+                <div class="support-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>+91 81403 51044</span>
+                </div>
             </div>
 
             <div class="footer-box">
                 <h3>Follow Us</h3>
-                <i class="fab fa-facebook icon"></i>
-                <i class="fab fa-twitter icon"></i>
-                <i class="fab fa-instagram icon"></i>
-                <i class="fab fa-linkedin icon"></i>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
             </div>
 
         </div>
 
-        <hr />
+        <hr class="footer-divider" />
 
         <p class="copyright">
-            © 2026 <span>SpareKart</span> Car Parts. All rights reserved.
+            © 2026 <span style="color:#3b82f6; font-weight:700;">Spare</span><span style="color:#f97316; font-weight:700;">Kart</span> Car Parts. All rights reserved.
         </p>
-
     </div>
-
-    <!-- FOOTER END -->
+    <!-- ================= FOOTER END ================= -->
 
 </body>
 </html>

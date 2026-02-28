@@ -24,8 +24,7 @@
             <option value="Accessories">Accessories</option>
         </select>
 
-        <span class="price-label">Price Range</span>
-        <p class="price-range">₹0 – ₹10000</p>
+        
     </div>
 
     <!-- PRODUCT SECTION -->
@@ -160,6 +159,17 @@
 </div>
 
 <script>
+    // Auto-filter on page load using URL ?category= param (from homepage category links)
+    window.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const cat = urlParams.get('category');
+        if (cat) {
+            const select = document.getElementById('categorySelect');
+            select.value = cat;
+        }
+        filterProducts();
+    });
+
     function filterProducts() {
         const search = document.getElementById('searchInput').value.toLowerCase();
         const category = document.getElementById('categorySelect').value;

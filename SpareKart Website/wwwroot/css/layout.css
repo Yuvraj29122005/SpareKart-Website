@@ -1,105 +1,216 @@
-﻿body {
+﻿/* ========================================
+   GLOBAL LAYOUT CSS — SpareKart 
+   ======================================== */
+
+body {
     margin: 0;
-    font-family: Arial;
-    background: #f3f4f6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f9fafb;
+    color: #1e293b;
 }
 
-/* NAVBAR */
+/* Typography Utilities */
+.text-blue {
+    color: #2563eb;
+}
+
+.text-orange {
+    color: #f97316;
+}
+
+.fw-bold {
+    font-weight: 700;
+}
+
+/* ========================================
+   NAVBAR
+   ======================================== */
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 40px;
-    background: #f9fafb;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 12px 60px;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
 }
 
 .logo {
-    height: 40px;
+    height: 45px;
+    object-fit: contain;
 }
 
-.brand {
-    color: #2563eb;
-    font-size: 18px;
+.nav-center {
+    font-size: 22px;
+    font-weight: 800;
+    text-transform: none;
+    letter-spacing: -0.5px;
+}
+
+.nav-center a.brand {
     text-decoration: none;
-    font-weight: bold;
 }
 
 .nav-right {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
 }
 
+/* Cart Icon */
 .cart-link {
     text-decoration: none;
-    color: black;
+    color: #475569;
+    font-size: 20px;
+    transition: color 0.2s;
 }
 
-.cart {
-    font-size: 18px;
+.cart-link:hover {
+    color: #2563eb;
 }
 
+/* Profile Icon */
 .user-link {
     text-decoration: none;
+    color: #475569;
 }
 
 .user {
     display: flex;
     align-items: center;
-    gap: 5px;
-    background: #2563eb;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 20px;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
 }
 
-/* FOOTER */
+.user i {
+    font-size: 28px;
+    color: #2563eb;
+    /* Blue circle user icon as per standard UI */
+}
+
+.user span {
+    color: #334155;
+}
+
+.user-link:hover .user span {
+    color: #2563eb;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
 
 .footer {
-    background: linear-gradient(to right,#0f172a,#1e3a8a);
-    color: white;
-    padding: 40px;
-    margin-top: 50px;
+    background: #0f172a;
+    /* Solid dark background matching screenshot */
+    color: #cbd5e1;
+    padding: 60px 40px 20px 40px;
+    margin-top: 60px;
+    font-size: 14px;
 }
 
 .footer-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .footer-box h3 {
+    color: #ffffff;
+    font-size: 16px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Two-tone logo text in footer about */
+.footer-box p.about-text {
+    line-height: 1.6;
+    color: #cbd5e1;
     margin-bottom: 10px;
 }
 
-.footer-box p {
-    font-size: 14px;
-    margin: 5px 0;
+.footer-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
+.footer-box ul li {
+    margin-bottom: 12px;
+}
+
+.footer-box ul li a,
 .footer-box a {
-    color: white;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-box ul li a:hover,
+.footer-box a:hover {
+    color: #ffffff;
+}
+
+/* Support Icons */
+.footer-box .support-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.footer-box .support-item i {
+    color: #94a3b8;
+    width: 16px;
+}
+
+/* Social Icons */
+.social-icons {
+    display: flex;
+    gap: 12px;
+}
+
+.social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #1e293b;
+    border-radius: 6px;
+    color: #cbd5e1;
+    transition: all 0.2s;
     text-decoration: none;
 }
 
-.icon {
-    margin-right: 10px;
-    background: #1e293b;
-    padding: 8px;
-    border-radius: 5px;
+.social-icons a:hover {
+    background: #2563eb;
+    color: #ffffff;
 }
 
-hr {
-    margin-top: 30px;
-    border: 1px solid #334155;
+/* Copyright line */
+hr.footer-divider {
+    border: none;
+    border-top: 1px solid #1e293b;
+    margin: 40px auto 20px;
+    max-width: 1200px;
 }
 
 .copyright {
     text-align: center;
-    margin-top: 10px;
+    color: #64748b;
+    font-size: 13px;
+    margin: 0;
 }
-
-    .copyright span {
-        color: #3b82f6;
-    }

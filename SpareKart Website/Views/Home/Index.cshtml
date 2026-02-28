@@ -3,40 +3,52 @@
 }
 <link rel="stylesheet" href="~/css/home.css" />
 
-<!-- HERO -->
-
+<!-- ================= HERO ================= -->
 <div class="hero">
-    <h1>Quality Car Spare Parts at Your <br /> Fingertips</h1>
+    <h1>Quality Car Spare Parts at Your Fingertips</h1>
     <p>Find the perfect parts for your vehicle with our extensive collection</p>
 </div>
 
-<!-- CATEGORY -->
-
+<!-- ================= CATEGORY ================= -->
 <h3 class="title">Browse by Category</h3>
 
 <div class="category">
-    <div class="cat-card">Engine</div>
-    <div class="cat-card">Brakes</div>
-    <div class="cat-card">Tyres</div>
-    <div class="cat-card">Lights</div>
-    <div class="cat-card">Accessories</div>
+    <a href="/Products/AllProducts?category=Engine" class="cat-card">
+        <i class="fa-solid fa-wrench"></i>
+        <span>Engine</span>
+    </a>
+    <a href="/Products/AllProducts?category=Brakes" class="cat-card">
+        <i class="fa-solid fa-circle" style="color:#ef4444;"></i>
+        <span>Brakes</span>
+    </a>
+    <a href="/Products/AllProducts?category=Tyres" class="cat-card">
+        <i class="fa-solid fa-dharmachakra"></i>
+        <span>Tyres</span>
+    </a>
+    <a href="/Products/AllProducts?category=Lights" class="cat-card">
+        <i class="fa-regular fa-lightbulb" style="color:#eab308;"></i>
+        <span>Lights</span>
+    </a>
+    <a href="/Products/AllProducts?category=Accessories" class="cat-card">
+        <i class="fa-solid fa-plug"></i>
+        <span>Accessories</span>
+    </a>
 </div>
 
-<!-- PRODUCTS -->
-
+<!-- ================= PRODUCTS ================= -->
 <h3 class="title">Featured Products</h3>
 
 <div class="products">
 
     <a href="/Products/ProductDetails?name=Engine Oil Filter&price=499&image=engine.jpg" class="card-link">
         <div class="p-card">
-            <img src="~/images/engine.jpg" />
+            <img src="~/images/engine.jpg" alt="Engine Oil Filter" />
             <h4>Engine Oil Filter</h4>
-            <p class="desc">High-quality filter for engine protection.</p>
+            <p class="desc">High-quality oil filter for engine protection. Compatible with most car models.</p>
             <div class="bottom">
-                <span>₹499</span>
+                <span>&#8377;499</span>
                 <a href="/Cart/Add?name=Engine Oil Filter&price=499&image=engine.jpg">
-                    <button>Add</button>
+                    <button><i class="fa-solid fa-cart-shopping"></i> Add</button>
                 </a>
             </div>
         </div>
@@ -44,13 +56,13 @@
 
     <a href="/Products/ProductDetails?name=Brake Disc Set&price=2999&image=brake.jpg" class="card-link">
         <div class="p-card">
-            <img src="~/images/brake.jpg" />
+            <img src="~/images/brake.jpg" alt="Brake Disc Set" />
             <h4>Brake Disc Set</h4>
-            <p class="desc">Premium brake disc set.</p>
+            <p class="desc">Premium brake disc set for superior stopping power. Fits most front wheels.</p>
             <div class="bottom">
-                <span>₹2999</span>
+                <span>&#8377;2999</span>
                 <a href="/Cart/Add?name=Brake Disc Set&price=2999&image=brake.jpg">
-                    <button>Add</button>
+                    <button><i class="fa-solid fa-cart-shopping"></i> Add</button>
                 </a>
             </div>
         </div>
@@ -58,13 +70,13 @@
 
     <a href="/Products/ProductDetails?name=All Season Tyre&price=4500&image=tyre.jpg" class="card-link">
         <div class="p-card">
-            <img src="~/images/tyre.jpg" />
-            <h4>All Season Tyre</h4>
-            <p class="desc">Durable tyre with grip.</p>
+            <img src="~/images/tyre.jpg" alt="All Season Tyre" />
+            <h4>All-Season Tyre</h4>
+            <p class="desc">Durable all-season tyre with excellent grip. Size: 195/65 R15.</p>
             <div class="bottom">
-                <span>₹4500</span>
+                <span>&#8377;4500</span>
                 <a href="/Cart/Add?name=All Season Tyre&price=4500&image=tyre.jpg">
-                    <button>Add</button>
+                    <button><i class="fa-solid fa-cart-shopping"></i> Add</button>
                 </a>
             </div>
         </div>
@@ -72,13 +84,27 @@
 
     <a href="/Products/ProductDetails?name=LED Headlight&price=1899&image=light.jpg" class="card-link">
         <div class="p-card">
-            <img src="~/images/light.jpg" />
+            <img src="~/images/light.jpg" alt="LED Headlight" />
             <h4>LED Headlight</h4>
-            <p class="desc">Bright LED headlight.</p>
+            <p class="desc">Bright LED headlight for better visibility. Easy installation.</p>
             <div class="bottom">
-                <span>₹1899</span>
+                <span>&#8377;1899</span>
                 <a href="/Cart/Add?name=LED Headlight&price=1899&image=light.jpg">
-                    <button>Add</button>
+                    <button><i class="fa-solid fa-cart-shopping"></i> Add</button>
+                </a>
+            </div>
+        </div>
+    </a>
+
+    <a href="/Products/ProductDetails?name=Spark Plugs Set&price=799&image=engine.jpg" class="card-link">
+        <div class="p-card">
+            <img src="~/images/engine.jpg" alt="Spark Plugs Set" />
+            <h4>Spark Plugs Set</h4>
+            <p class="desc">High-performance spark plugs for smooth engine operation. Set of 4.</p>
+            <div class="bottom">
+                <span>&#8377;799</span>
+                <a href="/Cart/Add?name=Spark Plugs Set&price=799&image=engine.jpg">
+                    <button><i class="fa-solid fa-cart-shopping"></i> Add</button>
                 </a>
             </div>
         </div>
@@ -86,6 +112,7 @@
 
 </div>
 
+<!-- ================= VIEW ALL BUTTON ================= -->
 <div class="view-btn">
     <a href="/Products/AllProducts">
         <button>View All Products</button>
