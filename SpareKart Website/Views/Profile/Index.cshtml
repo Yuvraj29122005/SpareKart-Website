@@ -4,28 +4,37 @@
 
 <div class="profile-container">
 
+    <!-- LEFT CARD: Avatar + Name + Badge -->
     <div class="profile-left">
-
         <div class="user-card">
-            <div class="avatar">
-                <i class="fa fa-user"></i>
+
+            <!-- Avatar Circle — clicking opens the file picker -->
+            <div class="avatar" onclick="document.getElementById('avatarInput').click()" title="Click to change photo">
+                <img id="avatarImg" src="" alt="Profile" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:50%;" />
+                <i class="fa fa-user" id="avatarIcon"></i>
+                <div class="avatar-overlay">
+                    <i class="fa-solid fa-camera"></i>
+                </div>
             </div>
 
-            <h4>Yuvraj dhadhal</h4>
-            <p>yuvraj@example.com</p>
+            <!-- Hidden file input for avatar -->
+            <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="changeAvatar(this)" />
+
+            <h4 id="displayName">Yuvraj Dhadhal</h4>
+            <p id="displayEmail">yuvraj@example.com</p>
 
             <span class="active">Active Member</span>
 
-            <p class="phone">+91 9876543210</p>
+            <p class="phone" id="displayPhone">+91 9876543210</p>
         </div>
-
     </div>
 
+    <!-- RIGHT: Edit Form -->
     <div class="profile-right">
 
         <div class="top">
             <h4>Personal Information</h4>
-            <button onclick="editProfile()" class="edit-btn">
+            <button onclick="editProfile()" class="edit-btn" id="editBtn">
                 <i class="fa fa-pen"></i> Edit Profile
             </button>
         </div>
@@ -33,21 +42,19 @@
         <div class="form">
 
             <label>Full Name</label>
-            <input type="text" id="name" value="Yuvraj dhadhal" disabled />
+            <input type="text" id="name" disabled />
 
             <label>Email Address</label>
-            <input type="text" id="email" value="yuvraj@example.com" disabled />
+            <input type="text" id="email" disabled />
 
             <label>Phone Number</label>
-            <input type="text" id="phone" value="+91 9876543210" disabled />
+            <input type="text" id="phone" disabled />
 
             <label>Address</label>
-<textarea id="address" disabled>
-rk university,rajkot,gujarat,360020
-</textarea>
+            <textarea id="address" rows="3" disabled></textarea>
 
-            <button class="save" id="saveBtn" style="display:none;">
-                Save Changes
+            <button class="save" id="saveBtn" style="display:none;" onclick="saveProfile()">
+                <i class="fa fa-save"></i> Save Changes
             </button>
 
         </div>
@@ -57,11 +64,86 @@ rk university,rajkot,gujarat,360020
 </div>
 
 <script>
-    function editProfile(){
-    document.getElementById("name").disabled=false;
-    document.getElementById("email").disabled=false;
-    document.getElementById("phone").disabled=false;
-    document.getElementById("address").disabled=false;
-    document.getElementById("saveBtn").style.display="block";
+    // ===== Load saved profile data from localStorage on page load =====
+    window.addEventListener('DOMContentLoaded', function () {
+        var name    = localStorage.getItem('sk_name')    || 'Yuvraj Dhadhal';
+        var email   = localStorage.getItem('sk_email')   || 'yuvraj@example.com';
+        var phone   = localStorage.getItem('sk_phone')   || '+91 9876543210';
+        var address = localStorage.getItem('sk_address') || 'RK University, Rajkot, Gujarat, 360020';
+        var avatar  = localStorage.getItem('sk_avatar');
+
+        // Fill the form inputs
+        document.getElementById('name').value    = name;
+        document.getElementById('email').value   = email;
+        document.getElementById('phone').value   = phone;
+        document.getElementById('address').value = address;
+
+        // Fill the left card display
+        document.getElementById('displayName').textContent  = name;
+        document.getElementById('displayEmail').textContent = email;
+        document.getElementById('displayPhone').textContent = phone;
+
+        // Restore saved avatar if any
+        if (avatar) {
+            document.getElementById('avatarImg').src           = avatar;
+            document.getElementById('avatarImg').style.display = 'block';
+            document.getElementById('avatarIcon').style.display = 'none';
+        }
+    });
+
+    // ===== Enable editing =====
+    function editProfile() {
+        document.getElementById('name').disabled    = false;
+        document.getElementById('email').disabled   = false;
+        document.getElementById('phone').disabled   = false;
+        document.getElementById('address').disabled = false;
+        document.getElementById('saveBtn').style.display = 'inline-flex';
+        document.getElementById('editBtn').style.display  = 'none';
+    }
+
+    // ===== Save profile data to localStorage =====
+    function saveProfile() {
+        var name    = document.getElementById('name').value.trim();
+        var email   = document.getElementById('email').value.trim();
+        var phone   = document.getElementById('phone').value.trim();
+        var address = document.getElementById('address').value.trim();
+
+        // Save to localStorage so changes are permanent across page reloads
+        localStorage.setItem('sk_name',    name);
+        localStorage.setItem('sk_email',   email);
+        localStorage.setItem('sk_phone',   phone);
+        localStorage.setItem('sk_address', address);
+
+        // Update the left card display text instantly
+        document.getElementById('displayName').textContent  = name;
+        document.getElementById('displayEmail').textContent = email;
+        document.getElementById('displayPhone').textContent = phone;
+
+        // Lock fields again
+        document.getElementById('name').disabled    = true;
+        document.getElementById('email').disabled   = true;
+        document.getElementById('phone').disabled   = true;
+        document.getElementById('address').disabled = true;
+        document.getElementById('saveBtn').style.display = 'none';
+        document.getElementById('editBtn').style.display  = 'inline-flex';
+    }
+
+    // ===== Change avatar from file picker =====
+    function changeAvatar(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var dataUrl = e.target.result;
+
+                // Show the image, hide the icon
+                document.getElementById('avatarImg').src           = dataUrl;
+                document.getElementById('avatarImg').style.display = 'block';
+                document.getElementById('avatarIcon').style.display = 'none';
+
+                // Save to localStorage so it persists on reload
+                localStorage.setItem('sk_avatar', dataUrl);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 </script>
