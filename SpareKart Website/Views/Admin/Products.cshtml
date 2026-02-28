@@ -1,0 +1,20 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage Products";
+}
+
+<link rel="stylesheet" href="~/css/admin/adminDashboard.css" />
+
+<h4 class="admin-page-title">Products</h4>
+<p class="admin-page-sub">Manage your product inventory.</p>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <input type="text" class="form-control w-25" placeholder="Search products..." />
+    <a href="/Admin/AddProduct" class="btn btn-primary btn-sm">
+        <i class="fa fa-plus"></i> Add New Product
+    </a>
+</div>
+
+<div class="admin-sidebox">
+    <p class="text-muted text-center my-3">No products to display yet.</p>
+</div>

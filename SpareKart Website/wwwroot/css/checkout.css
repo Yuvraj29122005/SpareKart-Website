@@ -1,118 +1,286 @@
-﻿.title {
-    padding-left: 40px;
-    margin-top: 20px;
+﻿/* ================================
+   CHECKOUT PAGE CSS
+   ================================ */
+
+.page-title {
+    padding: 24px 40px 8px 40px;
+    font-size: 26px;
+    color: #1e293b;
 }
 
+/* TWO-COLUMN LAYOUT */
 .checkout {
     display: flex;
     gap: 30px;
-    padding: 40px;
+    padding: 10px 40px 50px 40px;
+    align-items: flex-start;
+    background: #f8fafc;
+    min-height: calc(100vh - 200px);
 }
 
-/* FORM */
-
+/* ---- LEFT: FORM ---- */
 .form {
     flex: 2;
 }
 
 .form-box {
     background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 22px 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
     margin-bottom: 20px;
 }
 
-    .form-box h4 {
-        margin-bottom: 15px;
-    }
+.form-box h4 {
+    margin-bottom: 16px;
+    font-size: 15px;
+    color: #1e293b;
+    font-weight: 700;
+}
 
-    .form-box label {
-        font-size: 13px;
-    }
+.form-box label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    display: block;
+    margin-bottom: 4px;
+    margin-top: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
 
-    .form-box input,
-    .form-box textarea {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        border: 1px solid #d1d5db;
-    }
+.form-box label:first-of-type {
+    margin-top: 0;
+}
 
-/* PAYMENT */
+.form-box input[type="text"],
+.form-box input[type="email"],
+.form-box input[type="tel"],
+.form-box textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #334155;
+    box-sizing: border-box;
+    outline: none;
+    transition: border 0.2s;
+    background: #fafafa;
+}
 
+.form-box input:focus,
+.form-box textarea:focus {
+    border-color: #2563eb;
+    background: white;
+}
+
+.form-box textarea {
+    resize: vertical;
+}
+
+/* PAYMENT OPTIONS */
 .payment-option {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    background: #f9fafb;
-    padding: 15px;
+    gap: 12px;
+    background: #f8fafc;
+    padding: 14px 16px;
     border-radius: 10px;
     margin-bottom: 10px;
-    border: 1px solid #d1d5db;
+    border: 1.5px solid #e2e8f0;
     cursor: pointer;
+    transition: border 0.2s;
 }
 
-    .payment-option input {
-        accent-color: #2563eb;
-        margin-top: 4px;
-    }
+.payment-option:hover {
+    border-color: #2563eb;
+}
+
+.payment-option input[type="radio"] {
+    accent-color: #2563eb;
+    margin-top: 3px;
+    width: auto;
+    padding: 0;
+    border: none;
+    background: none;
+}
 
 .pay-info {
     display: flex;
     flex-direction: column;
+    gap: 2px;
 }
 
 .pay-title {
     font-weight: 600;
     font-size: 14px;
+    color: #1e293b;
 }
 
 .pay-desc {
     font-size: 12px;
-    color: gray;
+    color: #94a3b8;
 }
 
-/* SUMMARY */
-
+/* ---- RIGHT: ORDER SUMMARY ---- */
 .summary {
     flex: 1;
     background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    height: fit-content;
+    padding: 22px 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    position: sticky;
+    top: 20px;
 }
 
-.order-card {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+.summary h3 {
+    font-size: 17px;
+    color: #1e293b;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.item-count {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 14px;
+}
+
+/* SCROLLABLE ITEMS LIST */
+.order-items {
+    max-height: 320px;
+    overflow-y: auto;
+    padding-right: 4px;
     margin-bottom: 10px;
 }
 
+.order-items::-webkit-scrollbar {
+    width: 4px;
+}
+
+.order-items::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+/* INDIVIDUAL ORDER CARD */
+.order-card {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.order-card:last-child {
+    border-bottom: none;
+}
+
 .sum-img {
-    width: 60px;
-    height: 60px;
-    border-radius: 5px;
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
     object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid #e2e8f0;
 }
 
-.summary p {
-    margin: 5px 0;
+.order-info {
+    flex: 1;
 }
 
-.summary h4 {
+.item-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 3px 0;
+    line-height: 1.4;
+}
+
+.item-qty {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 0 0 3px 0;
+}
+
+.item-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2563eb;
+    margin: 0;
+}
+
+/* SUMMARY DIVIDER */
+.summary-divider {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 12px 0;
+}
+
+/* SUBTOTAL / SHIPPING ROWS */
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+.free-text {
+    color: #16a34a;
+    font-weight: 600;
+}
+
+/* TOTAL ROW */
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1e293b;
     margin-top: 10px;
+    padding-top: 10px;
+    border-top: 2px solid #e2e8f0;
+    margin-bottom: 16px;
 }
 
-.summary button {
+/* PLACE ORDER BUTTON */
+.place-btn {
     width: 100%;
     background: #2563eb;
     color: white;
-    padding: 10px;
+    padding: 13px;
     border: none;
-    border-radius: 5px;
-    margin-top: 10px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    letter-spacing: 0.3px;
+}
+
+.place-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+    .checkout {
+        flex-direction: column;
+        padding: 10px 20px 30px 20px;
+    }
+
+    .summary {
+        position: static;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .page-title {
+        padding: 20px 20px 8px 20px;
+    }
 }

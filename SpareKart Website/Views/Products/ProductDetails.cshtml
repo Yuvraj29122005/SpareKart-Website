@@ -5,50 +5,87 @@
 <link rel="stylesheet" href="~/css/productdetails.css" />
 
 <div class="back">
-    <a href="/Products/AllProducts">← Back</a>
+    <a href="/Products/AllProducts">← Back to Products</a>
 </div>
 
 <div class="product-details">
 
+    <!-- IMAGE -->
     <div class="img-box">
-        <img src="~/images/brake.jpg" />
+        <img src="~/images/@ViewBag.Image" alt="@ViewBag.Name" />
     </div>
 
+    <!-- INFO -->
     <div class="info-box">
 
-        <span class="tag">In Stock</span>
+        <span class="tag">✔ In Stock</span>
 
-        <h2>Brake Disc Set</h2>
+        <h2>@ViewBag.Name</h2>
 
-        <h3>
-            ₹2999
-            <span class="strike">₹3499</span>
-            <span class="save">Save ₹500</span>
+        <h3 class="price-row">
+            ₹@ViewBag.Price
         </h3>
 
-        <h4>Description</h4>
-
-        <p>
-            Premium brake disc set for superior stopping power.
-            Fits front wheels.
+        <h4 class="section-label">Description</h4>
+        <p class="product-desc">
+            Premium quality auto part for your vehicle. Compatible with most car models.
+            Ensures durability, safety and peak performance.
         </p>
 
-        <hr />
+        <hr class="divider" />
 
-        <h4>Quantity</h4>
+        <h4 class="section-label">Quantity</h4>
 
         <div class="qty">
-            <button>-</button>
-            <input type="text" value="1" />
-            <button>+</button>
+            <button type="button" id="decreaseBtn" onclick="changeQty(-1)">−</button>
+            <input type="text" id="qtyInput" value="1" readonly />
+            <button type="button" id="increaseBtn" onclick="changeQty(1)">+</button>
         </div>
 
-        <a href="/Cart/Add?name=@ViewBag.Name&price=@ViewBag.Price&image=@ViewBag.Image">
-            <button class="buy-btn">
-                Buy Now
-            </button>
-        </a>
+        <div class="action-buttons">
+            <a id="addToCartBtn" href="/Cart/Add?name=@ViewBag.Name&price=@ViewBag.Price&image=@ViewBag.Image">
+                <button class="cart-btn">
+                    🛒 Add to Cart
+                </button>
+            </a>
+
+            <a id="buyNowBtn" href="/Checkout/Index?name=@ViewBag.Name&price=@ViewBag.Price&image=@ViewBag.Image">
+                <button class="buy-btn">
+                    ⚡ Buy Now
+                </button>
+            </a>
+        </div>
 
     </div>
 
 </div>
+
+<script>
+    var basePrice = @ViewBag.Price;
+    var productName = "@ViewBag.Name";
+    var productImage = "@ViewBag.Image";
+
+    function changeQty(delta) {
+        var input = document.getElementById('qtyInput');
+        var current = parseInt(input.value);
+        var newVal = current + delta;
+        if (newVal < 1) newVal = 1;
+        if (newVal > 10) newVal = 10;
+        input.value = newVal;
+
+        // Update total price display
+        document.querySelector('.price-row').textContent = '₹' + (basePrice * newVal);
+
+        // Update cart and buy now links with qty param
+        document.getElementById('addToCartBtn').href =
+            '/Cart/Add?name=' + encodeURIComponent(productName) +
+            '&price=' + basePrice +
+            '&image=' + encodeURIComponent(productImage) +
+            '&qty=' + newVal;
+
+        document.getElementById('buyNowBtn').href =
+            '/Checkout/Index?name=' + encodeURIComponent(productName) +
+            '&price=' + (basePrice * newVal) +
+            '&image=' + encodeURIComponent(productImage);
+    }
+</script>

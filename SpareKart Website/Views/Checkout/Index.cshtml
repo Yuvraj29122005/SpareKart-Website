@@ -1,122 +1,106 @@
-﻿@{
+﻿@using SpareKart_Website.Models
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var cart = ViewBag.Cart as List<CartItem>;
+    int total = ViewBag.Total;
 }
 <link rel="stylesheet" href="~/css/checkout.css" />
 
-<h2 class="title">Checkout</h2>
+<h2 class="page-title">Checkout</h2>
 
-<form asp-controller="Checkout"
-      asp-action="PlaceOrder"
-      method="post">
+<form asp-controller="Checkout" asp-action="PlaceOrder" method="post">
 
     <div class="checkout">
 
-        <!-- LEFT SIDE -->
-
+        <!-- ====== LEFT: FORM ====== -->
         <div class="form">
 
             <!-- CONTACT -->
-
             <div class="form-box">
                 <h4>✉ Contact Information</h4>
 
                 <label>Full Name *</label>
-                <input type="text" name="fullname" required />
+                <input type="text" name="fullname" placeholder="Enter your full name" required />
 
                 <label>Email Address *</label>
-                <input type="email" name="email" required />
+                <input type="email" name="email" placeholder="Enter your email" required />
 
                 <label>Phone Number *</label>
-                <input type="tel" name="phone"
+                <input type="tel" name="phone" placeholder="10-digit mobile number"
                        pattern="[0-9]{10}" required />
             </div>
 
             <!-- SHIPPING -->
-
             <div class="form-box">
                 <h4>📍 Shipping Address</h4>
 
                 <label>Complete Address *</label>
-
-                <textarea rows="4"
-                          name="address"
-                          required>
-                </textarea>
+                <textarea rows="4" name="address"
+                          placeholder="House No., Street, City, State, PIN Code"
+                          required></textarea>
             </div>
 
             <!-- PAYMENT -->
-
             <div class="form-box">
                 <h4>💳 Payment Method</h4>
 
                 <label class="payment-option">
-
-                    <input type="radio"
-                           name="pay"
-                           value="COD"
-                           checked required>
-
+                    <input type="radio" name="pay" value="COD" checked required />
                     <div class="pay-info">
-                        <span class="pay-title">
-                            Cash on Delivery
-                        </span>
-                        <span class="pay-desc">
-                            Pay when you receive your order
-                        </span>
+                        <span class="pay-title">Cash on Delivery</span>
+                        <span class="pay-desc">Pay when you receive your order</span>
                     </div>
-
                 </label>
 
                 <label class="payment-option">
-
-                    <input type="radio"
-                           name="pay"
-                           value="Online">
-
+                    <input type="radio" name="pay" value="Online" />
                     <div class="pay-info">
-                        <span class="pay-title">
-                            Online Payment
-                        </span>
-                        <span class="pay-desc">
-                            UPI, Credit/Debit Cards, Net Banking
-                        </span>
+                        <span class="pay-title">Online Payment</span>
+                        <span class="pay-desc">UPI, Credit/Debit Cards, Net Banking</span>
                     </div>
-
                 </label>
-
             </div>
 
         </div>
 
-        <!-- RIGHT SIDE -->
-
+        <!-- ====== RIGHT: ORDER SUMMARY ====== -->
         <div class="summary">
 
-            <h3>Order Summary</h3>
+            <h3>🧾 Order Summary</h3>
+            <p class="item-count">@cart.Count item(s) in your cart</p>
 
-            <div class="order-card">
-
-                <img src="~/images/@ViewBag.Image"
-                     class="sum-img" />
-
-                <div>
-                    <p>@ViewBag.Name</p>
-                    <p>₹@ViewBag.Price</p>
-                </div>
-
+            <div class="order-items">
+                @foreach (var item in cart)
+                {
+                    <div class="order-card">
+                        <img src="~/images/@item.Image" class="sum-img" alt="@item.Name" />
+                        <div class="order-info">
+                            <p class="item-name">@item.Name</p>
+                            <p class="item-qty">Qty: @item.Quantity</p>
+                            <p class="item-price">₹@(item.Price * item.Quantity)</p>
+                        </div>
+                    </div>
+                }
             </div>
 
-            <hr />
+            <hr class="summary-divider" />
 
-            <p>Subtotal ₹@ViewBag.Price</p>
-            <p style="color:green;">Shipping Free</p>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span>₹@total</span>
+            </div>
+            <div class="summary-row">
+                <span>Shipping</span>
+                <span class="free-text">FREE</span>
+            </div>
 
-            <h4>Total ₹@ViewBag.Price</h4>
+            <div class="total-row">
+                <span>Total</span>
+                <span>₹@total</span>
+            </div>
 
-            <!-- IMPORTANT -->
-            <button type="submit"
-                    class="place-btn">
-                Place Order
+            <button type="submit" class="place-btn">
+                ✅ Place Order
             </button>
 
         </div>
