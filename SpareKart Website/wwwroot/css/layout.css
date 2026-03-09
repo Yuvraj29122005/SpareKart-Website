@@ -1,216 +1,208 @@
-﻿/* ========================================
-   GLOBAL LAYOUT CSS — SpareKart 
-   ======================================== */
+﻿/* =====================================================
+   LAYOUT.CSS — SpareKart Global Styles
+   Navbar + Footer used on every page
+   ===================================================== */
+
+/* --- Reset --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 body {
-    margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f9fafb;
+    background: #ffffff;
     color: #1e293b;
 }
 
-/* Typography Utilities */
-.text-blue {
-    color: #2563eb;
-}
-
-.text-orange {
-    color: #f97316;
-}
-
-.fw-bold {
-    font-weight: 700;
-}
-
-/* ========================================
+/* =====================
    NAVBAR
-   ======================================== */
-
+   ===================== */
 .navbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 12px 60px;
+    justify-content: space-between;
+    padding: 0 50px;
+    height: 58px;
     background: #ffffff;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
-.nav-left {
+.nav-left a {
     display: flex;
     align-items: center;
+    text-decoration: none;
 }
 
-.logo {
-    height: 45px;
+.nav-logo {
+    height: 40px;
     object-fit: contain;
 }
 
 .nav-center {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 800;
-    text-transform: none;
     letter-spacing: -0.5px;
-}
-
-.nav-center a.brand {
-    text-decoration: none;
 }
 
 .nav-right {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 20px;
 }
 
-/* Cart Icon */
-.cart-link {
+.nav-icon-link {
     text-decoration: none;
-    color: #475569;
-    font-size: 20px;
+    color: #64748b;
+    font-size: 17px;
     transition: color 0.2s;
 }
 
-.cart-link:hover {
+.nav-icon-link:hover {
     color: #2563eb;
 }
 
-/* Profile Icon */
-.user-link {
-    text-decoration: none;
-    color: #475569;
-}
-
-.user {
+.nav-user-link {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 14px;
+    gap: 6px;
+    text-decoration: none;
+    color: #334155;
+    font-size: 13px;
     font-weight: 500;
+    transition: color 0.2s;
 }
 
-.user i {
-    font-size: 28px;
+.nav-user-link:hover {
     color: #2563eb;
-    /* Blue circle user icon as per standard UI */
 }
 
-.user span {
+.nav-user-icon {
+    font-size: 26px;
+    color: #2563eb;
+}
+
+.nav-user-text {
+    font-size: 13px;
     color: #334155;
 }
 
-.user-link:hover .user span {
-    color: #2563eb;
-}
 
-/* ========================================
+/* =====================
    FOOTER
-   ======================================== */
-
+   ===================== */
 .footer {
     background: #0f172a;
-    /* Solid dark background matching screenshot */
-    color: #cbd5e1;
-    padding: 60px 40px 20px 40px;
-    margin-top: 60px;
-    font-size: 14px;
+    color: #94a3b8;
+    padding: 46px 50px 16px;
+    font-size: 13px;
 }
 
-.footer-container {
+.footer-inner {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-wrap: wrap;
     gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1100px;
+    margin: 0 auto 0;
 }
 
-.footer-box h3 {
+.f-col h4 {
     color: #ffffff;
-    font-size: 16px;
-    margin-bottom: 20px;
+    font-size: 14px;
     font-weight: 600;
+    margin-bottom: 16px;
 }
 
-/* Two-tone logo text in footer about */
-.footer-box p.about-text {
-    line-height: 1.6;
-    color: #cbd5e1;
-    margin-bottom: 10px;
+.f-col p {
+    color: #94a3b8;
+    line-height: 1.8;
+    font-size: 13px;
 }
 
-.footer-box ul {
+.f-col ul {
     list-style: none;
-    padding: 0;
-    margin: 0;
 }
 
-.footer-box ul li {
-    margin-bottom: 12px;
+.f-col ul li {
+    margin-bottom: 8px;
 }
 
-.footer-box ul li a,
-.footer-box a {
-    color: #cbd5e1;
+.f-col ul li a {
+    color: #94a3b8;
     text-decoration: none;
     transition: color 0.2s;
 }
 
-.footer-box ul li a:hover,
-.footer-box a:hover {
+.f-col ul li a:hover {
     color: #ffffff;
 }
 
-/* Support Icons */
-.footer-box .support-item {
+.f-support-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-}
-
-.footer-box .support-item i {
+    gap: 8px;
+    margin-bottom: 9px;
     color: #94a3b8;
-    width: 16px;
 }
 
-/* Social Icons */
-.social-icons {
+.f-support-row a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.f-support-row a:hover {
+    color: #ffffff;
+}
+
+.f-support-row i {
+    width: 14px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.f-socials {
     display: flex;
-    gap: 12px;
+    gap: 8px;
 }
 
-.social-icons a {
+.f-socials a {
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
     background: #1e293b;
-    border-radius: 6px;
-    color: #cbd5e1;
-    transition: all 0.2s;
+    border-radius: 5px;
+    color: #94a3b8;
     text-decoration: none;
+    font-size: 12px;
+    transition: background 0.2s, color 0.2s;
 }
 
-.social-icons a:hover {
+.f-socials a:hover {
     background: #2563eb;
     color: #ffffff;
 }
 
-/* Copyright line */
-hr.footer-divider {
+.f-divider {
     border: none;
     border-top: 1px solid #1e293b;
-    margin: 40px auto 20px;
-    max-width: 1200px;
+    margin: 36px auto 14px;
+    max-width: 1100px;
 }
 
-.copyright {
+.f-copy {
     text-align: center;
-    color: #64748b;
-    font-size: 13px;
-    margin: 0;
+    font-size: 12px;
+    color: #475569;
+    padding-bottom: 4px;
 }

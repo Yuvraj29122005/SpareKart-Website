@@ -3,63 +3,62 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SpareKart</title>
-    
-    <!-- Link to the main layout CSS -->
-    <link rel="stylesheet" href="~/css/layout.css" />
-    
-    <!-- Required: Font Awesome for Icons -->
+    <title>SpareKart - Quality Car Spare Parts</title>
+
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+
+    <!-- Global Layout CSS -->
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+
+    <!-- Page-specific CSS (injected by each view) -->
+    @RenderSection("Styles", required: false)
 </head>
 
 <body>
 
-    <!-- ================= NAVBAR START ================= -->
-    <div class="navbar">
+    <!-- ============================
+         NAVBAR
+         ============================ -->
+    <nav class="navbar">
 
-        <!-- Left: Image Logo -->
         <div class="nav-left">
             <a href="/Home/Index">
-                <img src="~/images/logo.png" class="logo" alt="SpareKart Logo" />
+                <img src="~/images/logo.png" class="nav-logo" alt="SpareKart" />
             </a>
         </div>
 
-        <!-- Center: Two-tone Text Logo -->
         <div class="nav-center">
-            <a href="/Home/Index" class="brand" style="text-decoration:none;">
-                <span style="color:#2563eb; font-weight:800;">Spare</span><span style="color:#f97316; font-weight:800;">Kart</span>
+            <a href="/Home/Index" style="text-decoration:none;">
+                <span style="color:#2563eb;font-weight:800;">Spare</span><span style="color:#f97316;font-weight:800;">Kart</span>
             </a>
         </div>
 
-        <!-- Right: Links -->
         <div class="nav-right">
-            <!-- Cart Icon -->
-            <a href="/Cart/Index" class="cart-link" title="Cart">
-                <i class="fa fa-shopping-cart cart"></i>
+            <a href="/Cart/Index" class="nav-icon-link" title="Cart">
+                <i class="fa fa-shopping-cart"></i>
             </a>
-
-            <!-- User Profile -->
-            <a href="/Profile/Index" class="user-link">
-                <div class="user">
-                    <i class="fa fa-user-circle"></i>
-                    <span>Hi,Yuvraj</span>
-                </div>
+            <a href="/Profile/Index" class="nav-user-link">
+                <i class="fa fa-user-circle nav-user-icon"></i>
+                <span class="nav-user-text">Hi, Yuvraj</span>
             </a>
         </div>
 
-    </div>
-    <!-- ================= NAVBAR END ================= -->
+    </nav>
+    <!-- END NAVBAR -->
 
-    <!-- Main Content Body inserted here -->
+    <!-- Page body content goes here -->
     @RenderBody()
 
-    <!-- ================= FOOTER START ================= -->
-    <div class="footer">
-        <div class="footer-container">
+    <!-- ============================
+         FOOTER
+         ============================ -->
+    <footer class="footer">
+        <div class="footer-inner">
 
-            <div class="footer-box">
-                <h3>About <span style="color:#3b82f6;">Spare</span><span style="color:#f97316;">Kart</span></h3>
-                <p class="about-text">
+            <div class="f-col">
+                <h4>About <span style="color:#3b82f6;">Spare</span><span style="color:#f97316;">Kart</span></h4>
+                <p>
                     Spare Kart is an online<br />
                     store providing quality<br />
                     car spare parts at<br />
@@ -68,8 +67,8 @@
                 </p>
             </div>
 
-            <div class="footer-box">
-                <h3>Quick Links</h3>
+            <div class="f-col">
+                <h4>Quick Links</h4>
                 <ul>
                     <li><a href="/Home/Index">Home</a></li>
                     <li><a href="/Products/AllProducts">Products</a></li>
@@ -77,24 +76,24 @@
                 </ul>
             </div>
 
-            <div class="footer-box">
-                <h3>Support</h3>
-                <div class="support-item">
-                    <a href="/Feedback/Index" style="color:#cbd5e1; text-decoration:none;">Feedback</a>
+            <div class="f-col">
+                <h4>Support</h4>
+                <div class="f-support-row">
+                    <a href="/Feedback/Index">Feedback</a>
                 </div>
-                <div class="support-item">
+                <div class="f-support-row">
                     <i class="fa-regular fa-envelope"></i>
                     <span>ydhadhal15@rku.ac.in</span>
                 </div>
-                <div class="support-item">
+                <div class="f-support-row">
                     <i class="fa-solid fa-phone"></i>
                     <span>+91 81403 51044</span>
                 </div>
             </div>
 
-            <div class="footer-box">
-                <h3>Follow Us</h3>
-                <div class="social-icons">
+            <div class="f-col">
+                <h4>Follow Us</h4>
+                <div class="f-socials">
                     <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="#"><i class="fa-brands fa-twitter"></i></a>
                     <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -104,13 +103,13 @@
 
         </div>
 
-        <hr class="footer-divider" />
+        <hr class="f-divider" />
 
-        <p class="copyright">
-            © 2026 <span style="color:#3b82f6; font-weight:700;">Spare</span><span style="color:#f97316; font-weight:700;">Kart</span> Car Parts. All rights reserved.
+        <p class="f-copy">
+            &copy; 2026 <span style="color:#3b82f6;font-weight:700;">Spare</span><span style="color:#f97316;font-weight:700;">Kart</span> Car Parts. All rights reserved.
         </p>
-    </div>
-    <!-- ================= FOOTER END ================= -->
+    </footer>
+    <!-- END FOOTER -->
 
 </body>
 </html>
