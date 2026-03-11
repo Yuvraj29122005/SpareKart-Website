@@ -48,8 +48,11 @@
                     🛒 Add to Cart
                 </button>
             </a>
-
-           
+            <a id="buyNowBtn" href="/Checkout/Index?name=@ViewBag.Name&price=@ViewBag.Price&image=@ViewBag.Image&qty=1">
+                <button class="buy-btn">
+                    ⚡ Buy Now
+                </button>
+            </a>
         </div>
 
     </div>
@@ -82,6 +85,7 @@
         document.getElementById('buyNowBtn').href =
             '/Checkout/Index?name=' + encodeURIComponent(productName) +
             '&price=' + (basePrice * newVal) +
-            '&image=' + encodeURIComponent(productImage);
+            '&image=' + encodeURIComponent(productImage) +
+            '&qty=' + newVal;
     }
 </script>

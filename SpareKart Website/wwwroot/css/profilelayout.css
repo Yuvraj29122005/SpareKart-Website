@@ -1,20 +1,15 @@
 ﻿.profile-navbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px 40px;
-    background: #f9fafb;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.logo {
-    height: 40px;
-}
-
-.brand {
-    color: #2563eb;
-    font-size: 18px;
-    font-weight: bold;
+    justify-content: space-between;
+    padding: 0 50px;
+    height: 70px;
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .logout-btn {

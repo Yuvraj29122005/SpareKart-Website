@@ -9,6 +9,14 @@
 <h2 class="page-title">Checkout</h2>
 
 <form id="checkoutForm" asp-controller="Checkout" asp-action="PlaceOrder" method="post" novalidate>
+    <!-- Hidden fields for static Buy Now flow -->
+    @if (!string.IsNullOrEmpty(ViewBag.BuyNowName))
+    {
+        <input type="hidden" name="buyNowName" value="@ViewBag.BuyNowName" />
+        <input type="hidden" name="buyNowPrice" value="@ViewBag.BuyNowPrice" />
+        <input type="hidden" name="buyNowImage" value="@ViewBag.BuyNowImage" />
+        <input type="hidden" name="buyNowQty" value="@ViewBag.BuyNowQty" />
+    }
 
     <div class="checkout">
 

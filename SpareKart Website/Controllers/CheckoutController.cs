@@ -7,37 +7,90 @@ namespace SpareKart_Website.Controllers
 {
     public class CheckoutController : Controller
     {
-        // GET - show checkout page with full cart
-        public IActionResult Index()
+        public IActionResult Index(string name, int? price, string image, int? qty)
         {
-            // Pass the entire cart to the view
-            var cart = CartController.cart;
+            List<CartItem> displayCart = new List<CartItem>();
+            int checkoutTotal = 0;
 
-            if (cart == null || cart.Count == 0)
-                return RedirectToAction("Index", "Cart");
+            if (!string.IsNullOrEmpty(name) && price.HasValue)
+            {
+                // Buy Now flow for specific product
+                int quantity = qty ?? 1;
+                // Note: The price passed from View might be (unitPrice * qty). Let's just use it as the total for this item,
+                // or assume price is total and we just show it.
+                displayCart.Add(new CartItem
+                {
+                    Name = name,
+                    Price = price.Value / quantity,
+                    Quantity = quantity,
+                    Image = image
+                });
+                checkoutTotal = price.Value;
+            }
+            else
+            {
+                // Regular cart checkout
+                displayCart = CartController.cart;
+                if (displayCart == null || displayCart.Count == 0)
+                    return RedirectToAction("Index", "Cart");
+                checkoutTotal = displayCart.Sum(x => x.Price * x.Quantity);
+            }
 
-            ViewBag.Cart = cart;
-            ViewBag.Total = cart.Sum(x => x.Price * x.Quantity);
+            ViewBag.Cart = displayCart;
+            ViewBag.Total = checkoutTotal;
+            
+            // Pass to view so we can persist in form if needed
+            ViewBag.BuyNowName = name;
+            ViewBag.BuyNowPrice = price;
+            ViewBag.BuyNowImage = image;
+            ViewBag.BuyNowQty = qty;
+
             return View();
         }
 
         [HttpPost]
-        public IActionResult PlaceOrder(string address, string fullname, string email, string phone, string pay)
+        public IActionResult PlaceOrder(string address, string fullname, string email, string phone, string pay, string buyNowName, int? buyNowPrice, string buyNowImage, int? buyNowQty)
         {
-            if (CartController.cart.Count == 0)
-                return RedirectToAction("Index", "Home");
+            List<CartItem> orderItems;
+            int total = 0;
+
+            if (!string.IsNullOrEmpty(buyNowName) && buyNowPrice.HasValue)
+            {
+                // Buy Now static order
+                int qty = buyNowQty ?? 1;
+                orderItems = new List<CartItem>
+                {
+                    new CartItem
+                    {
+                        Name = buyNowName,
+                        Price = buyNowPrice.Value / qty,
+                        Quantity = qty,
+                        Image = buyNowImage
+                    }
+                };
+                total = buyNowPrice.Value;
+            }
+            else
+            {
+                // Normal cart order
+                if (CartController.cart.Count == 0)
+                    return RedirectToAction("Index", "Home");
+
+                orderItems = CartController.cart.ToList();
+                total = orderItems.Sum(x => x.Price * x.Quantity);
+                CartController.cart.Clear();
+            }
 
             var newOrder = new OrderModel
             {
                 OrderId = "ORD" + (OrderController.orders.Count + 1),
                 Date = DateTime.Now.ToShortDateString(),
-                TotalAmount = CartController.cart.Sum(x => x.Price * x.Quantity),
+                TotalAmount = total,
                 Address = address,
-                Items = CartController.cart.ToList()
+                Items = orderItems
             };
 
             OrderController.orders.Add(newOrder);
-            CartController.cart.Clear();
 
             return RedirectToAction("MyOrders", "Order");
         }
