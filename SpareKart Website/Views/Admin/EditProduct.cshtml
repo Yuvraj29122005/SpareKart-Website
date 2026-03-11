@@ -3,47 +3,135 @@
     ViewBag.Title = "Edit Product";
 }
 
-<link rel="stylesheet" href="~/css/admin/adminDashboard.css" />
+<link rel="stylesheet" href="~/css/admin/adminProducts.css" />
 
-<h4 class="admin-page-title">Edit Product</h4>
-<p class="admin-page-sub">Update the details of an existing product.</p>
-
-<div class="admin-sidebox" style="max-width:600px;">
-
-    <div class="mb-3">
-        <label class="form-label fw-semibold">Product Name</label>
-        <input type="text" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-semibold">Category</label>
-        <select class="form-select">
-            <option>Engine</option>
-            <option>Brakes</option>
-            <option>Tyres</option>
-            <option>Lights</option>
-            <option>Accessories</option>
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-semibold">Price (₹)</label>
-        <input type="number" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-semibold">Stock Quantity</label>
-        <input type="number" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label fw-semibold">Description</label>
-        <textarea class="form-control" rows="3"></textarea>
-    </div>
-
-    <div class="d-flex gap-2">
-        <button class="btn btn-success"><i class="fa fa-save"></i> Update Product</button>
-        <a href="/Admin/Products" class="btn btn-outline-secondary">Cancel</a>
-    </div>
-
+<!-- ==================== EDIT VIEW ==================== -->
+<div class="mb-4">
+    <h4 class="admin-page-title">Edit Product</h4>
+    <p class="admin-page-sub">Fill in the details to update the spare part in your inventory</p>
 </div>
+
+<div class="admin-form-card" id="editFormWrap" style="display:none;">
+    <form id="formEditProduct" onsubmit="handleEditSubmit(event)">
+        
+        <input type="hidden" id="editId" />
+        
+        <div class="form-group">
+            <label class="form-label"><i class="fa fa-cube"></i> Product Name *</label>
+            <input type="text" class="form-control" id="editName" placeholder="e.g., Engine Oil Filter" required />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label"><i class="fa fa-tag"></i> Category *</label>
+            <select class="form-select" id="editCategory" required>
+                <option value="Engine">Engine</option>
+                <option value="Brakes">Brakes</option>
+                <option value="Tyres">Tyres</option>
+                <option value="Lights">Lights</option>
+                <option value="Accessories">Accessories</option>
+            </select>
+        </div>
+
+        <div class="row-split">
+            <div class="form-group">
+                <label class="form-label"><i class="fa fa-dollar-sign"></i> Price (₹) *</label>
+                <input type="number" step="0.01" class="form-control" id="editPrice" placeholder="0.00" required />
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fa fa-boxes-stacked"></i> Stock Quantity *</label>
+                <input type="number" class="form-control" id="editStock" placeholder="0" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label"><i class="fa fa-image"></i> Product Image (choose local file)</label>
+            <div class="d-flex align-items-center gap-3 mb-2">
+                <img id="currentImgPreview" src="" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;" />
+                <input type="file" class="form-control" id="editImage" accept="image/*" />
+            </div>
+            <span class="form-help">Leave empty to keep the existing image</span>
+            <input type="hidden" id="editExistingImage" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" id="editDesc" rows="4" placeholder="Enter product description, specifications, etc."></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">Update Product</button>
+            <a href="/Admin/Products" class="btn-cancel text-center text-decoration-none d-flex align-items-center justify-content-center">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+<div id="notFoundMessage" class="text-danger mt-4" style="display:none;">
+    <h5>Product Not Found</h5>
+    <p>The requested product could not be loaded.</p>
+    <a href="/Admin/Products" class="btn btn-primary mt-2">Go Back</a>
+</div>
+
+<script>
+    function getBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    // Load Data
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetId = parseInt(urlParams.get('id'));
+
+    let stored = localStorage.getItem('sparekart_products_data');
+    let products = stored ? JSON.parse(stored) : [];
+    
+    let p = products.find(x => x.id === targetId);
+
+    if (p) {
+        document.getElementById('editFormWrap').style.display = 'block';
+        
+        document.getElementById('editId').value = p.id;
+        document.getElementById('editName').value = p.name;
+        document.getElementById('editCategory').value = p.category;
+        document.getElementById('editPrice').value = p.price;
+        document.getElementById('editStock').value = p.stock;
+        document.getElementById('editExistingImage').value = p.img || '';
+        document.getElementById('currentImgPreview').src = p.img || 'https://placehold.co/100x100?text=None';
+        // Description left blank for dummy data
+    } else {
+        document.getElementById('notFoundMessage').style.display = 'block';
+    }
+
+    async function handleEditSubmit(e) {
+        e.preventDefault();
+
+        const id = parseInt(document.getElementById('editId').value);
+        let pIndex = products.findIndex(x => x.id === id);
+        if (pIndex === -1) return;
+
+        let imgData = document.getElementById('editExistingImage').value;
+        const fileInput = document.getElementById('editImage');
+        
+        if (fileInput.files && fileInput.files[0]) {
+            imgData = await getBase64(fileInput.files[0]);
+        }
+
+        products[pIndex] = {
+            id: id,
+            name: document.getElementById('editName').value,
+            category: document.getElementById('editCategory').value,
+            price: document.getElementById('editPrice').value,
+            stock: document.getElementById('editStock').value,
+            img: imgData
+        };
+
+        localStorage.setItem('sparekart_products_data', JSON.stringify(products));
+        
+        // Redirect back to Products list
+        window.location.href = '/Admin/Products';
+    }
+</script>

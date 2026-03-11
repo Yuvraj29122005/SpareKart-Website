@@ -3,18 +3,128 @@
     ViewBag.Title = "Manage Products";
 }
 
-<link rel="stylesheet" href="~/css/admin/adminDashboard.css" />
+<link rel="stylesheet" href="~/css/admin/adminProducts.css" />
 
-<h4 class="admin-page-title">Products</h4>
-<p class="admin-page-sub">Manage your product inventory.</p>
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <input type="text" class="form-control w-25" placeholder="Search products..." />
-    <a href="/Admin/AddProduct" class="btn btn-primary btn-sm">
-        <i class="fa fa-plus"></i> Add New Product
-    </a>
+<!-- ==================== LIST VIEW ==================== -->
+<div class="products-top-bar">
+    <div>
+        <h4 class="admin-page-title">Manage Products</h4>
+        <p class="admin-page-sub">View and update your store inventory.</p>
+    </div>
+    <div class="d-flex gap-3">
+        <div class="search-container">
+            <i class="fa fa-search"></i>
+            <input type="text" class="search-input" placeholder="Search products..." id="searchInput" onkeyup="filterTable()" />
+        </div>
+        <a href="/Admin/AddProduct" class="btn-add-product">
+            <i class="fa fa-plus"></i> Add Product
+        </a>
+    </div>
 </div>
 
-<div class="admin-sidebox">
-    <p class="text-muted text-center my-3">No products to display yet.</p>
+<div class="admin-table-container">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th style="width: 80px;">Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th style="width: 100px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="productsTableBody">
+            <!-- Data populated by JS -->
+        </tbody>
+    </table>
+    
+    <div class="p-3 text-end" style="border-top: 1px solid #f1f5f9; background: #fafafa;">
+        <button class="btn btn-sm btn-outline-danger" onclick="resetData()">
+            <i class="fa fa-rotate-right"></i> Reset Default Data
+        </button>
+    </div>
 </div>
+
+<script>
+    // Initial dummy data matching the screenshot
+    let defaultImg = "https://placehold.co/100x100?text=Part";
+    
+    function initData() {
+        let stored = localStorage.getItem('sparekart_products_data');
+        if (stored) {
+            return JSON.parse(stored);
+        } else {
+            let initial = [
+                { id: 1, name: "Engine Oil Filter", category: "Engine", price: 499, stock: 50, img: defaultImg },
+                { id: 2, name: "Brake Disc Set", category: "Brakes", price: 3500, stock: 30, img: defaultImg },
+                { id: 3, name: "All-Season Tyre", category: "Tyres", price: 6500, stock: 40, img: defaultImg },
+                { id: 4, name: "LED Headlight", category: "Lights", price: 1899, stock: 60, img: defaultImg },
+                { id: 5, name: "Car Air Freshener", category: "Accessories", price: 199, stock: 100, img: defaultImg },
+                { id: 6, name: "Spark Plugs Set", category: "Engine", price: 799, stock: 25, img: defaultImg },
+                { id: 7, name: "Brake Pads", category: "Brakes", price: 1299, stock: 45, img: defaultImg }
+            ];
+            localStorage.setItem('sparekart_products_data', JSON.stringify(initial));
+            return initial;
+        }
+    }
+
+    let products = initData();
+
+    function renderTable(filterText = '') {
+        const tbody = document.getElementById('productsTableBody');
+        tbody.innerHTML = '';
+
+        const lowerFilter = filterText.toLowerCase();
+
+        products.forEach(p => {
+            if (filterText && !p.name.toLowerCase().includes(lowerFilter)) {
+                return; 
+            }
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><img src="${p.img}" class="product-img" alt="img" /></td>
+                <td><strong>${p.name}</strong></td>
+                <td><span class="badge-category">${p.category}</span></td>
+                <td>₹${Number(p.price).toLocaleString('en-IN')}</td>
+                <td><span class="badge-stock">${p.stock}</span></td>
+                <td>
+                    <div class="action-icons">
+                        <a href="/Admin/EditProduct?id=${p.id}" class="btn-icon btn-edit"><i class="fa fa-edit"></i></a>
+                        <button class="btn-icon btn-delete" onclick="deleteProduct(${p.id})"><i class="fa fa-trash"></i></button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        if(tbody.innerHTML === '') {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No products found.</td></tr>`;
+        }
+    }
+
+    function filterTable() {
+        const text = document.getElementById('searchInput').value;
+        renderTable(text);
+    }
+
+    function deleteProduct(id) {
+        if(confirm("Are you sure you want to delete this product?")) {
+            products = products.filter(x => x.id !== id);
+            localStorage.setItem('sparekart_products_data', JSON.stringify(products));
+            renderTable();
+        }
+    }
+
+    function resetData() {
+        if(confirm("Restore default dummy data items?")) {
+            localStorage.removeItem('sparekart_products_data');
+            products = initData();
+            renderTable();
+        }
+    }
+
+    // Init display
+    renderTable();
+</script>
