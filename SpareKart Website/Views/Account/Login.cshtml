@@ -52,10 +52,12 @@
                             type="email"
                             id="email"
                             name="Email"
+                            value="@Model?.Email"
                             placeholder="Enter your email"
                             required
                             autocomplete="email" />
                     </div>
+                    <span asp-validation-for="Email" class="field-validation-error"></span>
                 </div>
 
                 <!-- Password Field -->
@@ -74,6 +76,7 @@
                             required
                             autocomplete="current-password" />
                     </div>
+                    <span asp-validation-for="Password" class="field-validation-error"></span>
                 </div>
 
                 <!-- Error Message -->

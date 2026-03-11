@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using SpareKart_Website.Models;
 
 namespace SpareKart_Website.Controllers
@@ -25,6 +25,21 @@ namespace SpareKart_Website.Controllers
                 }
             }
             return View(user);
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(RegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Login");
+            }
+            return View(model);
         }
     }
 }

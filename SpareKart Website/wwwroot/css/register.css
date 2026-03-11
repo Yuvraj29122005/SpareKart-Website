@@ -1,0 +1,57 @@
+/* ============================================
+   SpareKart Register Page — Styles
+   ============================================ */
+
+/* Register card gets a bit wider for the extra fields */
+.register-card {
+    max-width: 440px;
+}
+
+/* Tighter gap between form fields on register */
+.register-card .login-form {
+    gap: 14px;
+}
+
+/* ---------- Phone input with country code ---------- */
+.phone-input-wrapper {
+    position: relative;
+}
+
+.phone-code {
+    position: absolute;
+    left: 38px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #475569;
+    pointer-events: none;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.phone-code::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 18px;
+    background: #cbd5e1;
+    margin-left: 10px;
+}
+
+.phone-input {
+    padding-left: 82px !important;
+}
+
+/* ============================================
+   Responsive — Register
+   ============================================ */
+@media (max-width: 480px) {
+    .register-card {
+        max-width: 100%;
+    }
+
+    .phone-code {
+        left: 36px;
+    }
+}

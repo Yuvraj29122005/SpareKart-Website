@@ -1,29 +1,151 @@
-﻿@model SpareKart_Website.Models.UserModel
+@model SpareKart_Website.Models.RegisterModel
 @{
     Layout = null;
 }
 
-<link rel="stylesheet" href="~/css/login.css" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpareKart - Register</title>
 
-<div class="login-box">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <img src="~/images/logo.png" height="60" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
 
-    <h2>Create Account</h2>
+    <!-- Login / Register Page CSS -->
+    <link rel="stylesheet" href="~/css/login.css" />
+    <link rel="stylesheet" href="~/css/register.css" />
+</head>
+<body>
 
-    <form method="post">
+    <div class="login-page">
 
-        <input type="text" name="Name" placeholder="Full Name" required />
-        <input type="email" name="Email" placeholder="Email" required />
-        <input type="password" name="Password" placeholder="Password" required />
+        <!-- Register Card -->
+        <div class="login-card register-card">
 
-        <button type="submit">Register</button>
+            <!-- Logo -->
+            <div class="login-logo">
+                <img src="~/images/logo.png" alt="SpareKart Logo" />
+            </div>
 
-    </form>
+            <!-- Heading -->
+            <h1 class="login-title">Create Account</h1>
+            <p class="login-subtitle">Join SpareKart today</p>
 
-    <p>
-        Already have account?
-        <a href="/Account/Login">Login here</a>
-    </p>
+            <!-- Register Form -->
+            <form method="post" class="login-form" novalidate>
 
-</div>
+                <!-- Full Name Field -->
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-user input-icon"></i>
+                        <input
+                            type="text"
+                            id="name"
+                            name="Name"
+                            value="@Model?.Name"
+                            placeholder="Enter your full name"
+                            required
+                            autocomplete="name" />
+                    </div>
+                    <span asp-validation-for="Name" class="field-validation-error"></span>
+                </div>
+
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-envelope input-icon"></i>
+                        <input
+                            type="email"
+                            id="email"
+                            name="Email"
+                            value="@Model?.Email"
+                            placeholder="Enter your email"
+                            required
+                            autocomplete="email" />
+                    </div>
+                    <span asp-validation-for="Email" class="field-validation-error"></span>
+                </div>
+
+                <!-- Phone Field -->
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <div class="input-wrapper phone-input-wrapper">
+                        <i class="fa-solid fa-phone input-icon"></i>
+                        <span class="phone-code">+91</span>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="Phone"
+                            value="@Model?.Phone"
+                            placeholder="Enter your mobile number"
+                            required
+                            autocomplete="tel"
+                            class="phone-input" />
+                    </div>
+                    <span asp-validation-for="Phone" class="field-validation-error"></span>
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input
+                            type="password"
+                            id="password"
+                            name="Password"
+                            placeholder="Create a password"
+                            required
+                            autocomplete="new-password" />
+                    </div>
+                    <span asp-validation-for="Password" class="field-validation-error"></span>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-shield-halved input-icon"></i>
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            name="ConfirmPassword"
+                            placeholder="Confirm your password"
+                            required
+                            autocomplete="new-password" />
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="field-validation-error"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="login-btn">
+                    <span>Create your Account</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+            </form>
+
+            <!-- Divider -->
+            <div class="login-divider">
+                <span>or</span>
+            </div>
+
+            <!-- Login Link -->
+            <p class="register-text">
+                Already have an account?
+                <a href="/Account/Login" class="register-link">Login here</a>
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
