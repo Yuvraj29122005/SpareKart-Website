@@ -41,5 +41,21 @@ namespace SpareKart_Website.Controllers
             }
             return View(model);
         }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ForgotPassword(ForgotPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                TempData["ForgotSuccess"] = "true";
+                return View(model);
+            }
+            return View(model);
+        }
     }
 }

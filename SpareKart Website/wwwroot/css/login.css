@@ -1,5 +1,5 @@
 /* ============================================
-   SpareKart Login Page — Full Design
+   SpareKart Auth Pages — Shared Styles
    ============================================ */
 
 /* ---------- Reset & Base ---------- */
@@ -13,7 +13,7 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #f0f4f8;
+    background: #ffffff;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -26,17 +26,11 @@ body {
     justify-content: center;
     min-height: 100vh;
     padding: 24px;
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, #e8edf5 0%, #f0f4f8 40%, #e6ecf5 100%);
+    background: #ffffff;
 }
-
-
 
 /* ---------- Login Card ---------- */
 .login-card {
-    position: relative;
-    z-index: 1;
     width: 100%;
     max-width: 420px;
     background: #ffffff;
@@ -46,18 +40,6 @@ body {
         0 4px 6px -1px rgba(0, 0, 0, 0.06),
         0 10px 15px -3px rgba(0, 0, 0, 0.08),
         0 20px 40px -4px rgba(0, 0, 0, 0.04);
-    animation: cardFadeIn 0.5s ease-out both;
-}
-
-@keyframes cardFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(18px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* ---------- Logo ---------- */
@@ -70,11 +52,6 @@ body {
     height: 56px;
     width: auto;
     object-fit: contain;
-    transition: transform 0.3s ease;
-}
-
-.login-logo img:hover {
-    transform: scale(1.05);
 }
 
 /* ---------- Heading & subtitle ---------- */
@@ -127,7 +104,6 @@ body {
     font-weight: 500;
     color: #2563eb;
     text-decoration: none;
-    transition: color 0.2s;
 }
 
 .forgot-link:hover {
@@ -148,7 +124,6 @@ body {
     font-size: 0.875rem;
     color: #94a3b8;
     pointer-events: none;
-    transition: color 0.2s;
 }
 
 .input-wrapper input {
@@ -161,7 +136,6 @@ body {
     border: 1.5px solid #e2e8f0;
     border-radius: 10px;
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
 .input-wrapper input::placeholder {
@@ -180,17 +154,11 @@ body {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-.input-wrapper input:focus ~ .input-icon,
-.input-wrapper input:focus + .input-icon {
-    color: #2563eb;
-}
-
-/* Fix for icon color change on focus (icon is before input) */
 .input-wrapper:focus-within .input-icon {
     color: #2563eb;
 }
 
-/* ---------- Error message ---------- */
+/* ---------- Error message (general) ---------- */
 .error-message {
     display: flex;
     align-items: center;
@@ -202,7 +170,6 @@ body {
     color: #dc2626;
     font-size: 0.8125rem;
     font-weight: 500;
-    animation: shakeError 0.4s ease-out;
 }
 
 .error-message i {
@@ -210,15 +177,7 @@ body {
     flex-shrink: 0;
 }
 
-@keyframes shakeError {
-    0%, 100% { transform: translateX(0); }
-    20%      { transform: translateX(-4px); }
-    40%      { transform: translateX(4px); }
-    60%      { transform: translateX(-3px); }
-    80%      { transform: translateX(3px); }
-}
-
-/* ---------- Login Button ---------- */
+/* ---------- Login / Submit Button ---------- */
 .login-btn {
     display: flex;
     align-items: center;
@@ -231,33 +190,25 @@ body {
     font-weight: 600;
     font-family: inherit;
     color: #ffffff;
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    background: #2563eb;
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.2s, background 0.25s;
     box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
     letter-spacing: 0.02em;
 }
 
 .login-btn i {
     font-size: 0.8125rem;
-    transition: transform 0.2s;
 }
 
 .login-btn:hover {
-    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    background: #1d4ed8;
     box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
-    transform: translateY(-1px);
-}
-
-.login-btn:hover i {
-    transform: translateX(3px);
 }
 
 .login-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    background: #1e40af;
 }
 
 /* ---------- Divider ---------- */
@@ -284,7 +235,7 @@ body {
     letter-spacing: 0.08em;
 }
 
-/* ---------- Register text ---------- */
+/* ---------- Register / Login link text ---------- */
 .register-text {
     text-align: center;
     font-size: 0.84rem;
@@ -296,7 +247,6 @@ body {
     color: #2563eb;
     font-weight: 600;
     text-decoration: none;
-    transition: color 0.2s;
 }
 
 .register-link:hover {
@@ -308,7 +258,6 @@ body {
    Field-Level Validation Errors
    ============================================ */
 
-/* Error text below each input */
 .field-validation-error {
     display: block;
     font-size: 0.75rem;
@@ -318,26 +267,13 @@ body {
     padding-left: 2px;
     min-height: 0;
     line-height: 1.3;
-    animation: fadeInError 0.25s ease-out;
 }
 
-/* Hide when empty / valid */
 .field-validation-valid {
     display: none;
 }
 
-@keyframes fadeInError {
-    from {
-        opacity: 0;
-        transform: translateY(-4px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Red border on invalid inputs (when validation error sibling exists) */
+/* Red border on invalid inputs */
 .input-wrapper input.input-validation-error {
     border-color: #ef4444;
     background: #fef2f2;
