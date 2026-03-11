@@ -1,73 +1,133 @@
-﻿@{
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Dashboard";
 }
 
 <link rel="stylesheet" href="~/css/admin/adminDashboard.css" />
 
-<h4 class="admin-page-title">Dashboard</h4>
-<p class="admin-page-sub">Welcome back! Here's what's happening with your store today.</p>
+<div class="dashboard-header mb-4">
+    <h4 class="admin-page-title">Dashboard</h4>
+    <p class="admin-page-sub">Welcome back! Here's what's happening with your store today.</p>
+</div>
 
-<div class="row mt-3">
+<div class="row g-4 mb-4">
 
-    <div class="col-md-3 mb-3">
+    <div class="col-md-3">
         <div class="admin-card">
-            <p>Total Products</p>
-            <h4>8</h4>
-            <small>Low stock</small>
+            <div class="card-info">
+                <p>Total Products</p>
+                <h4>8</h4>
+                <small>0 low stock</small>
+            </div>
+            <div class="card-icon" style="background-color: #3b82f6;">
+                <i class="fa fa-box text-white"></i>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-3 mb-3">
+    <div class="col-md-3">
         <div class="admin-card">
-            <p>Total Orders</p>
-            <h4>2</h4>
-            <small>1 completed</small>
+            <div class="card-info">
+                <p>Total Orders</p>
+                <h4>2</h4>
+                <small>1 completed</small>
+            </div>
+            <div class="card-icon" style="background-color: #10b981;">
+                <i class="fa-solid fa-bag-shopping text-white"></i>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-3 mb-3">
+    <div class="col-md-3">
         <div class="admin-card">
-            <p>Total Users</p>
-            <h4>2</h4>
-            <small>2 active</small>
+            <div class="card-info">
+                <p>Total Users</p>
+                <h4>2</h4>
+                <small>2 active</small>
+            </div>
+            <div class="card-icon" style="background-color: #a855f7;">
+                <i class="fa fa-users text-white"></i>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-3 mb-3">
+    <div class="col-md-3">
         <div class="admin-card">
-            <p>Total Revenue</p>
-            <h4>₹5498</h4>
-            <small>From completed orders</small>
+            <div class="card-info">
+                <p>Total Revenue</p>
+                <h4>₹5,498</h4>
+                <small>From completed orders</small>
+            </div>
+            <div class="card-icon" style="background-color: #f97316;">
+                <i class="fa-solid fa-dollar-sign text-white"></i>
+            </div>
         </div>
     </div>
 
 </div>
 
-<div class="row mt-2">
+<div class="row g-4">
 
     <div class="col-md-8">
-        <div class="admin-lowstock">
-            All products well stocked
+        <div class="admin-lowstock-panel">
+            <div class="panel-header">
+                <h6><i class="fa flex-shrink-0 fa-triangle-exclamation text-warning"></i> Low Stock Alert</h6>
+            </div>
+            <div class="panel-body centered-content">
+                <div class="all-stocked">
+                    <i class="fa fa-arrow-trend-up"></i>
+                    <p>All products well stocked!</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 d-flex flex-column gap-4">
 
         <div class="admin-sidebox">
             <h6>Order Status</h6>
-            <p style="color:green;"><i class="fa fa-check-circle"></i> Completed — 1</p>
-            <p style="color:orange;"><i class="fa fa-clock"></i> Pending — 1</p>
-            <p style="color:red;"><i class="fa fa-times-circle"></i> Failed — 0</p>
+            <div class="status-item">
+                <div class="status-label">
+                    <span class="status-dot green"></span> Completed
+                </div>
+                <div class="status-val">1</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">
+                    <span class="status-dot orange"></span> Pending
+                </div>
+                <div class="status-val">1</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">
+                    <span class="status-dot red"></span> Failed
+                </div>
+                <div class="status-val">0</div>
+            </div>
         </div>
 
         <div class="admin-sidebox">
             <h6>Products by Category</h6>
-            <p>Engine — 2</p>
-            <p>Brakes — 2</p>
-            <p>Tyres — 1</p>
-            <p>Lights — 2</p>
-            <p>Accessories — 1</p>
+            <div class="category-item">
+                <span>Engine</span>
+                <span>2</span>
+            </div>
+            <div class="category-item">
+                <span>Brakes</span>
+                <span>2</span>
+            </div>
+            <div class="category-item">
+                <span>Tyres</span>
+                <span>1</span>
+            </div>
+            <div class="category-item">
+                <span>Lights</span>
+                <span>2</span>
+            </div>
+            <div class="category-item">
+                <span>Accessories</span>
+                <span>1</span>
+            </div>
         </div>
 
     </div>
