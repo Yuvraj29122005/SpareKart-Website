@@ -1,28 +1,323 @@
-﻿body {
-    background: #f3f4f6;
-    font-family: Arial;
+/* ============================================
+   SpareKart Login Page — Full Design
+   ============================================ */
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.login-box {
-    width: 350px;
-    margin: 100px auto;
-    padding: 30px;
-    background: white;
-    border-radius: 10px;
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f0f4f8;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Full-page wrapper ---------- */
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e8edf5 0%, #f0f4f8 40%, #e6ecf5 100%);
+}
+
+
+
+/* ---------- Login Card ---------- */
+.login-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px 36px 36px;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.06),
+        0 10px 15px -3px rgba(0, 0, 0, 0.08),
+        0 20px 40px -4px rgba(0, 0, 0, 0.04);
+    animation: cardFadeIn 0.5s ease-out both;
+}
+
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------- Logo ---------- */
+.login-logo {
     text-align: center;
-    box-shadow: 0 0 10px #ccc;
+    margin-bottom: 24px;
 }
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+.login-logo img {
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
 }
 
-button {
+.login-logo img:hover {
+    transform: scale(1.05);
+}
+
+/* ---------- Heading & subtitle ---------- */
+.login-title {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: #1e293b;
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+}
+
+.login-subtitle {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    text-align: center;
+    margin-bottom: 28px;
+    font-weight: 400;
+}
+
+/* ---------- Form ---------- */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ---------- Form group ---------- */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #475569;
+    letter-spacing: 0.02em;
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.forgot-link {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #2563eb;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.forgot-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* ---------- Input wrapper with icon ---------- */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    font-size: 0.875rem;
+    color: #94a3b8;
+    pointer-events: none;
+    transition: color 0.2s;
+}
+
+.input-wrapper input {
     width: 100%;
-    padding: 10px;
-    background: #2563eb;
-    color: white;
+    padding: 12px 14px 12px 40px;
+    font-size: 0.875rem;
+    font-family: inherit;
+    color: #1e293b;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.input-wrapper input::placeholder {
+    color: #b0bec5;
+    font-weight: 400;
+}
+
+.input-wrapper input:hover {
+    border-color: #cbd5e1;
+    background: #ffffff;
+}
+
+.input-wrapper input:focus {
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.input-wrapper input:focus ~ .input-icon,
+.input-wrapper input:focus + .input-icon {
+    color: #2563eb;
+}
+
+/* Fix for icon color change on focus (icon is before input) */
+.input-wrapper:focus-within .input-icon {
+    color: #2563eb;
+}
+
+/* ---------- Error message ---------- */
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    color: #dc2626;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    animation: shakeError 0.4s ease-out;
+}
+
+.error-message i {
+    font-size: 0.875rem;
+    flex-shrink: 0;
+}
+
+@keyframes shakeError {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-4px); }
+    40%      { transform: translateX(4px); }
+    60%      { transform: translateX(-3px); }
+    80%      { transform: translateX(3px); }
+}
+
+/* ---------- Login Button ---------- */
+.login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 20px;
+    margin-top: 4px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-family: inherit;
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
     border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s, background 0.25s;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+    letter-spacing: 0.02em;
+}
+
+.login-btn i {
+    font-size: 0.8125rem;
+    transition: transform 0.2s;
+}
+
+.login-btn:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    transform: translateY(-1px);
+}
+
+.login-btn:hover i {
+    transform: translateX(3px);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+
+/* ---------- Divider ---------- */
+.login-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 22px 0 18px;
+}
+
+.login-divider::before,
+.login-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+.login-divider span {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* ---------- Register text ---------- */
+.register-text {
+    text-align: center;
+    font-size: 0.84rem;
+    color: #64748b;
+    font-weight: 400;
+}
+
+.register-link {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.register-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 32px 22px 28px;
+        border-radius: 12px;
+    }
+
+    .login-title {
+        font-size: 1.4rem;
+    }
+
+    .login-logo img {
+        height: 48px;
+    }
 }
