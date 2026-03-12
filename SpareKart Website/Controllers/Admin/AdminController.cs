@@ -38,5 +38,10 @@ namespace SpareKart_Website.Controllers.Admin
         {
             return View();
         }
+
+        public IActionResult Feedback()
+        {
+            return View();
+        }
     }
 }

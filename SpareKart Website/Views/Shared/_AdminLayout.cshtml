@@ -31,20 +31,25 @@
                 </div>
             </div>
 
+            @{
+                // Get the current controller/action to check active states
+                var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+            }
+
             <div class="admin-nav-links">
-                <a href="/Admin/Dashboard" class="active">
+                <a href="/Admin/Dashboard" class="@(currentAction == "Dashboard" ? "active" : "")">
                     <i class="fa fa-desktop"></i> Dashboard
                 </a>
-                <a href="/Admin/Products">
+                <a href="/Admin/Products" class="@(currentAction == "Products" || currentAction == "AddProduct" || currentAction == "EditProduct" ? "active" : "")">
                     <i class="fa fa-box"></i> Products
                 </a>
-                <a href="/Admin/Orders">
+                <a href="/Admin/Orders" class="@(currentAction == "Orders" || currentAction == "OrderDetails" ? "active" : "")">
                     <i class="fa fa-clipboard-list"></i> Orders
                 </a>
-                <a href="/Admin/Users">
+                <a href="/Admin/Users" class="@(currentAction == "Users" ? "active" : "")">
                     <i class="fa fa-users"></i> Users
                 </a>
-                <a href="#">
+                <a href="/Admin/Feedback" class="@(currentAction == "Feedback" ? "active" : "")">
                     <i class="fa fa-comment-dots"></i> Feedback
                 </a>
             </div>
