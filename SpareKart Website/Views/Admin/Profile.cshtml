@@ -1,0 +1,177 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Admin Profile";
+}
+
+<link rel="stylesheet" href="~/css/admin/adminProfile.css" />
+
+<h4 class="admin-page-title">Admin Profile</h4>
+
+<div class="profile-container">
+    
+    <!-- LEFT CARD: AVATAR & BASIC DETAILS -->
+    <div class="profile-card-left">
+        <div class="avatar-wrapper">
+            <div class="avatar-circle">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <div class="btn-upload-avatar">
+                <i class="fa-solid fa-camera"></i>
+            </div>
+        </div>
+        <div class="profile-name" id="displayTitleName">Admin</div>
+        <div class="profile-email" id="displayTitleEmail">admin@carparts.com</div>
+        <div class="badge-role">Administrator</div>
+    </div>
+
+    <!-- RIGHT CARD: INFORMATION FORM -->
+    <div class="profile-card-right">
+        <div class="card-header-flex">
+            <div class="card-title">Personal Information</div>
+            <button class="btn-edit-outline" id="btnToggleEdit" onclick="toggleEditMode()">
+                <i class="fa-solid fa-pen"></i> Edit Profile
+            </button>
+        </div>
+
+        <form id="profileForm" onsubmit="saveProfile(event)">
+            
+            <!-- FULL NAME -->
+            <div class="info-group">
+                <div class="info-label"><i class="fa-regular fa-user"></i> Full Name</div>
+                
+                <!-- View Mode -->
+                <div class="info-value view-mode" id="viewName">Admin</div>
+                <!-- Edit Mode -->
+                <div class="edit-mode d-none">
+                    <div class="form-input-wrapper">
+                        <i class="fa-regular fa-user"></i>
+                        <input type="text" class="form-input-iconed" id="inputName" value="Admin" required />
+                    </div>
+                </div>
+            </div>
+
+            <!-- EMAIL ADDRESS -->
+            <div class="info-group">
+                <div class="info-label"><i class="fa-regular fa-envelope"></i> Email Address</div>
+                
+                <div class="info-value view-mode" id="viewEmail">admin@carparts.com</div>
+                <div class="edit-mode d-none">
+                    <div class="form-input-wrapper">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input type="email" class="form-input-iconed" id="inputEmail" value="admin@carparts.com" required />
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHONE NUMBER -->
+            <div class="info-group">
+                <div class="info-label"><i class="fa-solid fa-phone" style="font-size: 11px;"></i> Phone Number</div>
+                
+                <div class="info-value view-mode" id="viewPhone">+91 9876543210</div>
+                <div class="edit-mode d-none">
+                    <div class="form-input-wrapper">
+                        <i class="fa-solid fa-phone" style="font-size: 11px;"></i>
+                        <input type="text" class="form-input-iconed" id="inputPhone" value="+91 9876543210" required />
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADDRESS -->
+            <div class="info-group">
+                <div class="info-label"><i class="fa-solid fa-location-dot"></i> Address</div>
+                
+                <div class="info-value view-mode" id="viewAddress">rk university, rajkot, gujarat, 380020</div>
+                <div class="edit-mode d-none">
+                    <div class="form-input-wrapper">
+                        <i class="fa-solid fa-location-dot" style="top: 20px;"></i>
+                        <textarea class="form-input-iconed" id="inputAddress" rows="3" required>rk university, rajkot, gujarat, 380020</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAVE BUTTON -->
+            <button type="submit" class="btn-save-primary edit-mode d-none" id="btnSave">Save Changes</button>
+
+        </form>
+    </div>
+
+</div>
+
+<script>
+    let isEditMode = false;
+
+    // Load data from localStorage if exists
+    function loadProfileData() {
+        const stored = localStorage.getItem('sparekart_admin_profile');
+        if (stored) {
+            const data = JSON.parse(stored);
+            
+            // Set static view
+            document.getElementById('viewName').innerText = data.name;
+            document.getElementById('viewEmail').innerText = data.email;
+            document.getElementById('viewPhone').innerText = data.phone;
+            document.getElementById('viewAddress').innerText = data.address;
+            
+            // Set left card title
+            document.getElementById('displayTitleName').innerText = data.name;
+            document.getElementById('displayTitleEmail').innerText = data.email;
+
+            // Set inputs
+            document.getElementById('inputName').value = data.name;
+            document.getElementById('inputEmail').value = data.email;
+            document.getElementById('inputPhone').value = data.phone;
+            document.getElementById('inputAddress').value = data.address;
+        }
+    }
+
+    loadProfileData();
+
+    function toggleEditMode() {
+        isEditMode = !isEditMode;
+        
+        const viewElements = document.querySelectorAll('.view-mode');
+        const editElements = document.querySelectorAll('.edit-mode');
+        const btnToggle = document.getElementById('btnToggleEdit');
+        
+        if (isEditMode) {
+            viewElements.forEach(el => el.classList.add('d-none'));
+            editElements.forEach(el => el.classList.remove('d-none'));
+            btnToggle.classList.add('d-none'); // Hide Edit icon when editing
+        } else {
+            viewElements.forEach(el => el.classList.remove('d-none'));
+            editElements.forEach(el => el.classList.add('d-none'));
+            btnToggle.classList.remove('d-none');
+            
+            // If they cancel out, reload safe data
+            loadProfileData();
+        }
+    }
+
+    function saveProfile(e) {
+        e.preventDefault(); // Prevent form reload
+        
+        const newProfile = {
+            name: document.getElementById('inputName').value,
+            email: document.getElementById('inputEmail').value,
+            phone: document.getElementById('inputPhone').value,
+            address: document.getElementById('inputAddress').value
+        };
+
+        // Save to LocalStorage
+        localStorage.setItem('sparekart_admin_profile', JSON.stringify(newProfile));
+        
+        // Update View & UI State
+        loadProfileData();
+        isEditMode = false;
+
+        const viewElements = document.querySelectorAll('.view-mode');
+        const editElements = document.querySelectorAll('.edit-mode');
+        const btnToggle = document.getElementById('btnToggleEdit');
+
+        viewElements.forEach(el => el.classList.remove('d-none'));
+        editElements.forEach(el => el.classList.add('d-none'));
+        btnToggle.classList.remove('d-none');
+
+        alert("Profile updated successfully!");
+    }
+</script>
