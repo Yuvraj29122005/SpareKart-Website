@@ -1,0 +1,153 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Order Details";
+}
+
+<link rel="stylesheet" href="~/css/admin/adminOrderDetails.css" />
+
+<div>
+    <h4 class="admin-page-title" id="pageTitle">
+        Order #ORD-Loading... <span class="badge-processing" id="orderStatus">Loading</span>
+    </h4>
+    <p class="admin-page-sub">View and manage order information</p>
+
+    <div class="order-meta">
+        <div><i class="fa-regular fa-calendar"></i> <span id="orderDate">Oct 24, 2026</span></div>
+        <div><i class="fa-solid fa-credit-card"></i> Paid via <span id="paymentMethod">Online</span></div>
+    </div>
+</div>
+
+<div class="order-details-grid">
+
+    <!-- LEFT COLUMN - MAIN -->
+    <div class="admin-card">
+        <div class="order-items-list" id="orderItemsContainer">
+            <!-- Populated by JS -->
+        </div>
+
+        <div class="order-summary">
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotalValue">$0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Shipping</span>
+                <span id="shippingValue">$0.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Tax</span>
+                <span id="taxValue">$0.00</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span id="totalValue">$0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT COLUMN - SIDEBAR -->
+    <div class="sidebar-cards">
+        <div class="admin-card mb-4" style="margin-bottom: 24px;">
+            <div class="card-title">
+                <i class="fa-solid fa-cube"></i> Customer Details
+            </div>
+            
+            <div class="customer-info-row">
+                <div class="avatar" id="customerAvatar">J</div>
+                <div>
+                    <div class="customer-name" id="customerName">John Doe</div>
+                    <div class="customer-sub" id="customerSince">Customer since 2023</div>
+                </div>
+            </div>
+
+            <div class="contact-row">
+                <i class="fa-regular fa-envelope"></i>
+                <span id="customerEmail">john.doe@example.com</span>
+            </div>
+            <div class="contact-row">
+                <i class="fa-solid fa-phone"></i>
+                <span id="customerPhone">+1 (555) 123-4567</span>
+            </div>
+        </div>
+
+        <div class="admin-card">
+            <div class="card-title">
+                <i class="fa-solid fa-location-dot" style="color: #f97316;"></i> Shipping Address
+            </div>
+            <div class="address-text">
+                <div id="addrLine1">123 Main Street, Apt 4B</div>
+                <div id="addrLine2">Springfield, IL 62704</div>
+                <div id="addrLine3">United States</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function loadOrderDetails() {
+        // Parse ID from QueryString
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('id');
+
+        const storedData = localStorage.getItem('sparekart_orders_data');
+        if (!storedData) {
+            alert('Order data not found.');
+            return;
+        }
+
+        const orders = JSON.parse(storedData);
+        const order = orders.find(o => o.id === orderId);
+
+        if (!order) {
+            document.getElementById('pageTitle').innerText = "Order Not Found";
+            return;
+        }
+
+        // --- Header Section ---
+        const formatTitle = orderId.replace("ORD", "ORD-");
+        document.getElementById('pageTitle').innerHTML = `Order #${formatTitle} <span class="badge-processing">${order.status}</span>`;
+        
+        const dateObj = new Date(order.date);
+        const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        
+        document.getElementById('orderDate').innerText = formattedDate;
+        document.getElementById('paymentMethod').innerText = order.payment;
+
+        // --- Customer Sidebar ---
+        document.getElementById('customerName').innerText = order.customer;
+        document.getElementById('customerAvatar').innerText = order.customer.charAt(0);
+        document.getElementById('customerEmail').innerText = order.email;
+        document.getElementById('customerPhone').innerText = order.phone;
+
+        // --- Order Items ---
+        const itemsContainer = document.getElementById('orderItemsContainer');
+        itemsContainer.innerHTML = '';
+        order.products.forEach(p => {
+            const itemHTML = `
+                <div class="order-item">
+                    <div class="item-info">
+                        <img src="${p.img}" class="item-img" alt="${p.name}">
+                        <div class="item-details">
+                            <h6>${p.name}</h6>
+                            <p>Quantity: ${p.qty}</p>
+                        </div>
+                    </div>
+                    <div class="item-price">₹${p.price.toLocaleString('en-IN', { minimumFractionDigits: 0 })}</div>
+                </div>
+            `;
+            itemsContainer.innerHTML += itemHTML;
+        });
+
+        // --- Summary ---
+        function fmtcurrency(val) { return `₹${Number(val).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`; }
+
+        document.getElementById('subtotalValue').innerText = fmtcurrency(order.subtotal);
+        document.getElementById('shippingValue').innerText = fmtcurrency(order.shipping);
+        document.getElementById('taxValue').innerText = fmtcurrency(order.tax);
+        document.getElementById('totalValue').innerText = fmtcurrency(order.total);
+    }
+
+    // Initialize
+    loadOrderDetails();
+</script>

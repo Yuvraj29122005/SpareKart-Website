@@ -23,5 +23,20 @@ namespace SpareKart_Website.Controllers.Admin
         {
             return View();
         }
+
+        public IActionResult Orders()
+        {
+            return View();
+        }
+
+        public IActionResult OrderDetails()
+        {
+            return View();
+        }
+
+        public IActionResult Users()
+        {
+            return View();
+        }
     }
 }
