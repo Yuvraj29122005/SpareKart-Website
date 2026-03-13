@@ -12,12 +12,12 @@
     <!-- LEFT CARD: AVATAR & BASIC DETAILS -->
     <div class="profile-card-left">
         <div class="avatar-wrapper">
-            <div class="avatar-circle" id="avatarCircle">
+            <div class="avatar-circle" id="avatarCircle" onclick="if(isEditMode) document.getElementById('photoInput').click()" title="Change photo (Edit Mode)">
                 <i class="fa-regular fa-user" id="avatarIcon"></i>
             </div>
             <!-- Hidden file input triggered by camera button -->
             <input type="file" id="photoInput" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)" />
-            <div class="btn-upload-avatar" onclick="document.getElementById('photoInput').click()" title="Change photo">
+            <div class="btn-upload-avatar edit-mode d-none" onclick="document.getElementById('photoInput').click()" title="Change photo">
                 <i class="fa-solid fa-camera"></i>
             </div>
         </div>
@@ -53,6 +53,7 @@
             <div class="info-group">
                 <div class="info-label"><i class="fa-regular fa-envelope"></i> Email Address <span style="font-size:11px; color:#94a3b8; margin-left:6px;">(cannot be changed)</span></div>
                 <div class="info-value" id="viewEmail">admin@carparts.com</div>
+                <input type="hidden" id="inputEmail" value="admin@carparts.com" />
             </div>
 
             <!-- PHONE NUMBER -->
@@ -115,9 +116,16 @@
         if (icon) icon.style.display = 'none';
     }
 
+    let sessionProfileData = {
+        name: 'Admin',
+        email: 'admin@carparts.com',
+        phone: '+91 9876543210',
+        address: 'rk university, rajkot, gujarat, 380020',
+        photo: null
+    };
+
     function loadProfileData() {
-        const stored = localStorage.getItem('sparekart_admin_profile');
-        if (stored) applyProfileData(JSON.parse(stored));
+        applyProfileData(sessionProfileData);
     }
     loadProfileData();
 
@@ -128,11 +136,7 @@
         reader.onload = function(e) {
             const base64 = e.target.result;
             applyPhoto(base64);
-            // Persist photo
-            const stored = localStorage.getItem('sparekart_admin_profile');
-            const data = stored ? JSON.parse(stored) : {};
-            data.photo = base64;
-            localStorage.setItem('sparekart_admin_profile', JSON.stringify(data));
+            sessionProfileData.photo = base64;
         };
         reader.readAsDataURL(file);
     }
@@ -159,24 +163,13 @@
         e.preventDefault();
 
         // Capture inputs FIRST before any DOM refresh
-        const newProfile = {
-            name:    document.getElementById('inputName').value.trim(),
-            email:   document.getElementById('inputEmail').value.trim(),
-            phone:   document.getElementById('inputPhone').value.trim(),
-            address: document.getElementById('inputAddress').value.trim()
-        };
+        sessionProfileData.name    = document.getElementById('inputName').value.trim();
+        sessionProfileData.email   = document.getElementById('inputEmail').value.trim();
+        sessionProfileData.phone   = document.getElementById('inputPhone').value.trim();
+        sessionProfileData.address = document.getElementById('inputAddress').value.trim();
 
-        // Preserve existing photo
-        const stored = localStorage.getItem('sparekart_admin_profile');
-        if (stored) {
-            const existing = JSON.parse(stored);
-            if (existing.photo) newProfile.photo = existing.photo;
-        }
-
-        localStorage.setItem('sparekart_admin_profile', JSON.stringify(newProfile));
-
-        // Apply directly — do NOT call loadProfileData first (avoids overwriting new values with old ones)
-        applyProfileData(newProfile);
+        // Apply directly — do NOT call loadProfileData first
+        applyProfileData(sessionProfileData);
 
         isEditMode = false;
         document.querySelectorAll('.view-mode').forEach(el => el.classList.remove('d-none'));
