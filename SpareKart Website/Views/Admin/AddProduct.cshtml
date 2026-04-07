@@ -1,3 +1,4 @@
+@model SpareKart_Website.Models.Product
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Add Product";
@@ -5,23 +6,22 @@
 
 <link rel="stylesheet" href="~/css/admin/adminProducts.css" />
 
-<!-- ==================== ADD VIEW ==================== -->
 <div class="mb-4">
     <h4 class="admin-page-title">Add New Product</h4>
-    <p class="admin-page-sub">Fill in the details to add a new spare part to your inventory</p>
+    <p class="admin-page-sub">Fill in the details to add a new spare part to your SQL database</p>
 </div>
 
 <div class="admin-form-card">
-    <form id="formAddProduct" onsubmit="handleAddSubmit(event)">
+    <form method="post" action="/Admin/AddProduct">
         
         <div class="form-group">
             <label class="form-label"><i class="fa fa-cube"></i> Product Name *</label>
-            <input type="text" class="form-control" id="addName" placeholder="e.g., Engine Oil Filter" required />
+            <input type="text" class="form-control" name="Name" placeholder="e.g., Engine Oil Filter" required />
         </div>
 
         <div class="form-group">
             <label class="form-label"><i class="fa fa-tag"></i> Category *</label>
-            <select class="form-select" id="addCategory" required>
+            <select class="form-select" name="Category" required>
                 <option value="Engine">Engine</option>
                 <option value="Brakes">Brakes</option>
                 <option value="Tyres">Tyres</option>
@@ -33,23 +33,23 @@
         <div class="row-split">
             <div class="form-group">
                 <label class="form-label"><i class="fa fa-dollar-sign"></i> Price (₹) *</label>
-                <input type="number" step="0.01" class="form-control" id="addPrice" placeholder="0.00" required />
+                <input type="number" step="0.01" class="form-control" name="Price" placeholder="0.00" required />
             </div>
             <div class="form-group">
                 <label class="form-label"><i class="fa fa-boxes-stacked"></i> Stock Quantity *</label>
-                <input type="number" class="form-control" id="addStock" placeholder="0" required />
+                <input type="number" class="form-control" name="StockQty" placeholder="10" required />
             </div>
         </div>
 
         <div class="form-group">
-            <label class="form-label"><i class="fa fa-image"></i> Product Image (choose local file)</label>
-            <input type="file" class="form-control" id="addImage" accept="image/*" />
-            <span class="form-help">Select a file from your device to use as a product image. Stored locally without reloading.</span>
+            <label class="form-label"><i class="fa fa-file-lines"></i> Description</label>
+            <textarea class="form-control" name="Description" placeholder="Product description..."></textarea>
         </div>
 
         <div class="form-group">
-            <label class="form-label">Description</label>
-            <textarea class="form-control" id="addDesc" rows="4" placeholder="Enter product description, specifications, etc."></textarea>
+            <label class="form-label"><i class="fa fa-image"></i> Image URL</label>
+            <input type="text" class="form-control" name="ImageUrl" placeholder="https://..." />
+            <span class="form-help">Enter a public image URL link.</span>
         </div>
 
         <div class="form-actions">
@@ -59,45 +59,3 @@
 
     </form>
 </div>
-
-<script>
-    function getBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
-
-    async function handleAddSubmit(e) {
-        e.preventDefault();
-
-        const fileInput = document.getElementById('addImage');
-        let imgData = "https://placehold.co/100x100?text=Part"; // Default image fallback
-        
-        if (fileInput.files && fileInput.files[0]) {
-            imgData = await getBase64(fileInput.files[0]);
-        } 
-
-        // Load existing products to find next ID
-        let stored = localStorage.getItem('sparekart_products_data');
-        let products = stored ? JSON.parse(stored) : [];
-        let nextId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-
-        const newP = {
-            id: nextId,
-            name: document.getElementById('addName').value,
-            category: document.getElementById('addCategory').value,
-            price: document.getElementById('addPrice').value,
-            stock: document.getElementById('addStock').value,
-            img: imgData
-        };
-
-        products.push(newP);
-        localStorage.setItem('sparekart_products_data', JSON.stringify(products));
-        
-        // Redirect back to Products list
-        window.location.href = '/Admin/Products';
-    }
-</script>

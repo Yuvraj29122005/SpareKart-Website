@@ -1,26 +1,36 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using SpareKart_Website.Data;
+using System.Linq;
 
 namespace SpareKart_Website.Controllers
 {
     public class ProductsController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        public ProductsController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         // ALL PRODUCTS PAGE
         public IActionResult AllProducts()
         {
-            return View();
+            var products = _context.Products.ToList();
+            return View(products);
         }
 
-
-        // 🔥 PRODUCT DETAILS PAGE (THIS IS MISSING IN YOUR PROJECT)
+        // PRODUCT DETAILS PAGE
         [HttpGet]
-        public IActionResult ProductDetails(string name, int price, string image)
+        public IActionResult ProductDetails(int id)
         {
-            ViewBag.Name = name;
-            ViewBag.Price = price;
-            ViewBag.Image = image;
-            return View();
+            var product = _context.Products.Find(id);
+            if (product == null) return NotFound();
+            
+            ViewBag.Name = product.Name;
+            ViewBag.Price = product.Price;
+            ViewBag.Image = product.ImageUrl;
+            return View(product);
         }
-
     }
 }

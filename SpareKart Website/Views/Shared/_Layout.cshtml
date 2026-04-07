@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -38,9 +38,39 @@
             <a href="/Cart/Index" class="nav-icon-link" title="Cart">
                 <i class="fa fa-shopping-cart"></i>
             </a>
+            
+            @using Microsoft.AspNetCore.Http
+            @using SpareKart_Website.Data
+            @inject IHttpContextAccessor HttpContextAccessor
+            @inject ApplicationDbContext Context
+
+            @{
+                var userId = HttpContextAccessor.HttpContext?.Session.GetInt32("UserId");
+                SpareKart_Website.Models.User currentUser = null;
+                if (userId != null)
+                {
+                    currentUser = Context.Users.FirstOrDefault(u => u.Id == userId);
+                }
+            }
+
             <a href="/Profile/Index" class="nav-user-link">
-                <i class="fa fa-user-circle nav-user-icon"></i>
-                <span class="nav-user-text">Hi, Yuvraj</span>
+                @if (currentUser != null)
+                {
+                    @if (!string.IsNullOrEmpty(currentUser.ProfilePictureUrl))
+                    {
+                        <img src="/@currentUser.ProfilePictureUrl" alt="Profile" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <i class="fa fa-user-circle nav-user-icon"></i>
+                    }
+                    <span class="nav-user-text">Hi, @currentUser.Name.Split(' ')[0]</span>
+                }
+                else
+                {
+                    <i class="fa fa-user-circle nav-user-icon"></i>
+                    <span class="nav-user-text">Login</span>
+                }
             </a>
         </div>
 
@@ -111,5 +141,45 @@
     </footer>
     <!-- END FOOTER -->
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.body.addEventListener('click', function (e) {
+                // Find nearest anchor tag if an inner element like icon was clicked
+                let anchor = e.target.closest('a');
+                
+                // Check if it is an Add to Cart link
+                if (anchor && anchor.getAttribute('href') && anchor.getAttribute('href').includes('/Cart/Add')) {
+                    e.preventDefault(); // Stop redirection
+
+                    // Get the link
+                    const url = anchor.getAttribute('href');
+
+                    // Change button appearance temporarily (optional UX improvement)
+                    const originalHTML = anchor.innerHTML;
+                    if(anchor.querySelector('button') || anchor.querySelector('i')) {
+                        // Very basic visual feedback
+                    }
+
+                    fetch(url, {
+                        method: 'GET', // Add to cart is currently a GET request
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Product successfully added to your cart!');
+                        } else {
+                            alert('Failed to add product to cart.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error adding to cart:', error);
+                        alert('Something went wrong. Please try again.');
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

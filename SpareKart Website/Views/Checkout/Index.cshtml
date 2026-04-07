@@ -1,21 +1,25 @@
-﻿@using SpareKart_Website.Models
+@using SpareKart_Website.Models
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     var cart = ViewBag.Cart as List<CartItem>;
     int total = ViewBag.Total;
+    string razorpayKey = ViewBag.RazorpayKeyId;
 }
-<link rel="stylesheet" href="~/css/checkout.css" />
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/checkout.css" />
+}
 
 <h2 class="page-title">Checkout</h2>
 
 <form id="checkoutForm" asp-controller="Checkout" asp-action="PlaceOrder" method="post" novalidate>
-    <!-- Hidden fields for static Buy Now flow -->
-    @if (!string.IsNullOrEmpty(ViewBag.BuyNowName))
+    <!-- Hidden fields for Buy Now flow -->
+    @if (!string.IsNullOrEmpty(ViewBag.BuyNowName as string))
     {
-        <input type="hidden" name="buyNowName" value="@ViewBag.BuyNowName" />
-        <input type="hidden" name="buyNowPrice" value="@ViewBag.BuyNowPrice" />
-        <input type="hidden" name="buyNowImage" value="@ViewBag.BuyNowImage" />
-        <input type="hidden" name="buyNowQty" value="@ViewBag.BuyNowQty" />
+        <input type="hidden" name="buyNowName" id="buyNowName" value="@ViewBag.BuyNowName" />
+        <input type="hidden" name="buyNowPrice" id="buyNowPrice" value="@ViewBag.BuyNowPrice" />
+        <input type="hidden" name="buyNowImage" id="buyNowImage" value="@ViewBag.BuyNowImage" />
+        <input type="hidden" name="buyNowQty" id="buyNowQty" value="@ViewBag.BuyNowQty" />
     }
 
     <div class="checkout">
@@ -53,9 +57,12 @@
             <div class="form-box">
                 <h4><i class="fa-regular fa-credit-card"></i> Payment Method</h4>
 
-                <!-- COD option — selected by default (highlighted blue) -->
+                <!-- COD option — selected by default -->
                 <label class="payment-option selected" id="label-cod">
                     <input type="radio" name="pay" value="COD" checked onchange="highlightPayment(this)" />
+                    <div class="pay-icon-wrap">
+                        <i class="fa-solid fa-truck pay-icon"></i>
+                    </div>
                     <div class="pay-info">
                         <span class="pay-title">Cash on Delivery</span>
                         <span class="pay-desc">Pay when you receive your order</span>
@@ -65,9 +72,12 @@
                 <!-- Online Payment -->
                 <label class="payment-option" id="label-online">
                     <input type="radio" name="pay" value="Online" onchange="highlightPayment(this)" />
+                    <div class="pay-icon-wrap online-icon">
+                        <i class="fa-solid fa-shield-halved pay-icon"></i>
+                    </div>
                     <div class="pay-info">
-                        <span class="pay-title">Online Payment</span>
-                        <span class="pay-desc">UPI, Credit/Debit Cards, Net Banking</span>
+                        <span class="pay-title">Pay Online <span class="razorpay-badge">Razorpay</span></span>
+                        <span class="pay-desc">UPI, Credit/Debit Cards, Net Banking, Wallets</span>
                     </div>
                 </label>
             </div>
@@ -77,13 +87,21 @@
         <!-- ====== RIGHT: ORDER SUMMARY ====== -->
         <div class="summary">
 
-            <h3>Order Summary</h3>
+            <h3><i class="fa-solid fa-receipt"></i> Order Summary</h3>
 
             <div class="order-items">
                 @foreach (var item in cart)
                 {
+                    var isFullUrl = item.Image != null && item.Image.StartsWith("http");
                     <div class="order-card">
-                        <img src="~/images/@item.Image" class="sum-img" alt="@item.Name" />
+                        @if (isFullUrl)
+                        {
+                            <img src="@item.Image" class="sum-img" alt="@item.Name" />
+                        }
+                        else
+                        {
+                            <img src="~/images/@item.Image" class="sum-img" alt="@item.Name" />
+                        }
                         <div class="order-info">
                             <p class="item-name">@item.Name</p>
                             <p class="item-qty">Qty: @item.Quantity</p>
@@ -106,24 +124,42 @@
 
             <div class="total-row">
                 <span>Total</span>
-                <span>&#8377;@total</span>
+                <span id="totalAmount">&#8377;@total</span>
             </div>
 
-            <button type="submit" class="place-btn">Place Order</button>
+            <button type="submit" class="place-btn" id="placeOrderBtn">
+                <i class="fa-solid fa-lock"></i>
+                <span id="btnText">Place Order</span>
+            </button>
 
+            <div class="secure-badge">
+                <i class="fa-solid fa-shield-halved"></i> 100% Secure & Encrypted Payment
+            </div>
         </div>
 
     </div>
 
 </form>
 
+<!-- Razorpay SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script>
+    const TOTAL_AMOUNT = @total;
+    const RAZORPAY_KEY = '@razorpayKey';
+
     /* ====== Payment option highlight ====== */
     function highlightPayment(radio) {
-        // Remove 'selected' class from all payment labels
         document.querySelectorAll('.payment-option').forEach(lbl => lbl.classList.remove('selected'));
-        // Add to the clicked one
         radio.closest('.payment-option').classList.add('selected');
+
+        // Update button text based on payment method
+        const btnText = document.getElementById('btnText');
+        if (radio.value === 'Online') {
+            btnText.textContent = 'Pay Now ₹' + TOTAL_AMOUNT;
+        } else {
+            btnText.textContent = 'Place Order';
+        }
     }
 
     /* ====== Field-level validation ====== */
@@ -152,11 +188,10 @@
         }
     });
 
-    /* Validate on submit */
-    document.getElementById('checkoutForm').addEventListener('submit', function (e) {
+    /* ====== Validate form fields ====== */
+    function validateForm() {
         let valid = true;
 
-        /* Full Name */
         const name = document.getElementById('fullname').value.trim();
         if (name === '') {
             showError('fullname', 'err-fullname', 'Full name is required.');
@@ -165,7 +200,6 @@
             clearError('fullname', 'err-fullname');
         }
 
-        /* Email */
         const email = document.getElementById('email').value.trim();
         const emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
         if (email === '') {
@@ -178,7 +212,6 @@
             clearError('email', 'err-email');
         }
 
-        /* Phone */
         const phone = document.getElementById('phone').value.trim();
         const phoneRegex = /^[0-9]{10}$/;
         if (phone === '') {
@@ -191,7 +224,6 @@
             clearError('phone', 'err-phone');
         }
 
-        /* Address */
         const address = document.getElementById('address').value.trim();
         if (address === '') {
             showError('address', 'err-address', 'Shipping address is required.');
@@ -203,6 +235,150 @@
             clearError('address', 'err-address');
         }
 
-        if (!valid) e.preventDefault();
+        return valid;
+    }
+
+    /* ====== Handle form submit ====== */
+    document.getElementById('checkoutForm').addEventListener('submit', function (e) {
+        if (!validateForm()) {
+            e.preventDefault();
+            return;
+        }
+
+        const paymentMethod = document.querySelector('input[name="pay"]:checked').value;
+
+        // If Online Payment, prevent form submit and open Razorpay
+        if (paymentMethod === 'Online') {
+            e.preventDefault();
+            initiateRazorpayPayment();
+        }
+        // else: COD — let form submit normally
     });
+
+    /* ====== Razorpay Payment Flow ====== */
+    async function initiateRazorpayPayment() {
+        const btn = document.getElementById('placeOrderBtn');
+        const btnText = document.getElementById('btnText');
+        btn.disabled = true;
+        btnText.textContent = 'Processing...';
+        btn.classList.add('loading');
+
+        try {
+            // Step 1: Create Razorpay order on server
+            const response = await fetch('/Checkout/CreateRazorpayOrder', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: TOTAL_AMOUNT })
+            });
+
+            const data = await response.json();
+
+            if (!data.success) {
+                alert('Error: ' + data.message);
+                resetButton();
+                return;
+            }
+
+            // Step 2: Open Razorpay checkout
+            const options = {
+                key: RAZORPAY_KEY,
+                amount: data.amount,
+                currency: data.currency,
+                name: 'SpareKart',
+                description: 'Purchase from SpareKart Car Parts',
+                order_id: data.orderId,
+                handler: function (response) {
+                    // Step 3: Verify payment on server
+                    verifyPayment(response);
+                },
+                prefill: {
+                    name: document.getElementById('fullname').value,
+                    email: document.getElementById('email').value,
+                    contact: document.getElementById('phone').value
+                },
+                theme: {
+                    color: '#2563eb'
+                },
+                modal: {
+                    ondismiss: function () {
+                        resetButton();
+                    }
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.on('payment.failed', function (resp) {
+                alert('Payment failed: ' + resp.error.description);
+                resetButton();
+            });
+            rzp.open();
+
+        } catch (error) {
+            alert('Something went wrong. Please try again.');
+            console.error(error);
+            resetButton();
+        }
+    }
+
+    /* ====== Verify and place order ====== */
+    async function verifyPayment(razorpayResponse) {
+        const btnText = document.getElementById('btnText');
+        btnText.textContent = 'Verifying Payment...';
+
+        const payload = {
+            razorpayOrderId: razorpayResponse.razorpay_order_id,
+            razorpayPaymentId: razorpayResponse.razorpay_payment_id,
+            razorpaySignature: razorpayResponse.razorpay_signature,
+            fullName: document.getElementById('fullname').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            address: document.getElementById('address').value
+        };
+
+        // Add Buy Now fields if present
+        const buyNowName = document.getElementById('buyNowName');
+        if (buyNowName) {
+            payload.buyNowName = buyNowName.value;
+            payload.buyNowPrice = parseInt(document.getElementById('buyNowPrice').value);
+            payload.buyNowImage = document.getElementById('buyNowImage').value;
+            payload.buyNowQty = parseInt(document.getElementById('buyNowQty').value);
+        }
+
+        try {
+            const response = await fetch('/Checkout/VerifyPayment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Redirect to order confirmation
+                window.location.href = '/Checkout/OrderConfirmation?id=' + data.orderId;
+            } else {
+                alert('Payment verification failed: ' + data.message);
+                resetButton();
+            }
+        } catch (error) {
+            alert('Verification error. Please contact support.');
+            console.error(error);
+            resetButton();
+        }
+    }
+
+    /* ====== Reset button state ====== */
+    function resetButton() {
+        const btn = document.getElementById('placeOrderBtn');
+        const btnText = document.getElementById('btnText');
+        btn.disabled = false;
+        btn.classList.remove('loading');
+
+        const paymentMethod = document.querySelector('input[name="pay"]:checked').value;
+        if (paymentMethod === 'Online') {
+            btnText.textContent = 'Pay Now ₹' + TOTAL_AMOUNT;
+        } else {
+            btnText.textContent = 'Place Order';
+        }
+    }
 </script>

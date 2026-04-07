@@ -1,6 +1,8 @@
+@model IEnumerable<SpareKart_Website.Models.Feedback>
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "User Feedback";
+    int lastWeekCount = Model.Count(f => f.DateSubmitted >= DateTime.Now.AddDays(-7));
 }
 
 <link rel="stylesheet" href="~/css/admin/adminFeedback.css" />
@@ -11,11 +13,11 @@
 <div class="kpi-row">
     <div class="kpi-card">
         <div class="kpi-title">Total Feedback</div>
-        <div class="kpi-value" id="kpiTotal">0</div>
+        <div class="kpi-value" id="kpiTotal">@Model.Count()</div>
     </div>
     <div class="kpi-card">
         <div class="kpi-title">This Week</div>
-        <div class="kpi-value blue" id="kpiWeek">0</div>
+        <div class="kpi-value blue" id="kpiWeek">@lastWeekCount</div>
     </div>
 </div>
 
@@ -27,83 +29,53 @@
 
 <!-- FEEDBACK GRID -->
 <div class="feedback-grid" id="feedbackContainer">
-    <!-- Populated by JS -->
-</div>
-
-<script>
-    // Initial dummy data for feedback
-    function initFeedback() {
-        let stored = localStorage.getItem('sparekart_feedback_data');
-        if (stored) {
-            return JSON.parse(stored);
-        } else {
-            let initial = [
-                { id: "F001", name: "Alice Johnson", email: "alice@example.com", date: "2026-01-25", message: "Great service! Products arrived on time and in perfect condition.", avatarColor: "orange" },
-                { id: "F002", name: "Bob Wilson", email: "bob@example.com", date: "2026-01-27", message: "Good quality parts at reasonable prices. Will order again.", avatarColor: "blue" }
-            ];
-            localStorage.setItem('sparekart_feedback_data', JSON.stringify(initial));
-            return initial;
-        }
-    }
-
-    let feedbacks = initFeedback();
-
-    function updateKPIs() {
-        document.getElementById('kpiTotal').innerText = feedbacks.length;
-        
-        // Simulating "This Week" count - just using a dummy variable or filtering by recent dates.
-        // For simplicity hitting the screenshot exactly, setting to 0 for dummy data.
-        document.getElementById('kpiWeek').innerText = "0";
-    }
-
-    function renderFeedback(filterText = '') {
-        const container = document.getElementById('feedbackContainer');
-        container.innerHTML = '';
-
-        const lowerFilter = filterText.toLowerCase();
-        let renderedCount = 0;
-
-        feedbacks.forEach(f => {
-            if (filterText && !f.name.toLowerCase().includes(lowerFilter) && !f.email.toLowerCase().includes(lowerFilter) && !f.message.toLowerCase().includes(lowerFilter)) {
-                return;
-            }
-
-            renderedCount++;
-            const card = document.createElement('div');
-            card.className = 'feedback-card';
-            card.innerHTML = `
+    @if (Model.Any())
+    {
+        int index = 0;
+        foreach(var f in Model)
+        {
+            var colors = new[] { "orange", "blue", "green", "purple" };
+            var color = colors[index % colors.Length];
+            index++;
+            
+            <div class="feedback-card" data-search="@Html.Raw($"{f.Name} {f.Email} {f.Message}".ToLower())">
                 <div class="fb-header">
-                    <div class="fb-avatar ${f.avatarColor}">
+                    <div class="fb-avatar @color">
                         <i class="fa-regular fa-user"></i>
                     </div>
                     <div class="fb-user-info">
-                        <div class="fb-name">${f.name}</div>
-                        <div class="fb-email"><i class="fa-regular fa-envelope"></i> ${f.email}</div>
-                        <div class="fb-date"><i class="fa-regular fa-calendar"></i> ${f.date}</div>
+                        <div class="fb-name">@f.Name</div>
+                        <div class="fb-email"><i class="fa-regular fa-envelope"></i> @f.Email</div>
+                        <div class="fb-date"><i class="fa-regular fa-calendar"></i> @f.DateSubmitted.ToString("yyyy-MM-dd")</div>
                     </div>
                 </div>
                 <div class="fb-content-box">
                     <div class="fb-label">
                         <i class="fa-regular fa-message"></i> Feedback
                     </div>
-                    ${f.message}
+                    @f.Message
                 </div>
-            `;
-            container.appendChild(card);
-        });
-
-        if (renderedCount === 0) {
-            container.innerHTML = `<div class="text-muted p-4">No feedback found.</div>`;
+            </div>
         }
-
-        updateKPIs();
     }
+    else
+    {
+        <div class="text-muted p-4 w-100 text-center">No feedback found in the database.</div>
+    }
+</div>
 
+<script>
     function filterFeedback() {
-        const text = document.getElementById('searchInput').value;
-        renderFeedback(text);
+        const text = document.getElementById('searchInput').value.toLowerCase();
+        const cards = document.querySelectorAll('.feedback-card');
+        
+        cards.forEach(card => {
+            const searchText = card.getAttribute('data-search');
+            if (searchText.includes(text)) {
+                card.style.display = 'flex'; // Assuming flex layout based on default styles
+            } else {
+                card.style.display = 'none';
+            }
+        });
     }
-
-    // Initialize display
-    renderFeedback();
 </script>

@@ -1,140 +1,70 @@
+@model IEnumerable<SpareKart_Website.Models.Order>
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Manage Orders";
 }
-
 <link rel="stylesheet" href="~/css/admin/adminOrders.css" />
 
-<h4 class="admin-page-title">Manage Orders</h4>
+<h4 class="admin-page-title">Manage Orders (SQL Database)</h4>
 
-<!-- KPI CARDS -->
 <div class="kpi-row">
     <div class="kpi-card">
         <div class="kpi-title">Total Orders</div>
-        <div class="kpi-value" id="kpiTotalOrders">0</div>
+        <div class="kpi-value">@(Model?.Count() ?? 0)</div>
     </div>
     <div class="kpi-card">
         <div class="kpi-title">Completed</div>
-        <div class="kpi-value kpi-completed" id="kpiCompleted">0</div>
+        <div class="kpi-value kpi-completed">@(Model?.Count(o => o.Status == "Completed") ?? 0)</div>
     </div>
     <div class="kpi-card">
         <div class="kpi-title">Pending</div>
-        <div class="kpi-value kpi-pending" id="kpiPending">0</div>
+        <div class="kpi-value kpi-pending">@(Model?.Count(o => o.Status == "Pending") ?? 0)</div>
     </div>
     <div class="kpi-card">
-        <div class="kpi-title">Total Revenue</div>
-        <div class="kpi-value kpi-revenue" id="kpiRevenue">₹0</div>
+        <div class="kpi-title">Total Revenue (Completed)</div>
+        <div class="kpi-value kpi-revenue">₹@(Model?.Where(o => o.Status == "Completed").Sum(o => o.TotalAmount) ?? 0)</div>
     </div>
 </div>
 
-<!-- FILTER BAR -->
-<div class="filter-bar">
-    <div class="search-wrapper">
-        <i class="fa fa-search"></i>
-        <input type="text" class="search-input" placeholder="Search by order ID or customer name..." id="searchInput" onkeyup="filterOrders()" />
-    </div>
-    <button class="btn-filter">
-        <i class="fa fa-filter"></i> All Status
-    </button>
-</div>
-
-<!-- ORDERS TABLE -->
 <div class="table-container">
     <table class="orders-table">
         <thead>
             <tr>
                 <th>Order ID</th>
-                <th>Customer</th>
-                <th>Items</th>
+                <th>Address</th>
+                <th>Items (Count)</th>
                 <th>Total</th>
-                <th>Payment</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody id="ordersTableBody">
-            <!-- Data populated by JS -->
+        <tbody>
+            @if(Model != null && Model.Any())
+            {
+                foreach(var o in Model)
+                {
+                    <tr>
+                        <td><a href="/Admin/OrderDetails/@o.Id" class="order-link">ORD-@o.Id</a></td>
+                        <td>@o.ShippingAddress</td>
+                        <td>@(o.OrderItems?.Sum(i => i.Quantity) ?? 0) item(s)</td>
+                        <td>₹@o.TotalAmount</td>
+                        <td>
+                            @if(o.Status == "Pending"){ <span class="badge-status status-pending">Pending</span> }
+                            else if(o.Status == "Completed"){ <span class="badge-status status-completed">Completed</span> }
+                            else { <span class="badge-status status-failed">@o.Status</span> }
+                        </td>
+                        <td>
+                            <button class="btn-icon" onclick="window.location.href='/Admin/OrderDetails/@o.Id'">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="6" class="text-center text-muted py-4">No orders currently stored in the database.</td></tr>
+            }
         </tbody>
     </table>
 </div>
-
-<script>
-    // Initial dummy data for orders
-    function initOrders() {
-        let stored = localStorage.getItem('sparekart_orders_data');
-        if (stored) {
-            return JSON.parse(stored);
-        } else {
-            let initial = [
-                { id: "ORD001", customer: "John Doe", email: "john.doe@example.com", phone: "+1 (555) 123-4567", items: 2, subtotal: 102.99, shipping: 15.00, tax: 8.24, total: 126.23, payment: "UPI", status: "Completed", date: "2026-01-28", products: [{ name: "Premium Brake Pads", qty: 2, price: 90.00, img: "https://placehold.co/100x100?text=Brake" }, { name: "Oil Filter Pro", qty: 1, price: 12.99, img: "https://placehold.co/100x100?text=Filter" }] },
-                { id: "ORD002", customer: "Jane Smith", email: "jane.smith@example.com", phone: "+1 (555) 987-6543", items: 1, subtotal: 3500.00, shipping: 0, tax: 280.00, total: 3780.00, payment: "Credit Card", status: "Pending", date: "2026-02-15", products: [{ name: "Brake Disc Set", qty: 1, price: 3500.00, img: "https://placehold.co/100x100?text=Disc" }] },
-                { id: "ORD003", customer: "Mike Johnson", email: "mike.j@example.com", phone: "+1 (555) 456-7890", items: 4, subtotal: 1580.00, shipping: 20.00, tax: 126.40, total: 1726.40, payment: "Debit Card", status: "Completed", date: "2026-03-05", products: [{ name: "Engine Oil Synthetic", qty: 2, price: 790.00, img: "https://placehold.co/100x100?text=Oil" }, { name: "Air Filter", qty: 2, price: 395.00, img: "https://placehold.co/100x100?text=Air" }] },
-                { id: "ORD004", customer: "Emily Davis", email: "emily.d@example.com", phone: "+1 (555) 321-0987", items: 1, subtotal: 6500.00, shipping: 50.00, tax: 520.00, total: 7070.00, payment: "UPI", status: "Pending", date: "2026-03-10", products: [{ name: "All-Season Tyre", qty: 1, price: 6500.00, img: "https://placehold.co/100x100?text=Tyre" }] }
-            ];
-            localStorage.setItem('sparekart_orders_data', JSON.stringify(initial));
-            return initial;
-        }
-    }
-
-    let orders = initOrders();
-
-    function updateKPIs() {
-        let total = orders.length;
-        let completed = orders.filter(o => o.status === 'Completed').length;
-        let pending = orders.filter(o => o.status === 'Pending').length;
-        
-        let revenue = orders.filter(o => o.status === 'Completed')
-            .reduce((sum, o) => sum + o.total, 0);
-
-        document.getElementById('kpiTotalOrders').innerText = total;
-        document.getElementById('kpiCompleted').innerText = completed;
-        document.getElementById('kpiPending').innerText = pending;
-        document.getElementById('kpiRevenue').innerText = `₹${revenue.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`;
-    }
-
-    function renderOrders(filterText = '') {
-        const tbody = document.getElementById('ordersTableBody');
-        tbody.innerHTML = '';
-
-        const lowerFilter = filterText.toLowerCase();
-
-        orders.forEach(o => {
-            if (filterText && !o.id.toLowerCase().includes(lowerFilter) && !o.customer.toLowerCase().includes(lowerFilter)) {
-                return;
-            }
-
-            const statusClass = "status-" + o.status.toLowerCase();
-            const formatTotal = `₹${Number(o.total).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
-
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><a href="/Admin/OrderDetails?id=${o.id}" class="order-link">${o.id}</a></td>
-                <td>${o.customer}</td>
-                <td>${o.items} items</td>
-                <td>${formatTotal}</td>
-                <td>${o.payment}</td>
-                <td><span class="badge-status ${statusClass}">${o.status}</span></td>
-                <td>
-                    <button class="btn-icon" onclick="window.location.href='/Admin/OrderDetails?id=${o.id}'">
-                        <i class="fa fa-eye"></i>
-                    </button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        if (tbody.innerHTML === '') {
-            tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">No orders found.</td></tr>`;
-        }
-
-        updateKPIs();
-    }
-
-    function filterOrders() {
-        const text = document.getElementById('searchInput').value;
-        renderOrders(text);
-    }
-
-    // Initialize display
-    renderOrders();
-</script>

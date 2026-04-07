@@ -1,4 +1,5 @@
-﻿@{
+@model IEnumerable<SpareKart_Website.Models.Product>
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Home - SpareKart";
 }
@@ -17,109 +18,31 @@
     <h2 class="section-title">Featured Products</h2>
 
     <div class="products-grid">
-        
-        <!-- Product 1 -->
-        <a href="/Products/ProductDetails?name=All Season Tyre&price=4500&image=tyre.jpg" class="product-link">
-            <div class="product-card">
-                <img src="/images/tyre.jpg" alt="All-Season Tyre" class="product-img" />
-                <div class="product-body">
-                    <h3>All-Season Tyre</h3>
-                    <p>Durable all-season tyre with excellent grip. Size: 195/65 R15.</p>
-                </div>
-                <div class="product-footer">
-                    <span class="price">&#8377;4500</span>
-                    <object><a href="/Cart/Add?name=All Season Tyre&price=4500&image=tyre.jpg" class="btn-add">
-                        <i class="fa fa-shopping-cart"></i> Add
-                    </a></object>
-                </div>
-            </div>
-        </a>
-
-        <!-- Product 2 -->
-        <a href="/Products/ProductDetails?name=LED Headlight&price=1899&image=light.jpg" class="product-link">
-            <div class="product-card">
-                <img src="/images/light.jpg" alt="LED Headlight" class="product-img" />
-                <div class="product-body">
-                    <h3>LED Headlight</h3>
-                    <p>Bright LED headlight for better visibility. Easy installation.</p>
-                </div>
-                <div class="product-footer">
-                    <span class="price">&#8377;1899</span>
-                    <object><a href="/Cart/Add?name=LED Headlight&price=1899&image=light.jpg" class="btn-add">
-                        <i class="fa fa-shopping-cart"></i> Add
-                    </a></object>
-                </div>
-            </div>
-        </a>
-
-        <!-- Product 3 -->
-        <a href="/Products/ProductDetails?name=Engine Oil Filter&price=499&image=engine.jpg" class="product-link">
-            <div class="product-card">
-                <img src="/images/engine.jpg" alt="Engine Oil Filter" class="product-img" />
-                <div class="product-body">
-                    <h3>Engine Oil Filter</h3>
-                    <p>High-quality oil filter for engine protection. Compatible with most car models.</p>
-                </div>
-                <div class="product-footer">
-                    <span class="price">&#8377;499</span>
-                    <object><a href="/Cart/Add?name=Engine Oil Filter&price=499&image=engine.jpg" class="btn-add">
-                        <i class="fa fa-shopping-cart"></i> Add
-                    </a></object>
-                </div>
-            </div>
-        </a>
-
-        <!-- Product 4 -->
-        <a href="/Products/ProductDetails?name=Brake Disc Set&price=2999&image=brake.jpg" class="product-link">
-            <div class="product-card">
-                <img src="/images/brake.jpg" alt="Brake Disc Set" class="product-img" />
-                <div class="product-body">
-                    <h3>Brake Disc Set</h3>
-                    <p>Premium brake disc set for superior stopping power. Fits front wheels.</p>
-                </div>
-                <div class="product-footer">
-                    <span class="price">&#8377;2999</span>
-                    <object><a href="/Cart/Add?name=Brake Disc Set&price=2999&image=brake.jpg" class="btn-add">
-                        <i class="fa fa-shopping-cart"></i> Add
-                    </a></object>
-                </div>
-            </div>
-        </a>
-
-        <!-- Product 5 -->
-        <a href="/Products/ProductDetails?name=All Season Tyre&price=4500&image=tyre.jpg" class="product-link">
-            <div class="product-card">
-                <img src="/images/tyre.jpg" alt="All-Season Tyre" class="product-img" />
-                <div class="product-body">
-                    <h3>All-Season Tyre</h3>
-                    <p>Durable all-season tyre with excellent grip. Size: 195/65 R15.</p>
-                </div>
-                <div class="product-footer">
-                    <span class="price">&#8377;4500</span>
-                    <object><a href="/Cart/Add?name=All Season Tyre&price=4500&image=tyre.jpg" class="btn-add">
-                        <i class="fa fa-shopping-cart"></i> Add
-                    </a></object>
-                </div>
-            </div>
-        </a>
-
-        <!-- Product 6 -->
-        <a href="/Products/ProductDetails?name=Engine Oil Filter&price=499&image=engine.jpg" class="product-link">
-            <div class="product-card">
-                <img src="/images/engine.jpg" alt="Engine Oil Filter" class="product-img" />
-                <div class="product-body">
-                    <h3>Engine Oil Filter</h3>
-                    <p>High-quality oil filter for engine protection. Compatible with most car models.</p>
-                </div>
-                <div class="product-footer">
-                    <span class="price">&#8377;499</span>
-                    <object><a href="/Cart/Add?name=Engine Oil Filter&price=499&image=engine.jpg" class="btn-add">
-                        <i class="fa fa-shopping-cart"></i> Add
-                    </a></object>
-                </div>
-            </div>
-        </a>
-
+        @if (Model != null && Model.Any())
+        {
+            foreach(var p in Model)
+            {
+                <a href="/Products/ProductDetails/@p.Id" class="product-link">
+                    <div class="product-card">
+                        <img src="@(!string.IsNullOrEmpty(p.ImageUrl) ? p.ImageUrl : "https://placehold.co/200x200?text=Product")" alt="@p.Name" class="product-img" />
+                        <div class="product-body">
+                            <h3>@p.Name</h3>
+                            <p>@(string.IsNullOrEmpty(p.Category) ? "High quality product." : p.Category + " category.")</p>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">&#8377;@p.Price</span>
+                            <object><a href="/Cart/Add?name=@Uri.EscapeDataString(p.Name)&price=@((int)p.Price)&image=@Uri.EscapeDataString(!string.IsNullOrEmpty(p.ImageUrl) ? p.ImageUrl : "https://placehold.co/200x200?text=Product")" class="btn-add">
+                                <i class="fa fa-shopping-cart"></i> Add
+                            </a></object>
+                        </div>
+                    </div>
+                </a>
+            }
+        }
+        else
+        {
+            <p style="text-align:center; width:100%;">No products found. Please wait for Admin to stock up!</p>
+        }
     </div>
 
     <!-- VIEW ALL BUTTON -->

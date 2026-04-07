@@ -1,4 +1,4 @@
-﻿@model List<SpareKart_Website.Models.CartItem>
+@model List<SpareKart_Website.Models.CartItem>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -48,8 +48,17 @@ else
             <div class="cart-item">
 
                 <!-- PRODUCT IMAGE -->
-                <img src="~/images/@item.Image"
-                     class="cart-img" />
+                @{
+                    var isFullUrl = item.Image != null && item.Image.StartsWith("http");
+                }
+                @if (isFullUrl)
+                {
+                    <img src="@item.Image" class="cart-img" alt="@item.Name" />
+                }
+                else
+                {
+                    <img src="~/images/@item.Image" class="cart-img" alt="@item.Name" />
+                }
 
                 <div class="cart-info">
 
@@ -70,8 +79,15 @@ else
                         <span>@item.Quantity</span>
 
                         <!-- INCREASE QUANTITY -->
-                        <a href="/Cart/Increase?name=@item.Name"
-                           class="qty-btn">+</a>
+                        @if (item.Quantity >= item.MaxStock)
+                        {
+                            <a href="#" class="qty-btn" onclick="alert('Maximum available stock for this item is @item.MaxStock!'); return false;" style="background-color: #e2e8f0; color: #94a3b8; cursor: not-allowed;">+</a>
+                        }
+                        else
+                        {
+                            <a href="/Cart/Increase?name=@Uri.EscapeDataString(item.Name)"
+                               class="qty-btn">+</a>
+                        }
 
                     </div>
 

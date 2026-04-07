@@ -1,0 +1,70 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var order = ViewBag.Order as SpareKart_Website.Models.Order;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/orderconfirm.css" />
+}
+
+<div class="confirm-container">
+    <div class="confirm-card">
+        
+        <!-- Success Animation -->
+        <div class="success-icon-wrap">
+            <div class="success-circle">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <div class="ripple"></div>
+        </div>
+
+        <h2 class="confirm-title">Order Placed Successfully!</h2>
+        <p class="confirm-subtitle">Thank you for shopping with SpareKart</p>
+
+        <div class="order-details-box">
+            <div class="detail-row">
+                <span class="detail-label">Order ID</span>
+                <span class="detail-value">#ORD@(order?.Id.ToString("D4"))</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Amount</span>
+                <span class="detail-value amount">&#8377;@order?.TotalAmount</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Payment</span>
+                <span class="detail-value">
+                    @if (order?.PaymentMethod == "Online")
+                    {
+                        <span class="pay-badge online"><i class="fa-solid fa-circle-check"></i> Paid Online</span>
+                    }
+                    else
+                    {
+                        <span class="pay-badge cod"><i class="fa-solid fa-truck"></i> Cash on Delivery</span>
+                    }
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Status</span>
+                <span class="status-badge">@order?.Status</span>
+            </div>
+        </div>
+
+        @if (order?.PaymentMethod == "Online" && !string.IsNullOrEmpty(order?.RazorpayPaymentId))
+        {
+            <div class="payment-id-box">
+                <i class="fa-solid fa-fingerprint"></i>
+                <span>Payment ID: @order.RazorpayPaymentId</span>
+            </div>
+        }
+
+        <div class="confirm-actions">
+            <a href="/Order/MyOrders" class="btn-primary">
+                <i class="fa-solid fa-list"></i> View My Orders
+            </a>
+            <a href="/Products/AllProducts" class="btn-secondary">
+                <i class="fa-solid fa-bag-shopping"></i> Continue Shopping
+            </a>
+        </div>
+
+    </div>
+</div>

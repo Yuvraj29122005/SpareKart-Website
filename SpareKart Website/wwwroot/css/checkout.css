@@ -1,4 +1,4 @@
-﻿/* ================================
+/* ================================
    CHECKOUT PAGE CSS — SpareKart
    ================================ */
 
@@ -50,7 +50,7 @@
 }
 
 /* Labels */
-.form-box label {
+.form-box label:not(.payment-option) {
     display: block;
     font-size: 12px;
     font-weight: 600;
@@ -61,7 +61,7 @@
     letter-spacing: 0.4px;
 }
 
-.form-box label:first-of-type {
+.form-box label:not(.payment-option):first-of-type {
     margin-top: 0;
 }
 
@@ -113,31 +113,54 @@
 /* ========== PAYMENT OPTIONS ========== */
 .payment-option {
     display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 14px 16px;
-    border-radius: 10px;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 12px;
     margin-bottom: 10px;
     border: 1.5px solid #e2e8f0;
     cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
+    transition: all 0.25s ease;
     background: #fafafa;
 }
 
-/* Highlighted (selected) state — matches screenshot blue border */
 .payment-option.selected {
     border-color: #2563eb;
-    background: #eff6ff;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
 }
 
 .payment-option:hover {
     border-color: #93c5fd;
+    transform: translateY(-1px);
 }
 
 .payment-option input[type="radio"] {
     accent-color: #2563eb;
-    margin-top: 3px;
+    margin-top: 0;
     flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.pay-icon-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pay-icon-wrap.online-icon {
+    background: linear-gradient(135deg, #059669, #10b981);
+}
+
+.pay-icon {
+    color: #fff;
+    font-size: 16px;
 }
 
 .pay-info {
@@ -150,6 +173,20 @@
     font-size: 14px;
     font-weight: 600;
     color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.razorpay-badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .pay-desc {
@@ -174,6 +211,13 @@
     color: #1e293b;
     font-weight: 700;
     margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.summary h3 i {
+    color: #2563eb;
 }
 
 /* Scrollable cart items list */
@@ -274,21 +318,73 @@
 /* Place Order button */
 .place-btn {
     width: 100%;
-    background: #2563eb;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
     color: #ffffff;
-    padding: 13px;
+    padding: 14px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    letter-spacing: 0.2px;
-    transition: background 0.18s, transform 0.15s;
+    letter-spacing: 0.3px;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .place-btn:hover {
-    background: #1d4ed8;
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+}
+
+.place-btn:active {
+    transform: translateY(0);
+}
+
+.place-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.place-btn.loading {
+    position: relative;
+}
+
+.place-btn.loading::after {
+    content: '';
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-left: 8px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Secure badge */
+.secure-badge {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 11px;
+    color: #16a34a;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.secure-badge i {
+    font-size: 13px;
 }
 
 /* Responsive */

@@ -1,9 +1,8 @@
-﻿@{
+@model SpareKart_Website.Models.User
+@{
     Layout = "~/Views/Shared/_ProfileLayout.cshtml";
     ViewData["Title"] = "My Profile - SpareKart";
 }
-
-<!-- Profile Styles linked in Layout -->
 
 <div class="profile-page-wrapper">
     <h1 class="profile-heading">My Profile</h1>
@@ -12,28 +11,32 @@
         
         <!-- LEFT: User Card -->
         <div class="profile-left-card">
-            <div class="avatar-container" onclick="if(!document.getElementById('saveBtn').style.display || document.getElementById('saveBtn').style.display === 'none') { return; } document.getElementById('avatarInput').click()" title="Click Edit Profile to change photo">
-                <img id="avatarImg" src="/images/user-default.png" alt="Profile" style="display:none;" />
-                <i class="fa fa-user" id="avatarIcon"></i>
-                
-                <!-- Camera icon overlay shown on hover when editing -->
-                <div class="avatar-backdrop" id="avatarOverlayIcon">
-                    <i class="fa fa-camera"></i>
-                </div>
+            <div class="avatar-container" style="overflow:hidden;">
+                @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
+                {
+                    <img src="/@Model.ProfilePictureUrl" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover;" />
+                }
+                else
+                {
+                    <i class="fa fa-user" id="avatarIcon"></i>
+                }
             </div>
 
-            <!-- Hidden file input -->
-            <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="changeAvatar(this)" />
-
-            <h2 id="displayName">Yuvraj Dhadhal</h2>
-            <p class="email" id="displayEmail">yuvraj@example.com</p>
+            <h2 id="displayName">@Model.Name</h2>
+            <p class="email" id="displayEmail">@Model.Email</p>
             
             <div class="status-badge">Active Member</div>
 
             <div class="phone-row">
                 <i class="fa fa-phone"></i>
-                <span id="displayPhone">+91 9876543210</span>
+                <span id="displayPhone">@(string.IsNullOrEmpty(Model.Phone) ? "No Phone Set" : Model.Phone)</span>
             </div>
+            
+            @if(Model.IsEmailVerified) {
+                <div class="mt-3" style="color: #10b981; font-weight: bold; margin-top:10px;"><i class="fa fa-check-circle"></i> Email Verified</div>
+            } else {
+                <div class="mt-3" style="color: #ef4444; font-weight: bold; margin-top:10px;"><i class="fa fa-times-circle"></i> Email Not Verified</div>
+            }
         </div>
 
 
@@ -42,176 +45,63 @@
             
             <div class="right-card-header">
                 <h3>Personal Information</h3>
-                <button type="button" class="edit-btn" id="editBtn" onclick="enableEdit()">
-                    <i class="fa fa-pen"></i> Edit Profile
-                </button>
             </div>
 
-            <div class="form-body">
-                
-                <!-- Name -->
-                <div class="form-group">
-                    <label><i class="fa fa-user"></i> Full Name</label>
-                    <input type="text" id="name" value="Yuvraj Dhadhal" disabled />
-                    <span class="error-msg" id="nameError">Name cannot be empty</span>
+            <form method="post" action="/Profile/UpdateProfile" id="profileForm" enctype="multipart/form-data">
+                <div class="form-body">
+                    
+                    <!-- Profile Picture Upload (hidden until Edit) -->
+                    <div class="form-group" id="fileUploadGroup" style="display: none;">
+                        <label><i class="fa fa-camera"></i> Profile Picture</label>
+                        <input type="file" name="profilePicture" id="profilePicture" accept="image/*" class="form-control" style="background:#fff; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px;" />
+                    </div>
+
+                    <!-- Name -->
+                    <div class="form-group">
+                        <label><i class="fa fa-user"></i> Full Name</label>
+                        <input type="text" name="name" id="name" value="@Model.Name" required disabled />
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label><i class="fa fa-envelope"></i> Email Address</label>
+                        <input type="email" id="email" value="@Model.Email" class="locked" disabled title="Email address cannot be changed" />
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-group">
+                        <label><i class="fa fa-phone"></i> Phone Number</label>
+                        <input type="text" name="phone" id="phone" value="@Model.Phone" placeholder="Enter phone number" disabled />
+                    </div>
                 </div>
 
-                <!-- Email (STATIC/LOCKED) -->
-                <div class="form-group">
-                    <label><i class="fa fa-envelope"></i> Email Address</label>
-                    <input type="email" id="email" value="yuvraj@example.com" class="locked" disabled title="Email address cannot be changed" />
+                <!-- Action Buttons -->
+                <div class="save-btn-wrapper" style="display:flex; gap:15px; justify-content:center;">
+                    <button type="button" id="editProfileBtn" class="save-btn" style="background-color: #3b82f6; display: inline-flex;" onclick="enableEditMode()">
+                        <i class="fa fa-pencil"></i> Edit Profile
+                    </button>
+                    <button type="submit" id="saveChangesBtn" class="save-btn" style="display: none;">
+                        <i class="fa fa-save"></i> Save Changes
+                    </button>
                 </div>
+            </form>
 
-                <!-- Phone -->
-                <div class="form-group">
-                    <label><i class="fa fa-phone"></i> Phone Number</label>
-                    <input type="text" id="phone" value="+91 9876543210" disabled />
-                    <span class="error-msg" id="phoneError">Phone number cannot be empty</span>
-                </div>
+            <script>
+                function enableEditMode() {
+                    // Enable inputs
+                    document.getElementById('name').disabled = false;
+                    document.getElementById('phone').disabled = false;
+                    
+                    // Show file upload element
+                    document.getElementById('fileUploadGroup').style.display = 'block';
 
-                <!-- Address -->
-                <div class="form-group">
-                    <label><i class="fa fa-location-dot"></i> Address</label>
-                    <input type="text" id="address" value="RK University, Rajkot, Gujarat, 360020" disabled />
-                    <span class="error-msg" id="addressError">Address cannot be empty</span>
-                </div>
-
-            </div>
-
-            <!-- Save Button -->
-            <div class="save-btn-wrapper">
-                <button type="button" class="save-btn" id="saveBtn" onclick="saveProfile()">
-                    <i class="fa fa-save"></i> Save Changes
-                </button>
-            </div>
+                    // Toggle buttons
+                    document.getElementById('editProfileBtn').style.display = 'none';
+                    document.getElementById('saveChangesBtn').style.display = 'inline-flex';
+                }
+            </script>
 
         </div>
 
     </div>
 </div>
-
-<script>
-    // ===== Initialize data =====
-    // Static defaulting means we intentionally IGNORE previous localStorage data on page load
-    // The user explicitly requested this to always reset on refresh.
-    window.addEventListener('DOMContentLoaded', function () {
-        const defaultName    = 'Yuvraj Dhadhal';
-        const defaultPhone   = '+91 9876543210';
-        const defaultAddress = 'RK University, Rajkot, Gujarat, 360020';
-
-        // Fill form
-        document.getElementById('name').value    = defaultName;
-        document.getElementById('phone').value   = defaultPhone;
-        document.getElementById('address').value = defaultAddress;
-
-        // Fill left card
-        document.getElementById('displayName').textContent = defaultName;
-        document.getElementById('displayPhone').textContent = defaultPhone;
-        
-        // Hide camera overlay
-        document.getElementById('avatarOverlayIcon').style.display = 'none';
-    });
-
-
-    // ===== Enable Edit Mode =====
-    function enableEdit() {
-        document.getElementById('name').disabled    = false;
-        document.getElementById('phone').disabled   = false;
-        document.getElementById('address').disabled = false;
-        
-        // Email remains disabled
-        
-        // Toggle Buttons
-        document.getElementById('editBtn').style.display = 'none';
-        document.getElementById('saveBtn').style.display = 'inline-flex';
-        
-        // Enable camera overlay on avatar hover
-        document.getElementById('avatarOverlayIcon').style.display = 'flex';
-        
-        // Focus name
-        document.getElementById('name').focus();
-    }
-
-
-    // ===== Save Profile Data =====
-    function saveProfile() {
-        const nameInput    = document.getElementById('name');
-        const phoneInput   = document.getElementById('phone');
-        const addressInput = document.getElementById('address');
-        
-        const name    = nameInput.value.trim();
-        const phone   = phoneInput.value.trim();
-        const address = addressInput.value.trim();
-        
-        let isValid = true;
-        
-        // Name Validation
-        if (!name) {
-            document.getElementById('nameError').style.display = 'block';
-            nameInput.classList.add('error-border');
-            isValid = false;
-        } else {
-            document.getElementById('nameError').style.display = 'none';
-            nameInput.classList.remove('error-border');
-        }
-        
-        // Phone Validation
-        if (!phone) {
-            document.getElementById('phoneError').style.display = 'block';
-            phoneInput.classList.add('error-border');
-            isValid = false;
-        } else {
-            document.getElementById('phoneError').style.display = 'none';
-            phoneInput.classList.remove('error-border');
-        }
-        
-        // Address Validation
-        if (!address) {
-            document.getElementById('addressError').style.display = 'block';
-            addressInput.classList.add('error-border');
-            isValid = false;
-        } else {
-            document.getElementById('addressError').style.display = 'none';
-            addressInput.classList.remove('error-border');
-        }
-
-        // Stop saving if validation fails
-        if (!isValid) return;
-
-        // Instantly update the left preview card
-        document.getElementById('displayName').textContent = name;
-        document.getElementById('displayPhone').textContent = phone;
-
-        // Re-lock all fields
-        nameInput.disabled    = true;
-        phoneInput.disabled   = true;
-        addressInput.disabled = true;
-
-        // Toggle Buttons back
-        document.getElementById('saveBtn').style.display = 'none';
-        document.getElementById('editBtn').style.display = 'inline-flex';
-        
-        // Hide camera overlay
-        document.getElementById('avatarOverlayIcon').style.display = 'none';
-    }
-
-
-    // ===== Change Avatar file handler =====
-    function changeAvatar(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const dataUrl = e.target.result;
-
-                // Show the image, hide the default user icon
-                document.getElementById('avatarImg').src           = dataUrl;
-                document.getElementById('avatarImg').style.display = 'block';
-                document.getElementById('avatarIcon').style.display = 'none';
-
-                // Save to localStorage instantly
-                localStorage.setItem('sk_avatar', dataUrl);
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-</script>

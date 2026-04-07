@@ -2,134 +2,123 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Dashboard";
 }
-
 <link rel="stylesheet" href="~/css/admin/adminDashboard.css" />
 
 <div class="dashboard-header mb-4">
-    <h4 class="admin-page-title">Dashboard</h4>
-    <p class="admin-page-sub">Welcome back! Here's what's happening with your store today.</p>
+    <h4 class="admin-page-title">SQL Database Dashboard</h4>
+    <p class="admin-page-sub">Live metrics driven directly from your application database!</p>
 </div>
 
 <div class="row g-4 mb-4">
-
     <div class="col-md-3">
         <div class="admin-card">
             <div class="card-info">
                 <p>Total Products</p>
-                <h4>8</h4>
-                <small>0 low stock</small>
+                <h4>@ViewBag.TotalProducts</h4>
+                <small>@ViewBag.LowStockCount low stock</small>
             </div>
             <div class="card-icon" style="background-color: #3b82f6;">
                 <i class="fa fa-box text-white"></i>
             </div>
         </div>
     </div>
-
     <div class="col-md-3">
         <div class="admin-card">
             <div class="card-info">
                 <p>Total Orders</p>
-                <h4>2</h4>
-                <small>1 completed</small>
+                <h4>@ViewBag.TotalOrders</h4>
+                <small>@ViewBag.OrdersCompleted completed</small>
             </div>
             <div class="card-icon" style="background-color: #10b981;">
                 <i class="fa-solid fa-bag-shopping text-white"></i>
             </div>
         </div>
     </div>
-
     <div class="col-md-3">
         <div class="admin-card">
             <div class="card-info">
                 <p>Total Users</p>
-                <h4>2</h4>
-                <small>2 active</small>
+                <h4>@ViewBag.TotalUsers</h4>
+                <small>Verified accounts</small>
             </div>
             <div class="card-icon" style="background-color: #a855f7;">
                 <i class="fa fa-users text-white"></i>
             </div>
         </div>
     </div>
-
     <div class="col-md-3">
         <div class="admin-card">
             <div class="card-info">
                 <p>Total Revenue</p>
-                <h4>₹5,498</h4>
-                <small>From completed orders</small>
+                <h4>₹@ViewBag.TotalRevenue</h4>
+                <small>Lifetime value</small>
             </div>
             <div class="card-icon" style="background-color: #f97316;">
                 <i class="fa-solid fa-dollar-sign text-white"></i>
             </div>
         </div>
     </div>
-
 </div>
 
 <div class="row g-4">
-
     <div class="col-md-8">
         <div class="admin-lowstock-panel">
-            <div class="panel-header">
-                <h6><i class="fa flex-shrink-0 fa-triangle-exclamation text-warning"></i> Low Stock Alert</h6>
+            <div class="panel-header d-flex justify-content-between align-items-center">
+                <h6><i class="fa fa-triangle-exclamation text-warning"></i> Low Stock Alerts</h6>
+                <span class="badge bg-light text-dark border">@ViewBag.LowStockCount Items Found</span>
             </div>
-            <div class="panel-body centered-content">
-                <div class="all-stocked">
-                    <i class="fa fa-arrow-trend-up"></i>
-                    <p>All products well stocked!</p>
-                </div>
+            <div class="panel-body p-3" style="max-height: 400px; overflow-y: auto; align-items: flex-start; justify-content: flex-start;">
+                @if (ViewBag.LowStockProducts != null && ((IEnumerable<SpareKart_Website.Models.Product>)ViewBag.LowStockProducts).Any())
+                {
+                    <div class="stock-cards-grid">
+                        @foreach(var product in (IEnumerable<SpareKart_Website.Models.Product>)ViewBag.LowStockProducts)
+                        {
+                            <div class="stock-card-inline">
+                                <div class="stock-card-icon">
+                                    <i class="fa fa-box-open"></i>
+                                </div>
+                                <div class="stock-card-details">
+                                    <div class="stock-card-name">@product.Name</div>
+                                    <div class="stock-card-meta">@product.Category • ₹@product.Price</div>
+                                </div>
+                                <div class="stock-card-status">
+                                    <span class="stock-pill @(product.StockQty <= 0 ? "out-of-stock" : "low-stock")">
+                                        @(product.StockQty <= 0 ? "OUT" : product.StockQty.ToString())
+                                    </span>
+                                    <small>Remaining</small>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="centered-content w-100" style="padding: 40px; text-align: center;">
+                        <div class="all-stocked">
+                            <i class="fa fa-circle-check" style="color: #10b981; font-size: 2.5rem; margin-bottom: 12px;"></i>
+                            <p style="color: #64748b; font-weight: 600; font-size: 16px;">Inventory Healthy</p>
+                            <small class="text-muted">All products are well above the threshold.</small>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
-
     <div class="col-md-4 d-flex flex-column gap-4">
-
         <div class="admin-sidebox">
             <h6>Order Status</h6>
             <div class="status-item">
-                <div class="status-label">
-                    <span class="status-dot green"></span> Completed
-                </div>
-                <div class="status-val">1</div>
+                <div class="status-label"><span class="status-dot green"></span> Completed</div>
+                <div class="status-val">@ViewBag.OrdersCompleted</div>
             </div>
             <div class="status-item">
-                <div class="status-label">
-                    <span class="status-dot orange"></span> Pending
-                </div>
-                <div class="status-val">1</div>
+                <div class="status-label"><span class="status-dot orange"></span> Pending</div>
+                <div class="status-val">@ViewBag.OrdersPending</div>
             </div>
             <div class="status-item">
-                <div class="status-label">
-                    <span class="status-dot red"></span> Failed
-                </div>
-                <div class="status-val">0</div>
+                <div class="status-label"><span class="status-dot red"></span> Failed</div>
+                <div class="status-val">@ViewBag.OrdersFailed</div>
             </div>
         </div>
-
-        <div class="admin-sidebox">
-            <h6>Products by Category</h6>
-            <div class="category-item">
-                <span>Engine</span>
-                <span>2</span>
-            </div>
-            <div class="category-item">
-                <span>Brakes</span>
-                <span>2</span>
-            </div>
-            <div class="category-item">
-                <span>Tyres</span>
-                <span>1</span>
-            </div>
-            <div class="category-item">
-                <span>Lights</span>
-                <span>2</span>
-            </div>
-            <div class="category-item">
-                <span>Accessories</span>
-                <span>1</span>
-            </div>
-        </div>
-
     </div>
-
 </div>

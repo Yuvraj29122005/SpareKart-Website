@@ -1,209 +1,78 @@
+@model IEnumerable<SpareKart_Website.Models.User>
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Manage Users";
 }
-
 <link rel="stylesheet" href="~/css/admin/adminUsers.css" />
 
-<h4 class="admin-page-title">Manage Users</h4>
+<h4 class="admin-page-title">Manage SQL Database Users</h4>
 
-<!-- KPI CARDS -->
 <div class="kpi-row">
     <div class="kpi-card">
-        <div class="kpi-title">Total Users</div>
-        <div class="kpi-value" id="kpiTotalUsers">0</div>
+        <div class="kpi-title">Total Registered</div>
+        <div class="kpi-value">@(Model?.Count() ?? 0)</div>
     </div>
     <div class="kpi-card">
-        <div class="kpi-title">Active Users</div>
-        <div class="kpi-value kpi-active" id="kpiActiveUsers">0</div>
+        <div class="kpi-title">Email Verified</div>
+        <div class="kpi-value kpi-active">@(Model?.Count(u => u.IsEmailVerified) ?? 0)</div>
     </div>
     <div class="kpi-card">
-        <div class="kpi-title">Blocked Users</div>
-        <div class="kpi-value kpi-blocked" id="kpiBlockedUsers">0</div>
+        <div class="kpi-title">Unverified</div>
+        <div class="kpi-value kpi-blocked">@(Model?.Count(u => !u.IsEmailVerified) ?? 0)</div>
     </div>
 </div>
 
-<!-- FILTER BAR -->
-<div class="filter-bar">
-    <div class="search-wrapper">
-        <i class="fa fa-search"></i>
-        <input type="text" class="search-input" placeholder="Search by name, email or phone..." id="searchInput" onkeyup="filterUsers()" />
-    </div>
-    <select class="btn-filter" id="statusFilter" onchange="filterUsers()">
-        <option value="">All Status</option>
-        <option value="Active">Active</option>
-        <option value="Blocked">Blocked</option>
-    </select>
-</div>
-
-<!-- USERS TABLE -->
 <div class="table-container">
     <table class="users-table">
         <thead>
             <tr>
                 <th>User</th>
                 <th>Contact</th>
-                <th>Orders</th>
-                <th>Total Spent</th>
-                <th>Status</th>
+                <th>Verified</th>
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody id="usersTableBody">
-            <!-- Data populated by JS -->
+        <tbody>
+            @if(Model != null && Model.Any())
+            {
+                foreach(var u in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar"><i class="fa-regular fa-user"></i></div>
+                                <div class="user-name">@u.Name</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="user-contact">
+                                <div><i class="fa-regular fa-envelope"></i> @u.Email</div>
+                                <div><i class="fa-solid fa-phone"></i> @u.Phone</div>
+                            </div>
+                        </td>
+                        <td>
+                            @if(u.IsEmailVerified)
+                            {
+                                <span class="badge-status status-active">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="badge-status status-blocked">No</span>
+                            }
+                        </td>
+                        <td>
+                            <form action="/Admin/RemoveUser" method="post">
+                                <input type="hidden" name="id" value="@u.Id" />
+                                <button type="submit" class="btn-action-outline" style="color: #ef4444; border-color: #fee2e2;" onclick="return confirm('Remove user @u.Name forever?')">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="4" class="text-center text-muted py-4">No users in database.</td></tr>
+            }
         </tbody>
     </table>
 </div>
-
-<script>
-    // Initial dummy data for users
-    function initUsers() {
-        let stored = localStorage.getItem('sparekart_users_data');
-        if (stored) {
-            return JSON.parse(stored);
-        } else {
-            let initial = [
-                { id: "U001", name: "John Doe", email: "john@example.com", phone: "9876543210", orders: 12, spent: 54980, status: "Active", avatarClass: "" },
-                { id: "U002", name: "Jane Smith", email: "jane@example.com", phone: "9876543211", orders: 5, spent: 12500, status: "Active", avatarClass: "type-b" },
-                { id: "U003", name: "Michael Johnson", email: "michael@example.com", phone: "9876543212", orders: 0, spent: 0, status: "Active", avatarClass: "type-c" },
-                { id: "U004", name: "Emily Davis", email: "emily@example.com", phone: "9876543213", orders: 2, spent: 450, status: "Blocked", avatarClass: "type-d" },
-                { id: "U005", name: "Robert Wilson", email: "robert@example.com", phone: "9876543214", orders: 8, spent: 22000, status: "Active", avatarClass: "" },
-                { id: "U006", name: "Linda Brown", email: "linda@example.com", phone: "9876543215", orders: 1, spent: 300, status: "Active", avatarClass: "type-b" },
-                { id: "U007", name: "David Taylor", email: "david@example.com", phone: "9876543216", orders: 0, spent: 0, status: "Blocked", avatarClass: "type-c" },
-                { id: "U008", name: "Sarah Thomas", email: "sarah@example.com", phone: "9876543217", orders: 15, spent: 89000, status: "Active", avatarClass: "type-d" }
-                // Realistically would have more users here
-            ];
-            localStorage.setItem('sparekart_users_data', JSON.stringify(initial));
-            return initial;
-        }
-    }
-
-    let users = initUsers();
-
-    function updateKPIs() {
-        let total = users.length;
-        let active = users.filter(u => u.status === 'Active').length;
-        let blocked = users.filter(u => u.status === 'Blocked').length;
-        
-        document.getElementById('kpiTotalUsers').innerText = total;
-        document.getElementById('kpiActiveUsers').innerText = active;
-        document.getElementById('kpiBlockedUsers').innerText = blocked;
-    }
-
-    function renderUsers(filterText = '') {
-        const tbody = document.getElementById('usersTableBody');
-        tbody.innerHTML = '';
-
-        const lowerFilter = filterText.toLowerCase();
-
-        users.forEach(u => {
-            if (filterText && !u.name.toLowerCase().includes(lowerFilter) && !u.email.toLowerCase().includes(lowerFilter) && !u.phone.includes(lowerFilter)) {
-                return;
-            }
-
-            const statusClass = "status-" + u.status.toLowerCase();
-            const formatSpent = `₹${Number(u.spent).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
-
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>
-                    <div class="user-info">
-                        <div class="user-avatar ${u.avatarClass}">
-                            <i class="fa-regular fa-user"></i>
-                        </div>
-                        <div class="user-name">${u.name}</div>
-                    </div>
-                </td>
-                <td>
-                    <div class="user-contact">
-                        <div><i class="fa-regular fa-envelope"></i> ${u.email}</div>
-                        <div><i class="fa-solid fa-phone"></i> ${u.phone}</div>
-                    </div>
-                </td>
-                <td>${u.orders}</td>
-                <td>${formatSpent}</td>
-                <td><span class="badge-status ${statusClass}">${u.status}</span></td>
-                <td>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn-action-outline">${u.status === 'Active' ? 'Block' : 'Activate'}</button>
-                        <button class="btn-action-outline" style="color: #ef4444; border-color: #fee2e2;" onclick="removeUser('${u.id}')">Remove</button>
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        if (tbody.innerHTML === '') {
-            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No users found.</td></tr>`;
-        }
-
-        updateKPIs();
-    }
-
-    function filterUsers() {
-        const text = document.getElementById('searchInput').value;
-        const statusFilter = document.getElementById('statusFilter').value;
-        
-        const tbody = document.getElementById('usersTableBody');
-        tbody.innerHTML = '';
-
-        const lowerFilter = text.toLowerCase();
-
-        users.forEach(u => {
-            if (text && !u.name.toLowerCase().includes(lowerFilter) && !u.email.toLowerCase().includes(lowerFilter) && !u.phone.includes(lowerFilter)) {
-                return;
-            }
-
-            if (statusFilter && u.status !== statusFilter) {
-                return;
-            }
-
-            const statusClass = "status-" + u.status.toLowerCase();
-            const formatSpent = `₹${Number(u.spent).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
-
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>
-                    <div class="user-info">
-                        <div class="user-avatar ${u.avatarClass}">
-                            <i class="fa-regular fa-user"></i>
-                        </div>
-                        <div class="user-name">${u.name}</div>
-                    </div>
-                </td>
-                <td>
-                    <div class="user-contact">
-                        <div><i class="fa-regular fa-envelope"></i> ${u.email}</div>
-                        <div><i class="fa-solid fa-phone"></i> ${u.phone}</div>
-                    </div>
-                </td>
-                <td>${u.orders}</td>
-                <td>${formatSpent}</td>
-                <td><span class="badge-status ${statusClass}">${u.status}</span></td>
-                <td>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn-action-outline">${u.status === 'Active' ? 'Block' : 'Activate'}</button>
-                        <button class="btn-action-outline" style="color: #ef4444; border-color: #fee2e2;" onclick="removeUser('${u.id}')">Remove</button>
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        if (tbody.innerHTML === '') {
-            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No users found.</td></tr>`;
-        }
-    }
-
-    function removeUser(id) {
-        if(confirm("Are you sure you want to remove this user?")) {
-            users = users.filter(u => u.id !== id);
-            localStorage.setItem('sparekart_users_data', JSON.stringify(users));
-            filterUsers();
-            updateKPIs();
-        }
-    }
-
-    // Initialize display
-    renderUsers();
-</script>

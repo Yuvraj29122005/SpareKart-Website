@@ -1,3 +1,4 @@
+@model IEnumerable<SpareKart_Website.Models.Product>
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Manage Products";
@@ -9,7 +10,7 @@
 <div class="products-top-bar">
     <div>
         <h4 class="admin-page-title">Manage Products</h4>
-        <p class="admin-page-sub">View and update your store inventory.</p>
+        <p class="admin-page-sub">View and update your real SQL store inventory.</p>
     </div>
     <div class="d-flex gap-3">
         <div class="search-container">
@@ -35,96 +36,62 @@
             </tr>
         </thead>
         <tbody id="productsTableBody">
-            <!-- Data populated by JS -->
+            @if(Model != null && Model.Any())
+            {
+                foreach(var p in Model)
+                {
+                    <tr>
+                        <td>
+                            @if(!string.IsNullOrEmpty(p.ImageUrl))
+                            {
+                                <img src="@p.ImageUrl" class="product-img" alt="img" />
+                            }
+                            else
+                            {
+                                <img src="https://placehold.co/100x100?text=Part" class="product-img" alt="img" />
+                            }
+                        </td>
+                        <td class="product-name-row"><strong>@p.Name</strong></td>
+                        <td><span class="badge-category">@p.Category</span></td>
+                        <td>₹@p.Price</td>
+                        <td><span class="badge-stock">@(string.IsNullOrEmpty(p.Description) ? "0" : p.Description)</span></td>
+                        <td>
+                            <div class="action-icons">
+                                <a href="/Admin/EditProduct/@p.Id" class="btn-icon btn-edit"><i class="fa fa-edit"></i></a>
+                                <form action="/Admin/DeleteProduct" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@p.Id" />
+                                    <button type="submit" class="btn-icon btn-delete" onclick="return confirm('Delete this product?')"><i class="fa fa-trash"></i></button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="6" class="text-center text-muted py-4">No products exist in database.</td></tr>
+            }
         </tbody>
     </table>
-    
-    <div class="p-3 text-end" style="border-top: 1px solid #f1f5f9; background: #fafafa;">
-        <button class="btn btn-sm btn-outline-danger" onclick="resetData()">
-            <i class="fa fa-rotate-right"></i> Reset Default Data
-        </button>
-    </div>
 </div>
 
 <script>
-    // Initial dummy data matching the screenshot
-    let defaultImg = "https://placehold.co/100x100?text=Part";
-    
-    function initData() {
-        let stored = localStorage.getItem('sparekart_products_data');
-        if (stored) {
-            return JSON.parse(stored);
-        } else {
-            let initial = [
-                { id: 1, name: "Engine Oil Filter", category: "Engine", price: 499, stock: 50, img: defaultImg },
-                { id: 2, name: "Brake Disc Set", category: "Brakes", price: 3500, stock: 30, img: defaultImg },
-                { id: 3, name: "All-Season Tyre", category: "Tyres", price: 6500, stock: 40, img: defaultImg },
-                { id: 4, name: "LED Headlight", category: "Lights", price: 1899, stock: 60, img: defaultImg },
-                { id: 5, name: "Car Air Freshener", category: "Accessories", price: 199, stock: 100, img: defaultImg },
-                { id: 6, name: "Spark Plugs Set", category: "Engine", price: 799, stock: 25, img: defaultImg },
-                { id: 7, name: "Brake Pads", category: "Brakes", price: 1299, stock: 45, img: defaultImg }
-            ];
-            localStorage.setItem('sparekart_products_data', JSON.stringify(initial));
-            return initial;
-        }
-    }
-
-    let products = initData();
-
-    function renderTable(filterText = '') {
-        const tbody = document.getElementById('productsTableBody');
-        tbody.innerHTML = '';
-
-        const lowerFilter = filterText.toLowerCase();
-
-        products.forEach(p => {
-            if (filterText && !p.name.toLowerCase().includes(lowerFilter)) {
-                return; 
-            }
-
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><img src="${p.img}" class="product-img" alt="img" /></td>
-                <td><strong>${p.name}</strong></td>
-                <td><span class="badge-category">${p.category}</span></td>
-                <td>₹${Number(p.price).toLocaleString('en-IN')}</td>
-                <td><span class="badge-stock">${p.stock}</span></td>
-                <td>
-                    <div class="action-icons">
-                        <a href="/Admin/EditProduct?id=${p.id}" class="btn-icon btn-edit"><i class="fa fa-edit"></i></a>
-                        <button class="btn-icon btn-delete" onclick="deleteProduct(${p.id})"><i class="fa fa-trash"></i></button>
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        if(tbody.innerHTML === '') {
-            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No products found.</td></tr>`;
-        }
-    }
-
     function filterTable() {
-        const text = document.getElementById('searchInput').value;
-        renderTable(text);
-    }
-
-    function deleteProduct(id) {
-        if(confirm("Are you sure you want to delete this product?")) {
-            products = products.filter(x => x.id !== id);
-            localStorage.setItem('sparekart_products_data', JSON.stringify(products));
-            renderTable();
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("productsTableBody");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByClassName("product-name-row")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
         }
     }
-
-    function resetData() {
-        if(confirm("Restore default dummy data items?")) {
-            localStorage.removeItem('sparekart_products_data');
-            products = initData();
-            renderTable();
-        }
-    }
-
-    // Init display
-    renderTable();
 </script>

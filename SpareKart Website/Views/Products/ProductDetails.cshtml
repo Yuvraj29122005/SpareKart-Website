@@ -1,5 +1,9 @@
-﻿@{
+@model SpareKart_Website.Models.Product
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var product = Model;
+    var imageUrl = !string.IsNullOrEmpty(product.ImageUrl) ? product.ImageUrl : "https://placehold.co/400x400?text=Product";
+    var isFullUrl = imageUrl.StartsWith("http");
 }
 
 <link rel="stylesheet" href="~/css/productdetails.css" />
@@ -12,24 +16,41 @@
 
     <!-- IMAGE -->
     <div class="img-box">
-        <img src="~/images/@ViewBag.Image" alt="@ViewBag.Name" />
+        @if (isFullUrl)
+        {
+            <img src="@imageUrl" alt="@product.Name" />
+        }
+        else
+        {
+            <img src="~/images/@imageUrl" alt="@product.Name" />
+        }
     </div>
 
     <!-- INFO -->
     <div class="info-box">
 
-        <span class="tag">✔ In Stock</span>
+        @if (product.StockQty <= 0)
+        {
+            <span class="tag" style="background-color: #ef4444;">❌ Out of Stock</span>
+        }
+        else if (product.StockQty <= 5)
+        {
+            <span class="tag" style="background-color: #f59e0b;">⚡ Hurry! Only @product.StockQty items left</span>
+        }
+        else
+        {
+            <span class="tag">✔ In Stock</span>
+        }
 
-        <h2>@ViewBag.Name</h2>
+        <h2>@product.Name</h2>
 
         <h3 class="price-row">
-            ₹@ViewBag.Price
+            ₹@product.Price
         </h3>
 
         <h4 class="section-label">Description</h4>
         <p class="product-desc">
-            Premium quality auto part for your vehicle. Compatible with most car models.
-            Ensures durability, safety and peak performance.
+            @(!string.IsNullOrEmpty(product.Description) ? product.Description : "Premium quality auto part for your vehicle. Compatible with most car models. Ensures durability, safety and peak performance.")
         </p>
 
         <hr class="divider" />
@@ -37,22 +58,31 @@
         <h4 class="section-label">Quantity</h4>
 
         <div class="qty">
-            <button type="button" id="decreaseBtn" onclick="changeQty(-1)">−</button>
-            <input type="text" id="qtyInput" value="1" readonly />
-            <button type="button" id="increaseBtn" onclick="changeQty(1)">+</button>
+            <button type="button" id="decreaseBtn" onclick="changeQty(-1)" @(product.StockQty <= 0 ? "disabled" : "")>−</button>
+            <input type="text" id="qtyInput" value="@(product.StockQty > 0 ? "1" : "0")" readonly />
+            <button type="button" id="increaseBtn" onclick="changeQty(1)" @(product.StockQty <= 0 ? "disabled" : "")>+</button>
         </div>
 
         <div class="action-buttons">
-            <a id="addToCartBtn" href="/Cart/Add?name=@ViewBag.Name&price=@ViewBag.Price&image=@ViewBag.Image">
-                <button class="cart-btn">
-                    🛒 Add to Cart
+            @if (product.StockQty > 0)
+            {
+                <a id="addToCartBtn" href="/Cart/Add?name=@Uri.EscapeDataString(product.Name)&price=@((int)product.Price)&image=@Uri.EscapeDataString(imageUrl)">
+                    <button class="cart-btn">
+                        🛒 Add to Cart
+                    </button>
+                </a>
+                <a id="buyNowBtn" href="/Checkout/Index?name=@Uri.EscapeDataString(product.Name)&price=@((int)product.Price)&image=@Uri.EscapeDataString(imageUrl)&qty=1">
+                    <button class="buy-btn">
+                        ⚡ Buy Now
+                    </button>
+                </a>
+            }
+            else
+            {
+                <button class="cart-btn" style="background-color: #ccc; cursor: not-allowed;" disabled>
+                    Out of Stock
                 </button>
-            </a>
-            <a id="buyNowBtn" href="/Checkout/Index?name=@ViewBag.Name&price=@ViewBag.Price&image=@ViewBag.Image&qty=1">
-                <button class="buy-btn">
-                    ⚡ Buy Now
-                </button>
-            </a>
+            }
         </div>
 
     </div>
@@ -60,32 +90,38 @@
 </div>
 
 <script>
-    var basePrice = @ViewBag.Price;
-    var productName = "@ViewBag.Name";
-    var productImage = "@ViewBag.Image";
+    var basePrice = @((int)product.Price);
+    var productName = "@Uri.EscapeDataString(product.Name)";
+    var productImage = "@Uri.EscapeDataString(imageUrl)";
+
+    var maxQty = @product.StockQty;
 
     function changeQty(delta) {
+        if (maxQty <= 0) return;
+
         var input = document.getElementById('qtyInput');
         var current = parseInt(input.value);
         var newVal = current + delta;
         if (newVal < 1) newVal = 1;
-        if (newVal > 10) newVal = 10;
+        if (newVal > maxQty) newVal = maxQty; // Limit to available stock
+        if (newVal > 10) newVal = 10; // Hard max constraint (optional, keeping old rules combined)
         input.value = newVal;
 
         // Update total price display
         document.querySelector('.price-row').textContent = '₹' + (basePrice * newVal);
 
-        // Update cart and buy now links with qty param
+        // Update cart link
         document.getElementById('addToCartBtn').href =
-            '/Cart/Add?name=' + encodeURIComponent(productName) +
+            '/Cart/Add?name=' + productName +
             '&price=' + basePrice +
-            '&image=' + encodeURIComponent(productImage) +
+            '&image=' + productImage +
             '&qty=' + newVal;
 
+        // Update buy now link — price = basePrice * qty
         document.getElementById('buyNowBtn').href =
-            '/Checkout/Index?name=' + encodeURIComponent(productName) +
+            '/Checkout/Index?name=' + productName +
             '&price=' + (basePrice * newVal) +
-            '&image=' + encodeURIComponent(productImage) +
+            '&image=' + productImage +
             '&qty=' + newVal;
     }
 </script>

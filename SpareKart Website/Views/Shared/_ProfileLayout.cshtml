@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>SpareKart</title>
@@ -29,6 +29,35 @@
         </div>
 
         <div class="nav-right">
+            @using Microsoft.AspNetCore.Http
+            @using SpareKart_Website.Data
+            @inject IHttpContextAccessor HttpContextAccessor
+            @inject ApplicationDbContext Context
+
+            @{
+                var userId = HttpContextAccessor.HttpContext?.Session.GetInt32("UserId");
+                SpareKart_Website.Models.User currentUser = null;
+                if (userId != null)
+                {
+                    currentUser = Context.Users.FirstOrDefault(u => u.Id == userId);
+                }
+            }
+
+            @if (currentUser != null)
+            {
+                <div class="user-nav-info" style="display: flex; align-items: center; gap: 10px; margin-right: 15px;">
+                    @if (!string.IsNullOrEmpty(currentUser.ProfilePictureUrl))
+                    {
+                        <img src="/@currentUser.ProfilePictureUrl" alt="Profile" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #fff;" />
+                    }
+                    else
+                    {
+                        <i class="fa fa-user-circle" style="font-size: 24px; color: #fff;"></i>
+                    }
+                    <span style="color: #fff; font-weight: 500;">@currentUser.Name.Split(' ')[0]</span>
+                </div>
+            }
+
             <a href="/Profile/Logout">
                 <button class="logout-btn">
                     <i class="fa fa-sign-out"></i> Logout

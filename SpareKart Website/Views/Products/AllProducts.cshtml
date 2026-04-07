@@ -1,16 +1,15 @@
-﻿@{
+@model IEnumerable<SpareKart_Website.Models.Product>
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Our Products";
 }
 <link rel="stylesheet" href="~/css/products.css" />
 
 <h2 class="p-title">Our Products</h2>
 
 <div class="product-page">
-
-    <!-- FILTER SIDEBAR -->
     <div class="filter">
         <h4>Filters</h4>
-
         <label>Search</label>
         <input type="text" id="searchInput" placeholder="Search products..." oninput="filterProducts()" />
 
@@ -23,156 +22,40 @@
             <option value="Lights">Lights</option>
             <option value="Accessories">Accessories</option>
         </select>
-
-        
     </div>
 
-    <!-- PRODUCT SECTION -->
     <div class="product-section">
-        <p class="showing-count" id="showingCount">Showing 8 product(s)</p>
+        <p class="showing-count" id="showingCount">Showing @Model?.Count() product(s)</p>
 
         <div class="product-list" id="productList">
-
-            <!-- PRODUCT 1 -->
-            <div class="p-card" data-name="Engine Oil Filter" data-category="Engine">
-                <a href="/Products/ProductDetails?name=Engine Oil Filter&price=499&image=engine.jpg">
-                    <img src="~/images/engine.jpg" alt="Engine Oil Filter" />
-                    <h4>Engine Oil Filter</h4>
-                    <p class="desc">High-quality oil filter for engine protection. Compatible with most car models.</p>
-                </a>
-                <div class="bottom">
-                    <span>₹499</span>
-                    <a href="/Cart/Add?name=Engine Oil Filter&price=499&image=engine.jpg">
-                        <button><i class="fa fa-shopping-cart"></i> Add</button>
-                    </a>
-                </div>
-            </div>
-
-            <!-- PRODUCT 2 -->
-            <div class="p-card" data-name="Brake Disc Set" data-category="Brakes">
-                <a href="/Products/ProductDetails?name=Brake Disc Set&price=2999&image=brake.jpg">
-                    <img src="~/images/brake.jpg" alt="Brake Disc Set" />
-                    <h4>Brake Disc Set</h4>
-                    <p class="desc">Premium brake disc set for superior stopping power. Fits most wheels.</p>
-                </a>
-                <div class="bottom">
-                    <span>₹2999</span>
-                    <a href="/Cart/Add?name=Brake Disc Set&price=2999&image=brake.jpg">
-                        <button><i class="fa fa-shopping-cart"></i> Add</button>
-                    </a>
-                </div>
-            </div>
-
-            <!-- PRODUCT 3 -->
-            <div class="p-card" data-name="All-Season Tyre" data-category="Tyres">
-                <a href="/Products/ProductDetails?name=All-Season Tyre&price=4500&image=tyre.jpg">
-                    <img src="~/images/tyre.jpg" alt="All-Season Tyre" />
-                    <h4>All-Season Tyre</h4>
-                    <p class="desc">Durable all-season tyre with excellent grip. Size: 195/65 Info.</p>
-                </a>
-                <div class="bottom">
-                    <span>₹4500</span>
-                    <a href="/Cart/Add?name=All-Season Tyre&price=4500&image=tyre.jpg">
-                        <button><i class="fa fa-shopping-cart"></i> Add</button>
-                    </a>
-                </div>
-            </div>
-
-            <!-- PRODUCT 4 -->
-            <div class="p-card" data-name="LED Headlight" data-category="Lights">
-                <a href="/Products/ProductDetails?name=LED Headlight&price=1899&image=light.jpg">
-                    <img src="~/images/light.jpg" alt="LED Headlight" />
-                    <h4>LED Headlight</h4>
-                    <p class="desc">Bright LED headlight for better visibility. Easy installation.</p>
-                </a>
-                <div class="bottom">
-                    <span>₹1899</span>
-                    <a href="/Cart/Add?name=LED Headlight&price=1899&image=light.jpg">
-                        <button><i class="fa fa-shopping-cart"></i> Add</button>
-                    </a>
-                </div>
-            </div>
-
-            <!-- PRODUCT 5 -->
-            <div class="p-card" data-name="Car Air Freshener" data-category="Accessories">
-                <a href="/Products/ProductDetails?name=Car Air Freshener&price=199&image=light.jpg">
-                    <img src="~/images/light.jpg" alt="Car Air Freshener" />
-                    <h4>Car Air Freshener</h4>
-                    <p class="desc">Long lasting air freshener with pleasant fragrance. Fits all cars.</p>
-                </a>
-                <div class="bottom">
-                    <span>₹199</span>
-                    <a href="/Cart/Add?name=Car Air Freshener&price=199&image=light.jpg">
-                        <button><i class="fa fa-shopping-cart"></i> Add</button>
-                    </a>
-                </div>
-            </div>
-
-            <!-- PRODUCT 6 -->
-            <div class="p-card" data-name="Spark Plugs Set" data-category="Engine">
-                <a href="/Products/ProductDetails?name=Spark Plugs Set&price=799&image=engine.jpg">
-                    <img src="~/images/engine.jpg" alt="Spark Plugs Set" />
-                    <h4>Spark Plugs Set</h4>
-                    <p class="desc">High-performance spark plugs for smooth engine operation. Set of 4.</p>
-                </a>
-                <div class="bottom">
-                    <span>₹799</span>
-                    <a href="/Cart/Add?name=Spark Plugs Set&price=799&image=engine.jpg">
-                        <button><i class="fa fa-shopping-cart"></i> Add</button>
-                    </a>
-                </div>
-            </div>
-
-            <!-- PRODUCT 7 -->
-            <div class="p-card" data-name="Brake Pads" data-category="Brakes">
-                <a href="/Products/ProductDetails?name=Brake Pads&price=1299&image=brake.jpg">
-                    <img src="~/images/brake.jpg" alt="Brake Pads" />
-                    <h4>Brake Pads</h4>
-                    <p class="desc">Ceramic brake pads for quiet and efficient braking.</p>
-                </a>
-                <div class="bottom">
-                    <span>₹1299</span>
-                    <a href="/Cart/Add?name=Brake Pads&price=1299&image=brake.jpg">
-                        <button><i class="fa fa-shopping-cart"></i> Add</button>
-                    </a>
-                </div>
-            </div>
-
-            <!-- PRODUCT 8 -->
-            <div class="p-card" data-name="Tail Light Assembly" data-category="Lights">
-                <a href="/Products/ProductDetails?name=Tail Light Assembly&price=1599&image=tyre.jpg">
-                    <img src="~/images/light.jpg" alt="Tail Light Assembly" />
-                    <h4>Tail Light Assembly</h4>
-                    <p class="desc">Complete tail light assembly. Direct replacement.</p>
-                </a>
-                <div class="bottom">
-                    <span>₹1599</span>
-                    <a href="/Cart/Add?name=Tail Light Assembly&price=1599&image=tyre.jpg">
-                        <button><i class="fa fa-shopping-cart"></i> Add</button>
-                    </a>
-                </div>
-            </div>
-            <!-- PRODUCT 9-->
-            <div class="p-card" data-name="Tail Light Assembly" data-category="Lights">
-                <a href="/Products/ProductDetails?name=Tail Light Assembly&price=1599&image=tyre.jpg">
-                    <img src="~/images/light.jpg" alt="Tail Light Assembly" />
-                    <h4>Tail Light Assembly</h4>
-                    <p class="desc">Complete tail light assembly. Direct replacement.</p>
-                </a>
-                <div class="bottom">
-                    <span>₹1599</span>
-                    <a href="/Cart/Add?name=Tail Light Assembly&price=1599&image=tyre.jpg">
-                        <button><i class="fa fa-shopping-cart"></i> Add</button>
-                    </a>
-                </div>
-            </div>
+            @if(Model != null && Model.Any())
+            {
+                foreach(var p in Model)
+                {
+                    <div class="p-card" data-name="@p.Name" data-category="@p.Category">
+                        <a href="/Products/ProductDetails/@p.Id">
+                            <img src="@(!string.IsNullOrEmpty(p.ImageUrl) ? p.ImageUrl : "https://placehold.co/200x200?text=Product")" alt="@p.Name" />
+                            <h4>@p.Name</h4>
+                            <p class="desc">@p.Description</p>
+                        </a>
+                        <div class="bottom">
+                            <span>₹@p.Price</span>
+                            <a href="/Cart/Add?name=@Uri.EscapeDataString(p.Name)&price=@((int)p.Price)&image=@Uri.EscapeDataString(!string.IsNullOrEmpty(p.ImageUrl) ? p.ImageUrl : "https://placehold.co/200x200?text=Product")">
+                                <button><i class="fa fa-shopping-cart"></i> Add</button>
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h4 style="text-align: center; width: 100%;">No products found in the database.</h4>
+            }
         </div>
     </div>
-
 </div>
 
 <script>
-    // Auto-filter on page load using URL ?category= param (from homepage category links)
     window.addEventListener('DOMContentLoaded', function () {
         const urlParams = new URLSearchParams(window.location.search);
         const cat = urlParams.get('category');
