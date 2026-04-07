@@ -25,7 +25,7 @@
         <div class="item">
 
             @{
-                var isFullUrl = item.Image != null && item.Image.StartsWith("http");
+                var isFullUrl = item.Image != null && (item.Image.StartsWith("http") || item.Image.StartsWith("/"));
             }
             @if (isFullUrl)
             {

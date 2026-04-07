@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace SpareKart_Website.Models
 {
@@ -8,6 +8,7 @@ namespace SpareKart_Website.Models
         public string Date { get; set; }
         public int TotalAmount { get; set; }
         public string Address { get; set; }
+        public string PaymentStatus { get; set; }
         public List<CartItem> Items { get; set; }
     }
 }

@@ -28,9 +28,9 @@ namespace SpareKart_Website.Controllers.Admin
             ViewBag.LowStockCount = lowStockProducts.Count;
             ViewBag.LowStockProducts = lowStockProducts;
 
-            ViewBag.OrdersCompleted = _context.Orders.Count(o => o.Status == "Completed");
-            ViewBag.OrdersPending = _context.Orders.Count(o => o.Status == "Pending");
-            ViewBag.OrdersFailed = _context.Orders.Count(o => o.Status == "Failed");
+            ViewBag.OrdersCompleted = _context.Orders.Count(o => o.PaymentStatus == "Completed");
+            ViewBag.OrdersPending = _context.Orders.Count(o => o.PaymentStatus != "Completed");
+            ViewBag.OrdersFailed = 0;
 
             return View();
         }
@@ -50,8 +50,16 @@ namespace SpareKart_Website.Controllers.Admin
         [HttpPost]
         public IActionResult AddProduct(Product product, IFormFile productImage)
         {
+            ModelState.Remove("ImageUrl");
+            ModelState.Remove("Description");
+
             if (ModelState.IsValid)
             {
+                if (product.Description == null)
+                {
+                    product.Description = "";
+                }
+
                 if (productImage != null && productImage.Length > 0)
                 {
                     var uploadsFolder = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot", "images", "products");
@@ -67,6 +75,10 @@ namespace SpareKart_Website.Controllers.Admin
                     }
 
                     product.ImageUrl = "/images/products/" + uniqueFileName;
+                }
+                else
+                {
+                    product.ImageUrl = "";
                 }
 
                 _context.Products.Add(product);
@@ -87,8 +99,16 @@ namespace SpareKart_Website.Controllers.Admin
         [HttpPost]
         public IActionResult EditProduct(Product product, IFormFile productImage)
         {
+            ModelState.Remove("ImageUrl");
+            ModelState.Remove("Description");
+
             if (ModelState.IsValid)
             {
+                if (product.Description == null)
+                {
+                    product.Description = "";
+                }
+
                 if (productImage != null && productImage.Length > 0)
                 {
                     var uploadsFolder = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot", "images", "products");
@@ -104,6 +124,10 @@ namespace SpareKart_Website.Controllers.Admin
                     }
 
                     product.ImageUrl = "/images/products/" + uniqueFileName;
+                }
+                else if (product.ImageUrl == null)
+                {
+                    product.ImageUrl = "";
                 }
 
                 _context.Products.Update(product);

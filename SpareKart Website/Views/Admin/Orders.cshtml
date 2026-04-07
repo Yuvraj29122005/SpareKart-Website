@@ -14,15 +14,15 @@
     </div>
     <div class="kpi-card">
         <div class="kpi-title">Completed</div>
-        <div class="kpi-value kpi-completed">@(Model?.Count(o => o.Status == "Completed") ?? 0)</div>
+        <div class="kpi-value kpi-completed">@(Model?.Count(o => o.PaymentStatus == "Completed") ?? 0)</div>
     </div>
     <div class="kpi-card">
         <div class="kpi-title">Pending</div>
-        <div class="kpi-value kpi-pending">@(Model?.Count(o => o.Status == "Pending") ?? 0)</div>
+        <div class="kpi-value kpi-pending">@(Model?.Count(o => o.PaymentStatus != "Completed") ?? 0)</div>
     </div>
     <div class="kpi-card">
         <div class="kpi-title">Total Revenue (Completed)</div>
-        <div class="kpi-value kpi-revenue">₹@(Model?.Where(o => o.Status == "Completed").Sum(o => o.TotalAmount) ?? 0)</div>
+        <div class="kpi-value kpi-revenue">₹@(Model?.Where(o => o.PaymentStatus == "Completed").Sum(o => o.TotalAmount) ?? 0)</div>
     </div>
 </div>
 
@@ -49,9 +49,8 @@
                         <td>@(o.OrderItems?.Sum(i => i.Quantity) ?? 0) item(s)</td>
                         <td>₹@o.TotalAmount</td>
                         <td>
-                            @if(o.Status == "Pending"){ <span class="badge-status status-pending">Pending</span> }
-                            else if(o.Status == "Completed"){ <span class="badge-status status-completed">Completed</span> }
-                            else { <span class="badge-status status-failed">@o.Status</span> }
+                            @if(o.PaymentStatus == "Completed"){ <span class="badge-status status-completed">Completed</span> }
+                            else { <span class="badge-status status-pending">Pending</span> }
                         </td>
                         <td>
                             <button class="btn-icon" onclick="window.location.href='/Admin/OrderDetails/@o.Id'">

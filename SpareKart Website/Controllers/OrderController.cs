@@ -29,6 +29,7 @@ namespace SpareKart_Website.Controllers
                 Date = o.OrderDate.ToShortDateString(),
                 TotalAmount = (int)o.TotalAmount,
                 Address = o.ShippingAddress,
+                PaymentStatus = o.PaymentStatus,
                 Items = o.OrderItems.Select(oi => new CartItem 
                 {
                     Name = oi.Product?.Name ?? "Product " + oi.ProductId,
@@ -59,6 +60,7 @@ namespace SpareKart_Website.Controllers
                 Date = o.OrderDate.ToShortDateString(),
                 TotalAmount = (int)o.TotalAmount,
                 Address = o.ShippingAddress,
+                PaymentStatus = o.PaymentStatus,
                 Items = o.OrderItems.Select(oi => new CartItem 
                 {
                     Name = oi.Product?.Name ?? "Product " + oi.ProductId,

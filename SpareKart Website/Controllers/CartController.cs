@@ -30,6 +30,8 @@ namespace SpareKart_Website.Controllers
         {
             var product = _context.Products.FirstOrDefault(x => x.Name == name);
             int maxStock = product != null ? product.StockQty : 10;
+            string dbImage = product?.ImageUrl;
+            if (string.IsNullOrEmpty(dbImage)) dbImage = image;
 
             var item = cart.FirstOrDefault(x => x.Name == name);
 
@@ -39,7 +41,7 @@ namespace SpareKart_Website.Controllers
                 {
                     Name = name,
                     Price = price, // Ensure price is the unit price
-                    Image = image,
+                    Image = dbImage,
                     Quantity = (qty > maxStock) ? maxStock : qty,
                     MaxStock = maxStock
                 });

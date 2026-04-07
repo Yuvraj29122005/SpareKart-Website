@@ -1,4 +1,4 @@
-﻿@model List<SpareKart_Website.Models.OrderModel>
+@model List<SpareKart_Website.Models.OrderModel>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -57,10 +57,16 @@
                         </div>
                     </div>
 
-                    <!-- Status badges — 2 pills like in the screenshot -->
+                    <!-- Status badges modified dynamically based on payment -->
                     <div class="oc-badges">
-                        <span class="badge badge-delivered">Delivered</span>
-                        <span class="badge badge-paid">Payment Completed</span>
+                        @if (order.PaymentStatus == "Completed")
+                        {
+                            <span class="badge badge-paid">Completed</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-pending" style="background-color: #fef08a; color: #854d0e;">Pending</span>
+                        }
                     </div>
 
                 </div>
