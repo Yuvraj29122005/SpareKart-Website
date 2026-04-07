@@ -48,10 +48,27 @@ namespace SpareKart_Website.Controllers.Admin
         }
 
         [HttpPost]
-        public IActionResult AddProduct(Product product)
+        public IActionResult AddProduct(Product product, IFormFile productImage)
         {
             if (ModelState.IsValid)
             {
+                if (productImage != null && productImage.Length > 0)
+                {
+                    var uploadsFolder = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot", "images", "products");
+                    if (!System.IO.Directory.Exists(uploadsFolder))
+                        System.IO.Directory.CreateDirectory(uploadsFolder);
+
+                    var uniqueFileName = System.Guid.NewGuid().ToString() + "_" + productImage.FileName;
+                    var filePath = System.IO.Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var stream = new System.IO.FileStream(filePath, System.IO.FileMode.Create))
+                    {
+                        productImage.CopyTo(stream);
+                    }
+
+                    product.ImageUrl = "/images/products/" + uniqueFileName;
+                }
+
                 _context.Products.Add(product);
                 _context.SaveChanges();
                 return RedirectToAction("Products");
@@ -68,10 +85,27 @@ namespace SpareKart_Website.Controllers.Admin
         }
 
         [HttpPost]
-        public IActionResult EditProduct(Product product)
+        public IActionResult EditProduct(Product product, IFormFile productImage)
         {
             if (ModelState.IsValid)
             {
+                if (productImage != null && productImage.Length > 0)
+                {
+                    var uploadsFolder = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot", "images", "products");
+                    if (!System.IO.Directory.Exists(uploadsFolder))
+                        System.IO.Directory.CreateDirectory(uploadsFolder);
+
+                    var uniqueFileName = System.Guid.NewGuid().ToString() + "_" + productImage.FileName;
+                    var filePath = System.IO.Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var stream = new System.IO.FileStream(filePath, System.IO.FileMode.Create))
+                    {
+                        productImage.CopyTo(stream);
+                    }
+
+                    product.ImageUrl = "/images/products/" + uniqueFileName;
+                }
+
                 _context.Products.Update(product);
                 _context.SaveChanges();
                 return RedirectToAction("Products");

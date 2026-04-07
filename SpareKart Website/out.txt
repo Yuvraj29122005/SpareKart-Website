@@ -1,0 +1,11 @@
+﻿C:\Users\yuvra\Desktop\6TH SEM B.TECH\.net project\SpareKart-Website\SpareKart Website\Views\Admin\EditProduct.cshtml(28,40): error RZ1031: The tag helper 'option' must not have C# in the element's attribute declaration area. [C:\Users\yuvra\Desktop\6TH SEM B.TECH\.net project\SpareKart-Website\SpareKart Website\SpareKart Website.csproj]
+C:\Users\yuvra\Desktop\6TH SEM B.TECH\.net project\SpareKart-Website\SpareKart Website\Views\Admin\EditProduct.cshtml(29,40): error RZ1031: The tag helper 'option' must not have C# in the element's attribute declaration area. [C:\Users\yuvra\Desktop\6TH SEM B.TECH\.net project\SpareKart-Website\SpareKart Website\SpareKart Website.csproj]
+C:\Users\yuvra\Desktop\6TH SEM B.TECH\.net project\SpareKart-Website\SpareKart Website\Views\Admin\EditProduct.cshtml(30,39): error RZ1031: The tag helper 'option' must not have C# in the element's attribute declaration area. [C:\Users\yuvra\Desktop\6TH SEM B.TECH\.net project\SpareKart-Website\SpareKart Website\SpareKart Website.csproj]
+C:\Users\yuvra\Desktop\6TH SEM B.TECH\.net project\SpareKart-Website\SpareKart Website\Views\Admin\EditProduct.cshtml(31,40): error RZ1031: The tag helper 'option' must not have C# in the element's attribute declaration area. [C:\Users\yuvra\Desktop\6TH SEM B.TECH\.net project\SpareKart-Website\SpareKart Website\SpareKart Website.csproj]
+C:\Users\yuvra\Desktop\6TH SEM B.TECH\.net project\SpareKart-Website\SpareKart Website\Views\Admin\EditProduct.cshtml(32,45): error RZ1031: The tag helper 'option' must not have C# in the element's attribute declaration area. [C:\Users\yuvra\Desktop\6TH SEM B.TECH\.net project\SpareKart-Website\SpareKart Website\SpareKart Website.csproj]
+
+Build FAILED.
+    43 Warning(s)
+    5 Error(s)
+
+Time Elapsed 00:00:06.54

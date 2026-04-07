@@ -44,7 +44,14 @@
                         <td>
                             @if(!string.IsNullOrEmpty(p.ImageUrl))
                             {
-                                <img src="@p.ImageUrl" class="product-img" alt="img" />
+                                if (p.ImageUrl.StartsWith("http"))
+                                {
+                                    <img src="@p.ImageUrl" class="product-img" alt="img" />
+                                }
+                                else
+                                {
+                                    <img src="@Url.Content("~" + p.ImageUrl)" class="product-img" alt="img" />
+                                }
                             }
                             else
                             {

@@ -30,17 +30,18 @@
         <div class="product-list" id="productList">
             @if(Model != null && Model.Any())
             {
-                foreach(var p in Model)
+                @foreach(var p in Model)
                 {
+                    var imgUrl = !string.IsNullOrEmpty(p.ImageUrl) ? (p.ImageUrl.StartsWith("http") ? p.ImageUrl : Url.Content("~" + p.ImageUrl)) : "https://placehold.co/200x200?text=Product";
                     <div class="p-card" data-name="@p.Name" data-category="@p.Category">
                         <a href="/Products/ProductDetails/@p.Id">
-                            <img src="@(!string.IsNullOrEmpty(p.ImageUrl) ? p.ImageUrl : "https://placehold.co/200x200?text=Product")" alt="@p.Name" />
+                            <img src="@imgUrl" alt="@p.Name" />
                             <h4>@p.Name</h4>
                             <p class="desc">@p.Description</p>
                         </a>
                         <div class="bottom">
                             <span>₹@p.Price</span>
-                            <a href="/Cart/Add?name=@Uri.EscapeDataString(p.Name)&price=@((int)p.Price)&image=@Uri.EscapeDataString(!string.IsNullOrEmpty(p.ImageUrl) ? p.ImageUrl : "https://placehold.co/200x200?text=Product")">
+                            <a href="/Cart/Add?name=@Uri.EscapeDataString(p.Name)&price=@((int)p.Price)&image=@Uri.EscapeDataString(imgUrl)">
                                 <button><i class="fa fa-shopping-cart"></i> Add</button>
                             </a>
                         </div>

@@ -2,45 +2,96 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Edit Product";
+    var hasImage = !string.IsNullOrEmpty(Model.ImageUrl);
+    var imageSrc = hasImage ? (Model.ImageUrl.StartsWith("http") ? Model.ImageUrl : Url.Content("~" + Model.ImageUrl)) : "";
 }
 <link rel="stylesheet" href="~/css/admin/adminProducts.css" />
 
 <div class="mb-4">
     <h4 class="admin-page-title">Edit Product</h4>
+    <p class="admin-page-sub">Update the product details below</p>
 </div>
 
 <div class="admin-form-card">
-    <form method="post" action="/Admin/EditProduct">
+    <form method="post" action="/Admin/EditProduct" enctype="multipart/form-data">
         <input type="hidden" name="Id" value="@Model.Id" />
+        <input type="hidden" name="ImageUrl" id="existingImageUrl" value="@Model.ImageUrl" />
+
         <div class="form-group">
-            <label class="form-label">Product Name</label>
+            <label class="form-label"><i class="fa fa-cube"></i> Product Name *</label>
             <input type="text" class="form-control" name="Name" value="@Model.Name" required />
         </div>
+
         <div class="form-group">
-            <label class="form-label">Category</label>
-            <input type="text" class="form-control" name="Category" value="@Model.Category" required />
+            <label class="form-label"><i class="fa fa-tag"></i> Category *</label>
+            <select class="form-select" name="Category" required>
+                @foreach (var cat in new[] { "Engine", "Brakes", "Tyres", "Lights", "Accessories" })
+                {
+                    if (Model.Category == cat)
+                    {
+                        <option value="@cat" selected>@cat</option>
+                    }
+                    else
+                    {
+                        <option value="@cat">@cat</option>
+                    }
+                }
+            </select>
         </div>
+
         <div class="row-split">
             <div class="form-group">
-                <label class="form-label">Price (₹)</label>
+                <label class="form-label"><i class="fa fa-dollar-sign"></i> Price (₹) *</label>
                 <input type="number" step="0.01" class="form-control" name="Price" value="@Model.Price" required />
             </div>
             <div class="form-group">
-                <label class="form-label">Stock Quantity</label>
+                <label class="form-label"><i class="fa fa-boxes-stacked"></i> Stock Quantity *</label>
                 <input type="number" class="form-control" name="StockQty" value="@Model.StockQty" required />
             </div>
         </div>
+
         <div class="form-group">
-            <label class="form-label">Description</label>
+            <label class="form-label"><i class="fa fa-file-lines"></i> Description</label>
             <textarea class="form-control" name="Description">@Model.Description</textarea>
         </div>
+
         <div class="form-group">
-            <label class="form-label">Image URL</label>
-            <input type="text" class="form-control" name="ImageUrl" value="@Model.ImageUrl" />
+            <label class="form-label"><i class="fa fa-image"></i> Product Image</label>
+            <input type="file" class="form-control" name="productImage" id="productImageInput" accept="image/*" onchange="previewImage(event)" />
+            @if (hasImage)
+            {
+                <span class="form-help">Current image is shown below. Choose a new file to replace it, or leave as-is.</span>
+                <div style="margin-top: 15px;">
+                    <img id="imagePreview" src="@imageSrc" alt="Current Image" style="display:block; max-width: 150px; border-radius: 6px; border: 1px solid #e2e8f0; padding: 4px;" />
+                </div>
+            }
+            else
+            {
+                <span class="form-help">Select an image from your device for this product.</span>
+                <div style="margin-top: 15px;">
+                    <img id="imagePreview" src="" alt="Preview" style="display:none; max-width: 150px; border-radius: 6px; border: 1px solid #e2e8f0; padding: 4px;" />
+                </div>
+            }
         </div>
+
         <div class="form-actions">
             <button type="submit" class="btn-submit">Save Changes</button>
             <a href="/Admin/Products" class="btn-cancel text-center text-decoration-none d-flex align-items-center justify-content-center">Cancel</a>
         </div>
     </form>
 </div>
+
+<script>
+    function previewImage(event) {
+        var file = event.target.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var preview = document.getElementById('imagePreview');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>

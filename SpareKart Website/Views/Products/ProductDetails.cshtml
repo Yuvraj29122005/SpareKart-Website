@@ -4,6 +4,7 @@
     var product = Model;
     var imageUrl = !string.IsNullOrEmpty(product.ImageUrl) ? product.ImageUrl : "https://placehold.co/400x400?text=Product";
     var isFullUrl = imageUrl.StartsWith("http");
+    var resolvedUrl = isFullUrl ? imageUrl : Url.Content("~" + imageUrl);
 }
 
 <link rel="stylesheet" href="~/css/productdetails.css" />
@@ -16,14 +17,7 @@
 
     <!-- IMAGE -->
     <div class="img-box">
-        @if (isFullUrl)
-        {
-            <img src="@imageUrl" alt="@product.Name" />
-        }
-        else
-        {
-            <img src="~/images/@imageUrl" alt="@product.Name" />
-        }
+        <img src="@resolvedUrl" alt="@product.Name" />
     </div>
 
     <!-- INFO -->
@@ -66,12 +60,12 @@
         <div class="action-buttons">
             @if (product.StockQty > 0)
             {
-                <a id="addToCartBtn" href="/Cart/Add?name=@Uri.EscapeDataString(product.Name)&price=@((int)product.Price)&image=@Uri.EscapeDataString(imageUrl)">
+                <a id="addToCartBtn" href="/Cart/Add?name=@Uri.EscapeDataString(product.Name)&price=@((int)product.Price)&image=@Uri.EscapeDataString(resolvedUrl)">
                     <button class="cart-btn">
                         🛒 Add to Cart
                     </button>
                 </a>
-                <a id="buyNowBtn" href="/Checkout/Index?name=@Uri.EscapeDataString(product.Name)&price=@((int)product.Price)&image=@Uri.EscapeDataString(imageUrl)&qty=1">
+                <a id="buyNowBtn" href="/Checkout/Index?name=@Uri.EscapeDataString(product.Name)&price=@((int)product.Price)&image=@Uri.EscapeDataString(resolvedUrl)&qty=1">
                     <button class="buy-btn">
                         ⚡ Buy Now
                     </button>
@@ -92,7 +86,7 @@
 <script>
     var basePrice = @((int)product.Price);
     var productName = "@Uri.EscapeDataString(product.Name)";
-    var productImage = "@Uri.EscapeDataString(imageUrl)";
+    var productImage = "@Uri.EscapeDataString(resolvedUrl)";
 
     var maxQty = @product.StockQty;
 
